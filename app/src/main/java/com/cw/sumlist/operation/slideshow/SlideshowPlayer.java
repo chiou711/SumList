@@ -19,7 +19,6 @@ package com.cw.sumlist.operation.slideshow;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.R;
 import com.cw.sumlist.note.Note;
-import com.cw.sumlist.util.image.UtilImage;
 import com.cw.sumlist.util.uil.UilCommon;
 import com.cw.sumlist.util.Util;
 
@@ -48,8 +47,7 @@ public class SlideshowPlayer extends FragmentActivity
 
 	private SlideshowInfo showInfo; // slide show being played
 	private Handler slideHandler; // used to update the slide show
-	private BroadcastReceiver mReceiver;
-   
+
 	// initializes the SlideshowPlayer Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -232,17 +230,8 @@ public class SlideshowPlayer extends FragmentActivity
 			viewHolder = showInfo.getShowItem(currIndex);
 			System.out.println("SlideshowPlayer / _Runnable runSlideshow / currIndex = " + currIndex);
 
-			// check if Uri exists
-			boolean uriOK;
-			String path = viewHolder.imagePath;
-			if (UtilImage.hasImageExtension(path, SlideshowPlayer.this))
-				uriOK = Util.isUriExisted(path, SlideshowPlayer.this);
-			else
-				uriOK = false;
-			System.out.println("SlideshowPlayer / _Runnable runSlideshow / uriOK = " + uriOK);
-
 			String text = viewHolder.text;
-			if((!uriOK) && Util.isEmptyString(text))
+			if(Util.isEmptyString(text))
 			{
 				// post instantly
 				slideHandler.post(runSlideshow); // go to display next instantly

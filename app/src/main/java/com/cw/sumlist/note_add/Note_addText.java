@@ -47,7 +47,8 @@ public class Note_addText extends AppCompatActivity {
     boolean enSaveDb = true;
 	static final int ADD_TEXT_NOTE = R.id.ADD_TEXT_NOTE;
 	EditText titleEditText;
-	EditText linkEditText;
+	EditText bodyEditText;
+	EditText quantityEditText;
 	Menu mMenu;
 
     @Override
@@ -122,7 +123,8 @@ public class Note_addText extends AppCompatActivity {
 		mMenu.findItem(R.id.ADD_TEXT_NOTE).setIcon(R.drawable.ic_input_add);
 
 		titleEditText.addTextChangedListener(setTextWatcher());
-		linkEditText.addTextChangedListener(setTextWatcher());
+		bodyEditText.addTextChangedListener(setTextWatcher());
+		quantityEditText.addTextChangedListener(setTextWatcher());
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -223,10 +225,11 @@ public class Note_addText extends AppCompatActivity {
 	{
 		boolean bEdit = false;
 		String curTitle = titleEditText.getText().toString();
-		String curLink = linkEditText.getText().toString();
+		String curBody = bodyEditText.getText().toString();
+		String curQuantiry = quantityEditText.getText().toString();
 
 		if(!Util.isEmptyString(curTitle)||
-				!Util.isEmptyString(curLink)   )
+				!Util.isEmptyString(curBody)   )
 		{
 			bEdit = true;
 		}
@@ -237,7 +240,8 @@ public class Note_addText extends AppCompatActivity {
 	void UI_init_text()
 	{
 		titleEditText = (EditText) findViewById(R.id.edit_title);
-		linkEditText = (EditText) findViewById(R.id.edit_link);
+		bodyEditText = (EditText) findViewById(R.id.edit_body);
+		quantityEditText = (EditText) findViewById(R.id.edit_quantity);
 
 		int focusFolder_tableId = Pref.getPref_focusView_folder_tableId(this);
 		DB_folder db = new DB_folder(MainAct.mAct, focusFolder_tableId);
@@ -251,9 +255,14 @@ public class Note_addText extends AppCompatActivity {
 		titleEditText.setTextColor(ColorSet.mText_ColorArray[style]);
 		titleEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
 
-		//set link color
-		linkEditText.setTextColor(ColorSet.mText_ColorArray[style]);
-		linkEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
+		//set body color
+		bodyEditText.setTextColor(ColorSet.mText_ColorArray[style]);
+		bodyEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
+
+		//set quantity color
+		quantityEditText.setTextColor(ColorSet.mText_ColorArray[style]);
+		quantityEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
+
 	}
 
 	// populate text fields
@@ -265,10 +274,16 @@ public class Note_addText extends AppCompatActivity {
 			titleEditText.setText(strTitleEdit);
 			titleEditText.setSelection(strTitleEdit.length());
 
-			// link
-			String strLinkEdit = dB_page.getNoteLinkUri_byId(rowId);
-			linkEditText.setText(strLinkEdit);
-			linkEditText.setSelection(strLinkEdit.length());
+			// body
+			String strBodyEdit = dB_page.getNoteBody_byId(rowId);
+			bodyEditText.setText(strBodyEdit);
+			bodyEditText.setSelection(strBodyEdit.length());
+
+			// quantity
+			String strQuantityEdit = dB_page.getNoteQuantity_byId(rowId);
+			quantityEditText.setText(strQuantityEdit);
+			quantityEditText.setSelection(strQuantityEdit.length());
+
 		}
 		else
 		{
@@ -278,9 +293,15 @@ public class Note_addText extends AppCompatActivity {
 			titleEditText.setSelection(strBlank.length());
 			titleEditText.requestFocus();
 
-			// renew link
-			linkEditText.setText(strBlank);
-			linkEditText.setSelection(strBlank.length());
+			// renew body
+			bodyEditText.setText(strBlank);
+			bodyEditText.setSelection(strBlank.length());
+			bodyEditText.requestFocus();
+
+			// quantity
+			quantityEditText.setText(strBlank);
+			quantityEditText.setSelection(strBlank.length());
+			quantityEditText.requestFocus();
 		}
 	}
 
@@ -307,10 +328,15 @@ public class Note_addText extends AppCompatActivity {
 
 	Long saveStateInDB(Long rowId,boolean enSaveDb, String pictureUri)
 	{
-		String linkUri = "";
-		if(linkEditText != null)
-			linkUri = linkEditText.getText().toString();
 		String title = titleEditText.getText().toString();
+
+		String body = "";
+		if(bodyEditText != null)
+			body = bodyEditText.getText().toString();
+
+		String quantity = "";
+		if(quantityEditText != null)
+			quantity = quantityEditText.getText().toString();
 
 		if(enSaveDb)
 		{
@@ -318,16 +344,16 @@ public class Note_addText extends AppCompatActivity {
 			{
 				if( (!Util.isEmptyString(title)) ||
 						(!Util.isEmptyString(pictureUri)) ||
-						(!Util.isEmptyString(linkUri))            )
+						(!Util.isEmptyString(body))            )
 				{
 					// insert
 					System.out.println("Note_addText / _saveStateInDB / insert");
-					rowId = dB_page.insertNote(title, pictureUri,  linkUri,  0, (long) 0);// add new note, get return row Id
+					rowId = dB_page.insertNote(title, body,  Integer.valueOf(quantity),  1);// add new note, get return row Id
 				}
 			}
 			else if ( Util.isEmptyString(title) &&
 					Util.isEmptyString(pictureUri) &&
-					Util.isEmptyString(linkUri)         )
+					Util.isEmptyString(body)         )
 			{
 				// delete
 				System.out.println("Note_edit_ui / _saveStateInDB / delete");

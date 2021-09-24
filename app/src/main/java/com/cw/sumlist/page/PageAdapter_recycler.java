@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 CW Chiu
+ * Copyright (C) 2021 CW Chiu
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,15 @@ package com.cw.sumlist.page;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.net.Uri;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cw.sumlist.R;
@@ -50,32 +41,16 @@ import com.cw.sumlist.page.item_touch_helper.ItemTouchHelperViewHolder;
 import com.cw.sumlist.page.item_touch_helper.OnStartDragListener;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.ColorSet;
-import com.cw.sumlist.util.CustomWebView;
 import com.cw.sumlist.util.Util;
-import com.cw.sumlist.util.image.UtilImage;
-import com.cw.sumlist.util.image.UtilImage_bitmapLoader;
 import com.cw.sumlist.util.preferences.Pref;
-import com.cw.sumlist.util.uil.UilCommon;
-import com.cw.sumlist.util.video.UtilVideo;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.VideoListResponse;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Executors;
 
-import static com.cw.sumlist.db.DB_page.KEY_NOTE_LINK_URI;
 import static com.cw.sumlist.db.DB_page.KEY_NOTE_MARKING;
-import static com.cw.sumlist.db.DB_page.KEY_NOTE_PICTURE_URI;
+import static com.cw.sumlist.db.DB_page.KEY_NOTE_QUANTITY;
 import static com.cw.sumlist.db.DB_page.KEY_NOTE_TITLE;
+import static com.cw.sumlist.db.DB_page.KEY_NOTE_BODY;
 import static com.cw.sumlist.page.Page_recycler.swapRows;
 
 // Pager adapter
@@ -84,10 +59,9 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 {
 	private AppCompatActivity mAct;
 	private String strTitle;
-	private String pictureUri;
-	private String linkUri;
-	private int marking;
-	private String duration;
+	private String strBody;
+	private Integer quantity;
+	private Integer marking;
 	private static int style;
     DB_folder dbFolder;
 	private int page_pos;
@@ -95,7 +69,6 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	DB_page mDb_page;
 	int page_table_id;
 	List<Db_cache> listCache;
-	private static YouTube youtube;
 
     PageAdapter_recycler(int pagePos,  int pageTableId, OnStartDragListener dragStartListener) {
 	    mAct = MainAct.mAct;
@@ -106,13 +79,6 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	    page_table_id = pageTableId;
 
 	    updateDbCache();
-
-	    // get duration
-	    youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), new HttpRequestInitializer() {
-		    public void initialize(HttpRequest request) throws IOException {
-		    }
-	    }
-	    ).setApplicationName("YouLite").build();
     }
 
     /**
@@ -122,16 +88,11 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
         ImageView btnMarking;
         ImageView btnViewNote;
         ImageView btnEditNote;
-        ImageView btnPlayYouTube;
-        ImageView btnPlayWeb;
 		TextView rowId;
-		TextView textTitle;
-		TextView textTime;
+	    TextView textTitle;
+	    TextView textBody;
+		TextView textQuantity;
         ImageViewCustom btnDrag;
-		View thumbBlock;
-		ImageView thumbPicture;
-		CustomWebView thumbWeb;
-		ProgressBar progressBar;
 
         public ViewHolder(View v) {
             super(v);
@@ -143,20 +104,15 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
                 }
             });
 
-            textTitle = (TextView) v.findViewById(R.id.row_title);
-            rowId= (TextView) v.findViewById(R.id.row_id);
-            btnMarking = (ImageView) v.findViewById(R.id.btn_marking);
-            btnViewNote = (ImageView) v.findViewById(R.id.btn_view_note);
-            btnEditNote = (ImageView) v.findViewById(R.id.btn_edit_note);
-            btnPlayYouTube = (ImageView) v.findViewById(R.id.btn_play_youtube);
-            btnPlayWeb = (ImageView) v.findViewById(R.id.btn_play_web);
-            thumbBlock = v.findViewById(R.id.row_thumb_nail);
-            thumbPicture = (ImageView) v.findViewById(R.id.thumb_picture);
-            thumbWeb = (CustomWebView) v.findViewById(R.id.thumb_web);
-            btnDrag = (ImageViewCustom) v.findViewById(R.id.btn_drag);
-            progressBar = (ProgressBar) v.findViewById(R.id.thumb_progress);
-            textTitle = (TextView) v.findViewById(R.id.row_title);
-            textTime = (TextView) v.findViewById(R.id.row_time);
+	        btnMarking = (ImageView) v.findViewById(R.id.btn_marking);
+	        btnViewNote = (ImageView) v.findViewById(R.id.btn_view_note);
+	        btnEditNote = (ImageView) v.findViewById(R.id.btn_edit_note);
+	        btnDrag = (ImageViewCustom) v.findViewById(R.id.btn_drag);
+
+	        rowId= (TextView) v.findViewById(R.id.row_id);
+	        textTitle = (TextView) v.findViewById(R.id.row_title);
+	        textBody = (TextView) v.findViewById(R.id.row_body);
+	        textQuantity = (TextView) v.findViewById(R.id.row_quantity);
         }
 
         public TextView getTextView() {
@@ -208,16 +164,15 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 		    (position!=listCache.size()) )
 	    {
             strTitle =  listCache.get(position).title;
-            pictureUri = listCache.get(position).pictureUri;
-            linkUri = listCache.get(position).linkUri;
+            strBody = listCache.get(position).body;
+            quantity = listCache.get(position).quantity;
 		    marking = listCache.get(position).marking;
 
 	    } else  {
 		    strTitle ="";
-			pictureUri = "";
-		    linkUri = "";
+		    strBody ="";
+		    quantity = 0;
 		    marking = 0;
-		    duration = "n/a";
 	    }
 
         /**
@@ -244,182 +199,43 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
         else
             holder.btnDrag.setVisibility(View.GONE);
 
-        // show/hide play YouTube button, on play Web button
-        if(!Util.isEmptyString(linkUri) &&
-           linkUri.startsWith("http")      )
-        {
-            if(Util.isYouTubeLink(linkUri))
-            {
-                // YouTube
-                holder.btnPlayYouTube.setVisibility(View.VISIBLE);
-                holder.btnPlayWeb.setVisibility(View.GONE);
-            }
-            else
-            {
-                // Web
-                holder.btnPlayYouTube.setVisibility(View.GONE);
-                holder.btnPlayWeb.setVisibility(View.VISIBLE);
-            }
-        }
-        else
-        {
-            holder.btnPlayYouTube.setVisibility(View.GONE);
-            holder.btnPlayWeb.setVisibility(View.GONE);
-        }
-
 		// show text title
 		if( Util.isEmptyString(strTitle)){
-			if(Util.isYouTubeLink(linkUri)) {
-				strTitle = "";//Util.getYouTubeTitle(linkUri);
-				holder.textTitle.setVisibility(View.VISIBLE);
-				holder.textTitle.setText(strTitle);
-				holder.textTitle.setTextColor(Color.GRAY);
-			} else if( Util.isWebLink(linkUri)){
-				strTitle = "";
-				holder.textTitle.setVisibility(View.VISIBLE);
-				holder.textTitle.setText(strTitle);
-			} else {
-				// make sure empty title is empty after scrolling
-				holder.textTitle.setVisibility(View.VISIBLE);
-				holder.textTitle.setText("");
-			}
-		}
-		else
-		{
+			// make sure empty title is empty after scrolling
 			holder.textTitle.setVisibility(View.VISIBLE);
+			holder.textTitle.setText("");
+		} else {
+			holder.textTitle.setVisibility(View.VISIBLE);
+			holder.textTitle.setTextSize((float) 24.00);
 			holder.textTitle.setText(strTitle);
 			holder.textTitle.setTextColor(ColorSet.mText_ColorArray[style]);
 		}
 
-		// set YouTube thumb nail if picture Uri is none and YouTube link exists
-		if(Util.isEmptyString(pictureUri) &&
-		   Util.isYouTubeLink(linkUri)      )
-		{
-			pictureUri = "https://img.youtube.com/vi/"+Util.getYoutubeId(linkUri)+"/0.jpg";
-		}
+		// text body
+	    if( Util.isEmptyString(strBody)){
+		    // make sure empty title is empty after scrolling
+		    holder.textBody.setVisibility(View.VISIBLE);
+		    holder.textBody.setText("");
+	    }
+	    else{
+		    holder.textBody.setVisibility(View.VISIBLE);
+		    holder.textBody.setText(strBody);
+		    holder.textBody.setTextSize((float) 34.00);
+		    holder.textBody.setTextColor(ColorSet.mText_ColorArray[style]);
+	    }
 
-		// case 1: show thumb nail if picture Uri exists
-		if(UtilImage.hasImageExtension(pictureUri, mAct ) ||
-		   UtilVideo.hasVideoExtension(pictureUri, mAct )   )
-		{
-			holder.thumbBlock.setVisibility(View.VISIBLE);
-			holder.thumbPicture.setVisibility(View.VISIBLE);
-			holder.thumbWeb.setVisibility(View.GONE);
-			// load bitmap to image view
-			try
-			{
-				new UtilImage_bitmapLoader(holder.thumbPicture,
-										   pictureUri,
-										   holder.progressBar,
-                                           UilCommon.optionsForFadeIn,
-										   mAct);
-			}
-			catch(Exception e)
-			{
-				Log.e("PageAdapter_recycler", "UtilImage_bitmapLoader error");
-				holder.thumbBlock.setVisibility(View.GONE);
-				holder.thumbPicture.setVisibility(View.GONE);
-				holder.thumbWeb.setVisibility(View.GONE);
-			}
-		}
-		// case 2: set web title and web view thumb nail for general HTTP link
-		else if(Util.isWebLink(linkUri)){
-			// reset web view
-			CustomWebView.pauseWebView(holder.thumbWeb);
-			CustomWebView.blankWebView(holder.thumbWeb);
-
-			holder.thumbBlock.setVisibility(View.VISIBLE);
-			holder.thumbWeb.setInitialScale(50);
-			holder.thumbWeb.getSettings().setJavaScriptEnabled(true);//Using setJavaScriptEnabled can introduce XSS vulnerabilities
-			holder.thumbWeb.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT );
-
-			if(!Util.isEmptyString(pictureUri))
-				holder.thumbWeb.loadUrl(pictureUri);
-			else
-				holder.thumbWeb.loadUrl(linkUri);
-
-			holder.thumbWeb.setVisibility(View.VISIBLE);
-
-			holder.thumbPicture.setVisibility(View.GONE);
-
-			//Add for non-stop showing of full screen web view
-			holder.thumbWeb.setWebViewClient(new WebViewClient() {
-				@Override
-			    public boolean shouldOverrideUrlLoading(WebView view, String url)
-			    {
-			        view.loadUrl(url);
-			        return true;
-			    }
-			});
-
-			holder.thumbWeb.setOnTouchListener(new View.OnTouchListener() {
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					v.performClick();
-					return true;
-				}
-			});
-
-
-			if (Util.isEmptyString(strTitle)) {
-				holder.thumbWeb.setWebChromeClient(new WebChromeClient() {
-					@Override
-					public void onReceivedTitle(WebView view, String title) {
-						super.onReceivedTitle(view, title);
-						if (!TextUtils.isEmpty(title) &&
-							!title.equalsIgnoreCase("about:blank")) {
-
-							// title : for 1st time
-							holder.textTitle.setVisibility(View.VISIBLE);
-							holder.textTitle.setText(title);
-//							holder.textTitle.setTextColor(Color.GRAY);
-
-							// row Id
-							holder.rowId.setText(String.valueOf(position + 1));
-							holder.rowId.setTextColor(ColorSet.mText_ColorArray[style]);
-
-							// Also save received strTitle to DB
-							SharedPreferences pref_show_note_attribute = mAct.getSharedPreferences("add_new_note_option", 0);
-							boolean isAddedToTop = pref_show_note_attribute.getString("KEY_ADD_NEW_NOTE_TO","bottom").equalsIgnoreCase("top");
-							if(pref_show_note_attribute
-									.getString("KEY_ENABLE_LINK_TITLE_SAVE", "yes")
-									.equalsIgnoreCase("yes")) {
-								Date now = new Date();
-								DB_page dB_page = new DB_page(mAct, Pref.getPref_focusView_page_tableId(mAct));
-								int count = dB_page.getNotesCount(true);
-
-								long row_id;
-								if(isAddedToTop)
-									row_id = dB_page.getNoteId(0,true);
-								else
-									row_id = dB_page.getNoteId(count-1,true);
-
-								dB_page.updateNote(row_id, title, "",  linkUri,  0, now.getTime(), true); // update note
-							}
-						}
-					}
-				});
-			}
-		}
-		else
-		{
-			holder.thumbBlock.setVisibility(View.GONE);
-			holder.thumbPicture.setVisibility(View.GONE);
-			holder.thumbWeb.setVisibility(View.GONE);
-		}
-
-		// Show text body
-	  	if(pref_show_note_attribute.getString("KEY_SHOW_BODY", "yes").equalsIgnoreCase("yes"))
-	  	{
-//			holder.rowDivider.setVisibility(View.VISIBLE);
-			// duration
-            holder.textTime.setText(duration);
-			holder.textTime.setTextColor(ColorSet.mText_ColorArray[style]);
-	  	}
-	  	else
-	  	{
-            holder.textTime.setVisibility(View.GONE);
-	  	}
+	    // text quantity
+	    if( Util.isEmptyString(String.valueOf(quantity))){
+		    // make sure empty title is empty after scrolling
+		    holder.textQuantity.setVisibility(View.VISIBLE);
+		    holder.textQuantity.setText("");
+	    }
+	    else{
+		    holder.textQuantity.setVisibility(View.VISIBLE);
+		    holder.textQuantity.setText(String.valueOf(quantity));
+		    holder.textQuantity.setTextSize((float) 34.00);
+		    holder.textQuantity.setTextColor(ColorSet.mText_ColorArray[style]);
+	    }
 
         setBindViewHolder_listeners(holder,position);
     }
@@ -498,44 +314,10 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
                 Intent i = new Intent(mAct, Note_edit.class);
                 i.putExtra("list_view_position", position);
                 i.putExtra(DB_page.KEY_NOTE_ID, rowId);
-                i.putExtra(DB_page.KEY_NOTE_TITLE, db_page.getNoteTitle_byId(rowId));
-                i.putExtra(DB_page.KEY_NOTE_PICTURE_URI , db_page.getNotePictureUri_byId(rowId));
-                i.putExtra(DB_page.KEY_NOTE_LINK_URI , db_page.getNoteLinkUri_byId(rowId));
-                i.putExtra(DB_page.KEY_NOTE_CREATED, db_page.getNoteCreatedTime_byId(rowId));
+	            i.putExtra(DB_page.KEY_NOTE_TITLE, db_page.getNoteTitle_byId(rowId));
+	            i.putExtra(DB_page.KEY_NOTE_BODY, db_page.getNoteBody_byId(rowId));
+	            i.putExtra(DB_page.KEY_NOTE_QUANTITY, db_page.getNoteQuantity_byId(rowId));
                 mAct.startActivity(i);
-            }
-        });
-
-        // on play YouTube
-        viewHolder.btnPlayYouTube.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                TabsHost.getCurrentPage().mCurrPlayPosition = position;
-                DB_page db_page = new DB_page(mAct, TabsHost.getCurrentPageTableId());
-                db_page.open();
-                int count = db_page.getNotesCount(false);
-                String linkStr = db_page.getNoteLinkUri(position, false);
-                db_page.close();
-
-                if (position < count) {
-                    if (Util.isYouTubeLink(linkStr)) {
-                        // apply native YouTube
-                        Util.openLink_YouTube(mAct, linkStr);
-                    }
-                }
-            }
-        });
-
-        // on play Web
-        viewHolder.btnPlayWeb.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                DB_page db_page = new DB_page(mAct, TabsHost.getCurrentPageTableId());
-                linkUri = db_page.getNoteLinkUri(position, true);
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(linkUri));
-                MainAct.mAct.startActivity(intent);
             }
         });
 
@@ -580,20 +362,20 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
             return marking;
         }
 
-        String strNote = db_page.getNoteTitle(position,false);
-        String strPictureUri = db_page.getNotePictureUri(position,false);
-        String strLinkUri = db_page.getNoteLinkUri(position,false);
+	    String strNote = db_page.getNoteTitle(position,false);
+	    String strBody = db_page.getNoteBody(position,false);
+        Integer quantity = db_page.getNoteQuantity(position,false);
         Long idNote =  db_page.getNoteId(position,false);
 
         // toggle the marking
         if(db_page.getNoteMarking(position,false) == 0)
         {
-            db_page.updateNote(idNote, strNote, strPictureUri,  strLinkUri, 1, 0, false);
+            db_page.updateNote(idNote, strNote, strBody, quantity, 1, false);
             marking = 1;
         }
         else
         {
-            db_page.updateNote(idNote, strNote, strPictureUri,  strLinkUri,  0, 0, false);
+            db_page.updateNote(idNote, strNote, strBody,  quantity, 0, false);
             marking = 0;
         }
         db_page.close();
@@ -662,18 +444,14 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 			if (cursor.moveToPosition(i)) {
 				Db_cache cache = new Db_cache();
 				cache.title = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NOTE_TITLE));
-				cache.pictureUri = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NOTE_PICTURE_URI));
-				cache.linkUri = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NOTE_LINK_URI));
+				cache.body = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NOTE_BODY));
+				cache.quantity = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_NOTE_QUANTITY));
 				cache.marking = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_NOTE_MARKING));
-				cache.duration = "unknown";
 
 				listCache.add(cache);
 			}
 		}
 		mDb_page.close();
 	}
-
-	boolean isGotDuration;
-	String acquiredDuration;
 
 }

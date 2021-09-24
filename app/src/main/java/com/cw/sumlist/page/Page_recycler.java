@@ -139,45 +139,39 @@ public class Page_recycler extends Fragment implements OnStartDragListener {
     {
         Long noteNumber1;
         String noteTitle1;
-        String notePictureUri1;
-        String noteLinkUri1;
-        int markingIndex1;
-        Long createTime1;
+        String noteBody1;
+        Integer noteQuantity1;
+        Integer markingIndex1;
         Long noteNumber2 ;
-        String notePictureUri2;
-        String noteLinkUri2;
         String noteTitle2;
-        int markingIndex2;
-        Long createTime2;
+        String noteBody2;
+        Integer noteQuantity2;
+        Integer markingIndex2;
 
         dB_page.open();
         noteNumber1 = dB_page.getNoteId(startPosition,false);
         noteTitle1 = dB_page.getNoteTitle(startPosition,false);
-        notePictureUri1 = dB_page.getNotePictureUri(startPosition,false);
-        noteLinkUri1 = dB_page.getNoteLinkUri(startPosition,false);
+        noteBody1 = dB_page.getNoteBody(startPosition,false);
+        noteQuantity1 = dB_page.getNoteQuantity(startPosition,false);
         markingIndex1 = dB_page.getNoteMarking(startPosition,false);
-        createTime1 = dB_page.getNoteCreatedTime(startPosition,false);
 
         noteNumber2 = dB_page.getNoteId(endPosition,false);
         noteTitle2 = dB_page.getNoteTitle(endPosition,false);
-        notePictureUri2 = dB_page.getNotePictureUri(endPosition,false);
-        noteLinkUri2 = dB_page.getNoteLinkUri(endPosition,false);
+        noteBody2 = dB_page.getNoteBody(endPosition,false);
+        noteQuantity2 = dB_page.getNoteQuantity(endPosition,false);
         markingIndex2 = dB_page.getNoteMarking(endPosition,false);
-        createTime2 = dB_page.getNoteCreatedTime(endPosition,false);
 
         dB_page.updateNote(noteNumber2,
                 noteTitle1,
-                notePictureUri1,
-                noteLinkUri1,
-                markingIndex1,
-                createTime1,false);
+                noteBody1,
+                noteQuantity1,
+                markingIndex1,false);
 
         dB_page.updateNote(noteNumber1,
                 noteTitle2,
-                notePictureUri2,
-                noteLinkUri2,
-                markingIndex2,
-                createTime2,false);
+                noteBody2,
+                noteQuantity2,
+                markingIndex2,false);
 
         dB_page.close();
     }

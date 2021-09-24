@@ -16,16 +16,11 @@
 
 package com.cw.sumlist.note;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -37,12 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cw.sumlist.R;
-import com.cw.sumlist.db.DB_page;
-import com.cw.sumlist.operation.mail.MailNotes;
-import com.cw.sumlist.tabs.TabsHost;
-import com.cw.sumlist.util.Util;
 
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,24 +128,6 @@ class View_note_option {
 
         switch (optionId) {
             case ID_OPTION_MAIL:
-                dlgAddNew.dismiss();
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)//API23
-                {
-                    // check permission
-                    if (ActivityCompat.checkSelfPermission(act, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED)
-                    {
-                        // No explanation needed, we can request the permission.
-                        ActivityCompat.requestPermissions(act,
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                        Manifest.permission.READ_EXTERNAL_STORAGE},
-                                Util.PERMISSIONS_REQUEST_STORAGE);
-                    }
-                    else
-                        doMailNote(act);
-                }
-                else
-                    doMailNote(act);
             break;
 
             case ID_OPTION_BACK:
@@ -170,36 +142,6 @@ class View_note_option {
         }
 
     }
-
-    void doMailNote(AppCompatActivity act)
-    {
-        // set Sent string Id
-        String sentString = null;
-        try {
-            sentString = Util.getJson(TabsHost.getFocus_tabPos(),noteId).get(0).toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        sentString = "{\"client\":\"TV YouTube\",\"content\":[{\"category\":\"new folder\",\"link_page\":[{\"title\":\"new page\",\"links\":[" +
-                            sentString +
-                             "]}]}]}";
-
-        DB_page dB_page = new DB_page(act, TabsHost.getCurrentPageTableId());
-
-        // picture first priority
-        String picFile = dB_page.getNotePictureUri_byId(noteId);
-
-        System.out.println("-> picFile = " + picFile);
-
-        String[] picFileArray = null;
-        if( (picFile != null) &&
-                (picFile.length() > 0) )
-        {
-            picFileArray = new String[]{picFile};
-        }
-        new MailNotes(act,sentString,picFileArray);
-    }
-
 
     /**
      * Created by cw on 2017/10/7.

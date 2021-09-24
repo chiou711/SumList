@@ -266,8 +266,8 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         System.out.println("TabsHost / _onTabSelected: " + tab.getPosition());
 //        System.out.println("TabsHost / _onTabSelected:  / Pref.getPref_DB_ready(getActivity()) = " + Pref.getPref_DB_ready(getActivity()));
 
-        if( !Pref.getPref_DB_ready(getActivity()))
-            return;
+//        if( !Pref.getPref_DB_ready(getActivity()))
+//            return;
 
         setFocus_tabPos(tab.getPosition());
 

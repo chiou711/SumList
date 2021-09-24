@@ -13,6 +13,7 @@
     <string name="edit_note_dlg_set_link">设置连结</string>
     <string name="edit_note_dlg_title">标题:</string>
     <string name="edit_note_dlg_body">正文:</string>
+    <string name="edit_note_dlg_quantity">数量:</string>
     <string name="view_note_title">查看笔记</string>
     <string name="view_note_button_back">返回</string>
     <string name="view_note_button_edit">编辑</string>

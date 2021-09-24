@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 CW Chiu
+ * Copyright (C) 2021 CW Chiu
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,12 +36,9 @@ import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.main.MainAct;
-import com.cw.sumlist.operation.mail.MailNotes;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.preferences.Pref;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -202,9 +199,9 @@ public class Checked_notes_option {
                 {
                     int count = mDb_page.getCheckedNotesCount();
                     String copyItemsTitle[] = new String[count];
-                    String copyItemsPicture[] = new String[count];
-                    String copyItemsLink[] = new String[count];
-                    Long copyItemsTime[] = new Long[count];
+                    String copyItemsBody[] = new String[count];
+                    Integer copyItemsQuantity[] = new Integer[count];
+                    Integer copyItemsMarking[] = new Integer[count];
                     int cCopy = 0;
 
                     mDb_page.open();
@@ -214,18 +211,18 @@ public class Checked_notes_option {
                         if(mDb_page.getNoteMarking(i,false) == 1)
                         {
                             copyItemsTitle[cCopy] = mDb_page.getNoteTitle(i,false);
-                            copyItemsPicture[cCopy] = mDb_page.getNotePictureUri(i,false);
-                            copyItemsLink[cCopy] = mDb_page.getNoteLinkUri(i,false);
-                            copyItemsTime[cCopy] = mDb_page.getNoteCreatedTime(i,false);
+                            copyItemsBody[cCopy] = mDb_page.getNoteBody(i,false);
+                            copyItemsQuantity[cCopy] = mDb_page.getNoteQuantity(i,false);
+                            copyItemsMarking[cCopy] = mDb_page.getNoteMarking(i,false);
                             cCopy++;
                         }
                     }
                     mDb_page.close();
 
                     if(option == MOVE_CHECKED_NOTE)
-                        operateCheckedTo(mAct,copyItemsTitle, copyItemsPicture,   copyItemsLink,  copyItemsTime, MOVE_TO); // move to
+                        operateCheckedTo(mAct,copyItemsTitle, copyItemsBody,   copyItemsQuantity,  copyItemsMarking, MOVE_TO); // move to
                     else if(option == COPY_CHECKED_NOTE)
-                        operateCheckedTo(mAct,copyItemsTitle, copyItemsPicture,   copyItemsLink,  copyItemsTime, COPY_TO);// copy to
+                        operateCheckedTo(mAct,copyItemsTitle, copyItemsBody,   copyItemsQuantity,  copyItemsMarking, COPY_TO);// copy to
 
                 }
                 else
@@ -237,53 +234,6 @@ public class Checked_notes_option {
                 break;
 
             case MAIL_CHECKED_NOTE:
-                if(!noItemChecked())
-                {
-                    // set Sent string Id
-                    List<Long> noteIdArray = new ArrayList<>();
-                    List<String> pictureFileNameList = new ArrayList<>();
-                    int j=0;
-                    mDb_page.open();
-                    int count = mDb_page.getNotesCount(false);
-                    for(int i=0; i<count; i++)
-                    {
-                        if(mDb_page.getNoteMarking(i,false) == 1)
-                        {
-                            j++;
-
-                            String picFile = mDb_page.getNotePictureUri_byId(mDb_page.getNoteId(i,false),false,false);
-                            if((picFile != null) && (picFile.length() > 0))
-                                pictureFileNameList.add(picFile);
-                        }
-                    }
-                    mDb_page.close();
-
-                    // message
-                    String sentString = null;
-                    try {
-                        sentString = Util.getJson(TabsHost.getFocus_tabPos(),Util.ID_FOR_NOTES).toString();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    sentString = "{\"client\":\"TV YouTube\",\"content\":[{\"category\":\"new folder\",\"link_page\":[{\"title\":\"new page\",\"links\":" +
-                            sentString +
-                            "}]}]}";
-
-                    // picture array
-                    int cnt = pictureFileNameList.size();
-                    String pictureFileNameArr[] = new String[cnt];
-                    for(int i=0; i < cnt ; i++ )
-                    {
-                        pictureFileNameArr[i] = pictureFileNameList.get(i);
-                    }
-                    new MailNotes(mAct,sentString,pictureFileNameArr);
-                }
-                else
-                    Toast.makeText(act,
-                            R.string.delete_checked_no_checked_items,
-                            Toast.LENGTH_SHORT)
-                            .show();
-                dlgAddNew.dismiss();
                 break;
 
             case DELETE_CHECKED_NOTE:
@@ -316,9 +266,9 @@ public class Checked_notes_option {
         {
             Long rowId = mDb_page.getNoteId(i,false);
             String noteTitle = mDb_page.getNoteTitle(i,false);
-            String pictureUri = mDb_page.getNotePictureUri(i,false);
-            String linkUri = mDb_page.getNoteLinkUri(i,false);
-            mDb_page.updateNote(rowId, noteTitle, pictureUri, linkUri,  action, 0,false);// action 1:check all, 0:uncheck all
+            String noteBody = mDb_page.getNoteBody(i,false);
+            Integer noteQuantity = mDb_page.getNoteQuantity(i,false);
+            mDb_page.updateNote(rowId, noteTitle, noteBody,  noteQuantity, action,false);// action 1:check all, 0:uncheck all
             // Stop if unmarked item is at playing state
         }
         mDb_page.close();
@@ -339,10 +289,10 @@ public class Checked_notes_option {
         {
             Long rowId = mDb_page.getNoteId(i,false);
             String noteTitle = mDb_page.getNoteTitle(i,false);
-            String pictureUri = mDb_page.getNotePictureUri(i,false);
-            String linkUri = mDb_page.getNoteLinkUri(i,false);
-            long marking = (mDb_page.getNoteMarking(i,false)==1)?0:1;
-            mDb_page.updateNote(rowId, noteTitle, pictureUri,  linkUri,  marking, 0,false);// action 1:check all, 0:uncheck all
+            String noteBody = mDb_page.getNoteBody(i,false);
+            Integer quantity = mDb_page.getNoteQuantity(i,false);
+            Integer marking = (mDb_page.getNoteMarking(i,false)==1)?0:1;
+            mDb_page.updateNote(rowId, noteTitle, noteBody, quantity, marking, false);// action 1:check all, 0:uncheck all
         }
         mDb_page.close();
 
@@ -356,8 +306,8 @@ public class Checked_notes_option {
      *   operate checked to: move to, copy to
      *
      */
-    private void operateCheckedTo(final AppCompatActivity act,final String[] copyItemsTitle, final String[] copyItemsPicture,
-                                  final String[] copyItemsLink, final Long[] copyItemsTime, final int action)
+    private void operateCheckedTo(final AppCompatActivity act,final String[] copyItemsTitle, final String[] copyItemsBody,
+                                  final Integer[] copyItemsQuantity, final Integer[] copyRemarks, final int action)
     {
         //list all pages
         int focusFolder_tableId = Pref.getPref_focusView_folder_tableId(act);
@@ -392,7 +342,7 @@ public class Checked_notes_option {
                 {
                     // move to same page is not allowed
                     if(!((action == MOVE_TO) && (srcPageTableId == destPageTableId)))
-                        mDb_page.insertNote(copyItemsTitle[i],copyItemsPicture[i],  copyItemsLink[i], 1, copyItemsTime[i]);
+                        mDb_page.insertNote(copyItemsTitle[i], copyItemsBody[i], copyItemsQuantity[i], copyRemarks[i]);
                 }
 
                 //recover table Id of original page

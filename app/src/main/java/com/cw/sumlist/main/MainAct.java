@@ -80,7 +80,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import static android.os.Build.VERSION_CODES.M;
-import static android.os.Build.VERSION_CODES.O;
 
 public class MainAct extends AppCompatActivity implements OnBackStackChangedListener
 {
@@ -99,7 +98,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     OnBackPressedListener onBackPressedListener;
     public Drawer drawer;
     public static Folder mFolder;
-    public static MainUi mMainUi;
     public static Toolbar mToolbar;
 
     public static MediaBrowserCompat mMediaBrowserCompat;
@@ -142,7 +140,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
         mAct = this;
         mAppTitle = getTitle();
-        mMainUi = new MainUi();
 
         // File provider implementation is needed after Android version 24
         // if not, will encounter android.os.FileUriExposedException
@@ -342,17 +339,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     {
         super.onNewIntent(intent);
         System.out.println("MainAct / _onNewIntent ");
-
-        if(isEdited_link) {
-            System.out.println("MainAct / _onNewIntent / call Edited link");
-            mMainUi.editNote_IntentLink(intent, mAct, isAdded_onNewIntent,edit_position);
-        } else {
-            if(Build.VERSION.SDK_INT >= O)//API26
-                isAdded_onNewIntent = true; // fix 2 times _onNewIntent on API26
-
-            // Add link from new intent
-            mMainUi.addNote_IntentLink(intent, mAct, isAdded_onNewIntent);//todo How to judge Add or Edit?
-        }
     }
 
     @Override
@@ -557,9 +543,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
             {
                 // launch next intent
                 alertDlg.dismiss();
-                mMainUi.cancelYouTubeHandler(handler,runCountDown);
                 System.out.println("MainAct / _runCountDown /alertDlg  dismiss ");
-                mMainUi.launchNextYouTubeIntent(mAct,handler,runCountDown);
             }
         }
     };
@@ -698,7 +682,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
      * onCreate Options Menu
      *
      *************************/
-    MenuItem playOrStopMusicButton;
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu)
     {

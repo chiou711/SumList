@@ -19,9 +19,7 @@ package com.cw.sumlist.note_add;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +33,6 @@ import android.widget.Toast;
 
 import com.cw.sumlist.R;
 import com.cw.sumlist.folder.FolderUi;
-import com.cw.sumlist.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,9 +73,6 @@ public class Add_note_option {
 
         // get layout inflater
         View rootView = act.getLayoutInflater().inflate(R.layout.option_grid, null);
-
-        // check camera feature
-        PackageManager packageManager = act.getPackageManager();
 
         addNoteList = new ArrayList<>();
 
@@ -157,26 +151,6 @@ public class Add_note_option {
                     intent.putExtra("extra_ADD_NEW_TO_TOP", "false");
 
                 act.startActivity(intent);
-            }
-            break;
-
-            case ID_NEW_YOUTUBE_LINK:
-            {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com"));
-                if (intent.resolveActivity(act.getPackageManager()) != null)
-                    act.startActivityForResult(intent, Util.ADD_NEW_YOUTUBE_LINK_INTENT);
-                else
-                    Toast.makeText(act,R.string.toast_check_youtube_installation,Toast.LENGTH_SHORT).show();
-            }
-            break;
-
-            case ID_NEW_WEB_LINK:
-            {
-                Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.google.com"));
-                if (intent.resolveActivity(act.getPackageManager()) != null)
-                    act.startActivityForResult(intent, Util.ADD_NEW_LINK_INTENT);
-                else
-                    Toast.makeText(act,R.string.toast_check_browser_installation,Toast.LENGTH_SHORT).show();
             }
             break;
 

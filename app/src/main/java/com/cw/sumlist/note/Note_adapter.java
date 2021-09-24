@@ -19,12 +19,6 @@ package com.cw.sumlist.note;
 import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.tabs.TabsHost;
-import com.cw.sumlist.util.uil.UilCommon;
-import com.cw.sumlist.util.image.TouchImageView;
-import com.cw.sumlist.util.image.UtilImage;
-import com.cw.sumlist.util.image.UtilImage_bitmapLoader;
-import com.cw.sumlist.util.video.UtilVideo;
-import com.cw.sumlist.util.video.VideoViewCustom;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.CustomWebView;
 import com.cw.sumlist.util.Util;
@@ -33,7 +27,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 
 import androidx.fragment.app.Fragment;
@@ -43,21 +36,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.text.Layout.Alignment;
 import android.text.style.AlignmentSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 public class Note_adapter extends FragmentStatePagerAdapter
 {
@@ -96,31 +84,6 @@ public class Note_adapter extends FragmentStatePagerAdapter
     	int style = Note.getStyle();
         pagerView.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
 
-    	// Picture group
-        ViewGroup pictureGroup = (ViewGroup) pagerView.findViewById(R.id.pictureContent);
-        String tagPictureStr = "current"+ position +"pictureView";
-        pictureGroup.setTag(tagPictureStr);
-    	
-        // image view
-    	TouchImageView imageView = ((TouchImageView) pagerView.findViewById(R.id.image_view));
-        String tagImageStr = "current"+ position +"imageView";
-        imageView.setTag(tagImageStr);
-
-		// video view
-    	VideoViewCustom videoView = ((VideoViewCustom) pagerView.findViewById(R.id.video_view));
-        String tagVideoStr = "current"+ position +"videoView";
-        videoView.setTag(tagVideoStr);
-
-		ProgressBar spinner = (ProgressBar) pagerView.findViewById(R.id.loading);
-
-        // link web view
-		CustomWebView linkWebView = ((CustomWebView) pagerView.findViewById(R.id.link_web_view));
-        String tagStr = "current"+position+"linkWebView";
-        linkWebView.setTag(tagStr);
-
-        // line view
-        View line_view = pagerView.findViewById(R.id.line_view);
-
     	// text group
         ViewGroup textGroup = (ViewGroup) pagerView.findViewById(R.id.textGroup);
 
@@ -131,78 +94,30 @@ public class Note_adapter extends FragmentStatePagerAdapter
         textGroup.setContentDescription(act.getResources().getString(R.string.note_text));
 		textWebView.getRootView().setContentDescription(act.getResources().getString(R.string.note_text));
 
-        tagStr = "current"+position+"textWebView";
-        textWebView.setTag(tagStr);
-
 		// set text web view
-        setWebView(textWebView,spinner,CustomWebView.TEXT_VIEW);
+        setWebView(textWebView,null,CustomWebView.TEXT_VIEW);
 
-        String linkUri = db_page.getNoteLinkUri(position,true);
         String strTitle = db_page.getNoteTitle(position,true);
 
         // View mode
-    	// picture only
-	  	if(Note.isPictureMode())
-	  	{
-			System.out.println("Note_adapter / _instantiateItem / isPictureMode ");
-	  		pictureGroup.setVisibility(View.VISIBLE);
-	  	    showPictureView(position,imageView,videoView,linkWebView,spinner);
-
-	  	    line_view.setVisibility(View.GONE);
-	  	    textGroup.setVisibility(View.GONE);
-	  	}
 	    // text only
-	  	else if(Note.isTextMode())
+	  	if(Note.isTextMode())
 	  	{
 			System.out.println("Note_adapter / _instantiateItem / isTextMode ");
-	  		pictureGroup.setVisibility(View.GONE);
 
-	  		line_view.setVisibility(View.VISIBLE);
 	  		textGroup.setVisibility(View.VISIBLE);
 
-	  	    if( Util.isYouTubeLink(linkUri) ||
-	 	  	   !Util.isEmptyString(strTitle)||
-				linkUri.startsWith("http")      )
-	  	    {
-	  	    	showTextWebView(position,textWebView);
-	  	    }
+		    if( !Util.isEmptyString(strTitle) )
+			    showTextWebView(position,textWebView);
 	  	}
-  		// picture and text
-	  	else if(Note.isViewAllMode())
-	  	{
-			System.out.println("Note_adapter / _instantiateItem / isViewAllMode ");
 
-			// picture
-			pictureGroup.setVisibility(View.VISIBLE);
-	  	    showPictureView(position,imageView,videoView,linkWebView,spinner);
-
-	  	    line_view.setVisibility(View.VISIBLE);
-	  	    textGroup.setVisibility(View.VISIBLE);
-
-			// text
-	  	    if( !Util.isEmptyString(strTitle)||
-				Util.isYouTubeLink(linkUri)  ||
-				linkUri.startsWith("http")      )
-	  	    {
-	  	    	showTextWebView(position,textWebView);
-	  	    }
-	  	    else
-			{
-				textGroup.setVisibility(View.GONE);
-			}
-	  	}
 
 		// footer of note view
 		TextView footerText = (TextView) pagerView.findViewById(R.id.note_view_footer);
-		if(!Note.isPictureMode())
-		{
-			footerText.setVisibility(View.VISIBLE);
-			footerText.setText(String.valueOf(position+1)+"/"+ pager.getAdapter().getCount());
-            footerText.setTextColor(ColorSet.mText_ColorArray[Note.mStyle]);
-            footerText.setBackgroundColor(ColorSet.mBG_ColorArray[Note.mStyle]);
-		}
-		else
-			footerText.setVisibility(View.GONE);
+		footerText.setVisibility(View.VISIBLE);
+		footerText.setText(String.valueOf(position+1)+"/"+ pager.getAdapter().getCount());
+        footerText.setTextColor(ColorSet.mText_ColorArray[Note.mStyle]);
+        footerText.setBackgroundColor(ColorSet.mBG_ColorArray[Note.mStyle]);
 
     	container.addView(pagerView, 0);
     	
@@ -228,57 +143,6 @@ public class Note_adapter extends FragmentStatePagerAdapter
 	    textWebView.loadDataWithBaseURL(null, strHtml, "text/html", "UTF-8", null);
     }
     
-    // show picture view
-    private void showPictureView(int position,
-    		             TouchImageView imageView,
-    		             VideoView videoView,
-    		             CustomWebView linkWebView,
-    		             ProgressBar spinner          )
-    {
-		String linkUri = db_page.getNoteLinkUri(position,true);
-		String pictureUri = db_page.getNotePictureUri(position,true);
-
-    	// Check if Uri is for YouTube
-    	if(Util.isEmptyString(pictureUri) && Util.isYouTubeLink(linkUri) )
-    	{
-			pictureUri = "https://img.youtube.com/vi/"+Util.getYoutubeId(linkUri)+"/0.jpg";//??? how to get this jpg for a playlist
-			System.out.println("Note_adapter / _showPictureView / YouTube pictureUri = " + pictureUri);
-		}
-
-        // show image view
-  		if( UtilImage.hasImageExtension(pictureUri, act)||
-  		    (Util.isEmptyString(pictureUri)&& 
-  		     Util.isEmptyString(linkUri)      )             ) // for wrong path icon
-  		{
-			System.out.println("Note_adapter / _showPictureView / show image view");
-  			videoView.setVisibility(View.GONE);
-  			linkWebView.setVisibility(View.GONE);
-  			UtilVideo.mVideoView = null;
-  			imageView.setVisibility(View.VISIBLE);
-  			showImageByTouchImageView(spinner, imageView, pictureUri,position);
-  		}
-  		// show video view
-  		else if(UtilVideo.hasVideoExtension(pictureUri, act))
-  		{
-			System.out.println("Note_adapter / _showPictureView / show video view");
-  			linkWebView.setVisibility(View.GONE);
-  			imageView.setVisibility(View.GONE);
-  			videoView.setVisibility(View.VISIBLE);
-  		}
-  		// show link thumb view
-  		else if(Util.isEmptyString(pictureUri)&&
-  				!Util.isEmptyString(linkUri))
-  		{
-			System.out.println("Note_adapter / _showPictureView / show link thumb view");
-  			videoView.setVisibility(View.GONE);
-  			UtilVideo.mVideoView = null;
-  			imageView.setVisibility(View.GONE);
-  			linkWebView.setVisibility(View.VISIBLE);
-  		}
-		else
-			System.out.println("Note_adapter / _showPictureView / show none");
-    }
-
 	@Override
 	public Fragment getItem(int position) {
 		return null;
@@ -316,153 +180,11 @@ public class Note_adapter extends FragmentStatePagerAdapter
 			System.out.println("Note_adapter / _setPrimaryItem / mLastPosition = " + mLastPosition);
             System.out.println("Note_adapter / _setPrimaryItem / position = " + position);
 
-			String lastPictureStr = null;
-			String lastLinkUri = null;
-
-			if(mLastPosition != -1)
-			{
-				lastPictureStr = db_page.getNotePictureUri(mLastPosition,true);
-				lastLinkUri = db_page.getNoteLinkUri(mLastPosition, true);
-			}
-
-			String pictureStr = db_page.getNotePictureUri(position,true);
-			String linkUri = db_page.getNoteLinkUri(position,true);
-
-			// remove last text web view
-			if (!Note.isPictureMode())
-			{
-				String tag = "current" + mLastPosition + "textWebView";
-				CustomWebView textWebView = (CustomWebView) pager.findViewWithTag(tag);
-				if (textWebView != null) {
-					textWebView.onPause();
-					textWebView.onResume();
-				}
-			}
-
-			// for web view
-			if (!UtilImage.hasImageExtension(pictureStr, act) &&
-				!UtilVideo.hasVideoExtension(pictureStr, act)   )
-			{
-				// remove last link web view
-				if(	!UtilImage.hasImageExtension(lastPictureStr, act) &&
-					!UtilVideo.hasVideoExtension(lastPictureStr, act) &&
-					!Util.isYouTubeLink(lastLinkUri)                      )
-				{
-					String tag = "current" + mLastPosition + "linkWebView";
-					CustomWebView lastLinkWebView = (CustomWebView) pager.findViewWithTag(tag);
-
-					if (lastLinkWebView != null)
-					{
-						CustomWebView.pauseWebView(lastLinkWebView);
-						CustomWebView.blankWebView(lastLinkWebView);
-					}
-				}
-
-				// set current link web view
-				if ( !Util.isYouTubeLink(linkUri) &&
-					  linkUri.startsWith("http") &&
-					 !Note.isTextMode()      )
-				{
-					if(Note.isViewAllMode() )
-					{
-						String tagStr = "current" + position + "linkWebView";
-						CustomWebView linkWebView = (CustomWebView) pager.findViewWithTag(tagStr);
-						linkWebView.setVisibility(View.VISIBLE);
-                        setWebView(linkWebView,object,CustomWebView.LINK_VIEW);
-						System.out.println("Note_adapter / _setPrimaryItem / load linkUri = " + linkUri);
-
-						// apply non-empty picture Uri
-						if(!Util.isEmptyString(pictureStr))
-							linkWebView.loadUrl(pictureStr);
-						else
-							linkWebView.loadUrl(linkUri);;
-
-						//Add for non-stop showing of full screen web view
-						linkWebView.setWebViewClient(new WebViewClient() {
-							@Override
-							public boolean shouldOverrideUrlLoading(WebView view, String url)
-							{
-								view.loadUrl(url);
-								return true;
-							}
-						});
-
-						//cf. https://stackoverflow.com/questions/13576153/how-to-get-text-from-a-webview
-//						linkWebView.addJavascriptInterface(new JavaScriptInterface(act), "Android");
-					}
-					else if(Note.isPictureMode())
-					{
-                        Intent i = new Intent(Intent.ACTION_VIEW,Uri.parse(linkUri));
-						act.startActivity(i);
-                    }
-				}
-			}
-
-			// for video view
-			if (!Note.isTextMode() )
-			{
-
-				// stop last video view running
-				if (mLastPosition != -1)
-				{
-					String tagVideoStr = "current" + mLastPosition + "videoView";
-					VideoViewCustom lastVideoView = (VideoViewCustom) pager.findViewWithTag(tagVideoStr);
-					lastVideoView.stopPlayback();
-				}
-
-                // Show picture view UI
-				if (Note.isViewAllMode() || Note.isPictureMode() )
-                {
-					NoteUi.cancel_UI_callbacks();
-					picUI_primary = new NoteUi(act, pager, position);
-					picUI_primary.tempShow_picViewUI(5002, pictureStr);
-                }
-
-				// Set video view
-				if ( UtilVideo.hasVideoExtension(pictureStr, act) &&
-					 !UtilImage.hasImageExtension(pictureStr, act)   )
-				{
-					// update current pager view
-					UtilVideo.mCurrentPagerView = (View) object;
-
-					// for view mode change
-					if (Note.mIsViewModeChanged && (Note.mPlayVideoPositionOfInstance == 0) )
-					{
-						UtilVideo.mPlayVideoPosition = Note.mPositionOfChangeView;
-						UtilVideo.setVideoViewLayout(pictureStr);
-
-						if (UtilVideo.mPlayVideoPosition > 0)
-							UtilVideo.playOrPauseVideo(pager,pictureStr);
-					}
-					else
-					{
-						// for key protect
-						if (Note.mPlayVideoPositionOfInstance > 0)
-						{
-							UtilVideo.setVideoState(UtilVideo.VIDEO_AT_PAUSE);
-							UtilVideo.setVideoViewLayout(pictureStr);
-
-							if (!UtilVideo.hasMediaControlWidget) {
-								NoteUi.updateVideoPlayButtonState(pager, NoteUi.getFocus_notePos());
-								picUI_primary.tempShow_picViewUI(5003,pictureStr);
-                            }
-
-							UtilVideo.playOrPauseVideo(pager,pictureStr);
-						}
-						else
-						{
-							if (UtilVideo.hasMediaControlWidget)
-								UtilVideo.setVideoState(UtilVideo.VIDEO_AT_PLAY);
-							else
-								UtilVideo.setVideoState(UtilVideo.VIDEO_AT_STOP);
-
-							UtilVideo.mPlayVideoPosition = 0; // make sure play video position is 0 after page is changed
-							UtilVideo.initVideoView(pager,pictureStr, act, position);
-						}
-					}
-
-					UtilVideo.currentPicturePath = pictureStr;
-				}
+			String tag = "current" + mLastPosition + "textWebView";
+			CustomWebView textWebView = (CustomWebView) pager.findViewWithTag(tag);
+			if (textWebView != null) {
+				textWebView.onPause();
+				textWebView.onResume();
 			}
 		}
 	    mLastPosition = position;
@@ -470,20 +192,13 @@ public class Note_adapter extends FragmentStatePagerAdapter
 	} //setPrimaryItem		
 
 	// Set web view
-    private static boolean bWebViewIsShown;
 	private void setWebView(final CustomWebView webView,Object object, int whichView)
 	{
         final SharedPreferences pref_web_view = act.getSharedPreferences("web_view", 0);
-		final ProgressBar spinner = (ProgressBar) ((View)object).findViewById(R.id.loading);
         if( whichView == CustomWebView.TEXT_VIEW )
         {
             int scale = pref_web_view.getInt("KEY_WEB_VIEW_SCALE",0);
             webView.setInitialScale(scale);
-        }
-        else if( whichView == CustomWebView.LINK_VIEW )
-        {
-            bWebViewIsShown = false;
-            webView.setInitialScale(30);
         }
 
         int style = Note.getStyle();
@@ -494,15 +209,6 @@ public class Note_adapter extends FragmentStatePagerAdapter
     	webView.getSettings().setUseWideViewPort(true);
 //    	customWebView.getSettings().setLoadWithOverviewMode(true);
     	webView.getSettings().setJavaScriptEnabled(true);//warning: Using setJavaScriptEnabled can introduce XSS vulnerabilities
-
-//		// speed up
-//		if (Build.VERSION.SDK_INT >= 19) {
-//			// chromium, enable hardware acceleration
-//			webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-//		} else {
-//			// older android version, disable hardware acceleration
-//			webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-//		}
 
         if( whichView == CustomWebView.TEXT_VIEW )
    		{
@@ -528,64 +234,7 @@ public class Note_adapter extends FragmentStatePagerAdapter
 	        });
 
    		}
-	    
-    	if(whichView == CustomWebView.LINK_VIEW)
-    	{
-	        webView.setWebChromeClient(new WebChromeClient()
-	        {
-	            public void onProgressChanged(WebView view, int progress)
-	            {
-                    System.out.println("---------------- spinner progress = " + progress);
 
-                    if(spinner != null )
-	            	{
-						if(bWebViewIsShown)
-						{
-							if (progress < 100 && (spinner.getVisibility() == ProgressBar.GONE)) {
-								webView.setVisibility(View.GONE);
-								spinner.setVisibility(ProgressBar.VISIBLE);
-							}
-
-							spinner.setProgress(progress);
-
-							if (progress > 30)
-								bWebViewIsShown = true;
-						}
-
-						if(bWebViewIsShown || (progress == 100))
-						{
-							spinner.setVisibility(ProgressBar.GONE);
-							webView.setVisibility(View.VISIBLE);
-						}
-	            	}
-	            }
-
-	            @Override
-			    public void onReceivedTitle(WebView view, String title) {
-			        super.onReceivedTitle(view, title);
-			        if (!TextUtils.isEmpty(title) &&
-			        	!title.equalsIgnoreCase("about:blank"))
-			        {
-			        	System.out.println("Note_adapter / _onReceivedTitle / title = " + title);
-
-						int position = NoteUi.getFocus_notePos();
-				    	String tag = "current"+position+"textWebView";
-				    	CustomWebView textWebView = (CustomWebView) pager.findViewWithTag(tag);
-
-				    	String strLink = db_page.getNoteLinkUri(position,true);
-
-						// show title of http link
-				    	if((textWebView != null) &&
-				    	    !Util.isYouTubeLink(strLink) &&
-				    	    strLink.startsWith("http")        )
-			        	{
-				        	mWebTitle = title;
-		        			showTextWebView(position,textWebView);
-			        	}
-			        }
-			    }
-			});
-    	}
 	}
 
     final private static int VIEW_PORT_BY_NONE = 0;
@@ -598,26 +247,16 @@ public class Note_adapter extends FragmentStatePagerAdapter
     	int mStyle = Note.mStyle;
     	
     	System.out.println("Note_adapter / _getHtmlStringWithViewPort");
-    	String strTitle = db_page.getNoteTitle(position,true);
-    	String linkUri = db_page.getNoteLinkUri(position,true);
+	    String strTitle = db_page.getNoteTitle(position,true);
+	    String strBody = db_page.getNoteBody(position,true);
+	    Integer quantity = db_page.getNoteQuantity(position,true);
 
     	// replace note title
 		boolean bSetGray = false;
 		if( Util.isEmptyString(strTitle)    )
 		{
-			if(Util.isYouTubeLink(linkUri))
-			{
-				strTitle = "";//Util.getYouTubeTitle(linkUri);
-				bSetGray = true;
-			}
-			else if(linkUri.startsWith("http"))
-			{
-				strTitle = mWebTitle;
-				bSetGray = true;
-			}
 		}
 
-    	Long createTime = db_page.getNoteCreatedTime(position,true);
     	String head = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"+
 		       	  	  "<html><head>" +
 	  		       	  "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />";
@@ -676,40 +315,14 @@ public class Note_adapter extends FragmentStatePagerAdapter
 		         "<p align=\"center\"><b>" +
 		         "<font color=\"" + colorStr + "\">" + strTitle + "</font>" +
          		 "</b></p>" + separatedLineTitle +
-		         "<p align=\"right\">" +
-				 "<font color=\"" + colorStr + "\">"  + Util.getTimeString(createTime) + "</font>" +
-		         "</p>" + 
-		         "</body></html>";
+		         "<p align=\"left\">" +
+				 "<font color=\"" + colorStr + "\">"  + strBody + "</font>" +
+		         "</p>" +
+			     "</b></p>" + separatedLineTitle +
+			     "<p align=\"right\">" +
+			     "<font color=\"" + colorStr + "\">"  + quantity + "</font>" +
+			     "</p>" +
+			     "</body></html>";
     }
 
-    // show image by touch image view
-    private void showImageByTouchImageView(final ProgressBar spinner, final TouchImageView pictureView, String strPicture,final Integer position)
-    {
-        if(Util.isEmptyString(strPicture))
-        {
-            pictureView.setImageResource(Note.mStyle%2 == 1 ?
-                    R.drawable.btn_radio_off_holo_light:
-                    R.drawable.btn_radio_off_holo_dark);//R.drawable.ic_empty);
-        }
-        else if(!Util.isUriExisted(strPicture, act))
-        {
-            pictureView.setImageResource(R.drawable.ic_not_found);
-        }
-        else
-        {
-			// load bitmap to image view
-			try
-			{
-				new UtilImage_bitmapLoader(pictureView,
-						strPicture,
-						spinner,
-						UilCommon.optionsForFadeIn,
-						act);
-			}
-			catch(Exception e)
-			{
-				Log.e("Note_adapter", "UtilImage_bitmapLoader error");
-			}
-        }
-    }
 }

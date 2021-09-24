@@ -13,6 +13,7 @@
     <string name="edit_note_dlg_set_link">Set link</string>
     <string name="edit_note_dlg_title">Title:</string>
     <string name="edit_note_dlg_body">Body:</string>
+    <string name="edit_note_dlg_quantity">Quantity:</string>
     <string name="view_note_title">View note</string>
     <string name="view_note_button_back">Back</string>
     <string name="view_note_button_edit">Edit</string>

@@ -20,16 +20,13 @@ import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.tabs.TabsHost;
-import com.cw.sumlist.util.image.TouchImageView;
 import com.cw.sumlist.util.Util;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,12 +41,12 @@ import androidx.appcompat.widget.Toolbar;
 public class Note_edit extends AppCompatActivity
 {
 
-    private Long noteId, createdTime;
-    private String title, picUriStr,  linkUri;
+    private Long noteId;
+    Integer quantity;
+    private String title, body;
     Note_edit_ui note_edit_ui;
     private boolean enSaveDb = true;
     DB_page dB;
-    TouchImageView enlargedImage;
     int position;
     final int EDIT_LINK = 1;
 	static final int CHANGE_LINK = R.id.ADD_LINK;
@@ -73,8 +70,6 @@ public class Note_edit extends AppCompatActivity
     	
         System.out.println("Note_edit / onCreate");
         
-		enlargedImage = (TouchImageView)findViewById(R.id.expanded_image);
-
 	    Toolbar toolbar = (Toolbar) findViewById(R.id.recorder_toolbar);
 	    toolbar.setPopupTheme(R.style.ThemeOverlay_AppCompat_Light);
 	    if (toolbar != null)
@@ -90,25 +85,14 @@ public class Note_edit extends AppCompatActivity
     	Bundle extras = getIntent().getExtras();
     	position = extras.getInt("list_view_position");
     	noteId = extras.getLong(DB_page.KEY_NOTE_ID);
-		picUriStr = extras.getString(DB_page.KEY_NOTE_PICTURE_URI);
-    	linkUri = extras.getString(DB_page.KEY_NOTE_LINK_URI);
     	title = extras.getString(DB_page.KEY_NOTE_TITLE);
-    	createdTime = extras.getLong(DB_page.KEY_NOTE_CREATED);
+    	body = extras.getString(DB_page.KEY_NOTE_BODY);
+    	quantity = extras.getInt(DB_page.KEY_NOTE_QUANTITY);
 
 		//initialization
-        note_edit_ui = new Note_edit_ui(this, dB, noteId, title, picUriStr, linkUri,  createdTime);
+        note_edit_ui = new Note_edit_ui(this, dB, noteId, title, body,quantity);
         note_edit_ui.UI_init();
 
-        if(savedInstanceState != null)
-        {
-	        System.out.println("Note_edit / onCreate / noteId =  " + noteId);
-	        if(noteId != null)
-	        {
-	        	picUriStr = dB.getNotePictureUri_byId(noteId);
-				note_edit_ui.currPictureUri = picUriStr;
-	        }
-        }
-        
     	// show view
 		note_edit_ui.populateFields_all(noteId);
 		
@@ -120,12 +104,6 @@ public class Note_edit extends AppCompatActivity
 
             public void onClick(View view) {
                 setResult(RESULT_OK);
-				if(note_edit_ui.bRemovePictureUri)
-				{
-					picUriStr = "";
-				}
-
-				System.out.println("Note_edit / onClick (okButton) / noteId = " + noteId);
                 enSaveDb = true;
                 finish();
             }
@@ -198,11 +176,6 @@ public class Note_edit extends AppCompatActivity
 					@Override
 					public void onClick(DialogInterface dialog, int which) 
 					{
-						if(note_edit_ui.bRemovePictureUri)
-						{
-							picUriStr = "";
-						}
-
 					    enSaveDb = true;
 					    finish();
 					}})
@@ -218,20 +191,10 @@ public class Note_edit extends AppCompatActivity
 					public void onClick(DialogInterface dialog, int which) 
 					{
 						Bundle extras = getIntent().getExtras();
-						String originalPictureFileName = extras.getString(DB_page.KEY_NOTE_PICTURE_URI);
 
-						if(Util.isEmptyString(originalPictureFileName))
-						{   // no picture at first
-							note_edit_ui.removePictureStringFromOriginalNote(noteId);
-		                    enSaveDb = false;
-						}
-						else
-						{	// roll back existing picture
-                            note_edit_ui.bRollBackData = true;
-							picUriStr = originalPictureFileName;
-							enSaveDb = true;
-						}	
-						
+						note_edit_ui.bRollBackData = true;
+						enSaveDb = true;
+
 	                    finish();
 					}})
 			   .show();
@@ -244,8 +207,7 @@ public class Note_edit extends AppCompatActivity
         super.onPause();
         
         System.out.println("Note_edit / onPause / enSaveDb = " + enSaveDb);
-        System.out.println("Note_edit / onPause / picUriStr = " + picUriStr);
-        noteId = note_edit_ui.saveStateInDB(noteId, enSaveDb, picUriStr);
+        noteId = note_edit_ui.saveStateInDB(noteId, enSaveDb);
     }
 
     // for Rotate screen
@@ -256,10 +218,7 @@ public class Note_edit extends AppCompatActivity
         System.out.println("Note_edit / onSaveInstanceState / enSaveDb = " + enSaveDb);
 //        System.out.println("Note_edit / onSaveInstanceState / bUseCameraImage = " + bUseCameraImage);
 
-        if(note_edit_ui.bRemovePictureUri)
-    	    outState.putBoolean("removeOriginalPictureUri",true);
-
-        noteId = note_edit_ui.saveStateInDB(noteId, enSaveDb, picUriStr);
+        noteId = note_edit_ui.saveStateInDB(noteId, enSaveDb);
         outState.putSerializable(DB_page.KEY_NOTE_ID, noteId);
         
     }
@@ -270,17 +229,6 @@ public class Note_edit extends AppCompatActivity
     {
     	super.onRestoreInstanceState(savedInstanceState);
 
-    	System.out.println("Note_edit / onRestoreInstanceState / savedInstanceState.getBoolean removeOriginalPictureUri =" +
-    							savedInstanceState.getBoolean("removeOriginalPictureUri"));
-        if(savedInstanceState.getBoolean("removeOriginalPictureUri"))
-        {
-			note_edit_ui.oriPictureUri ="";
-			note_edit_ui.currPictureUri ="";
-        	note_edit_ui.removePictureStringFromOriginalNote(noteId);
-			note_edit_ui.populateFields_all(noteId);
-			note_edit_ui.bRemovePictureUri = true;
-        }
-
     }
 
     @Override
@@ -290,22 +238,15 @@ public class Note_edit extends AppCompatActivity
     
     @Override
     public void onBackPressed() {
-	    if(note_edit_ui.bShowEnlargedImage)
-	    {
-            note_edit_ui.closeEnlargedImage();
-	    }
-	    else
-	    {
-	    	if(note_edit_ui.isNoteModified())
-	    	{
-	    		confirmToUpdateDlg();
-	    	}
-	    	else
-	    	{
-	            enSaveDb = false;
-	            finish();
-	    	}
-	    }
+        if(note_edit_ui.isNoteModified())
+        {
+            confirmToUpdateDlg();
+        }
+        else
+        {
+            enSaveDb = false;
+            finish();
+        }
     }
     
 	@Override
@@ -335,67 +276,11 @@ public class Note_edit extends AppCompatActivity
 		        return true;
 
             case CHANGE_LINK:
-//            	Intent intent_youtube_link = new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com"));
-//            	startActivityForResult(intent_youtube_link,EDIT_YOUTUBE_LINK);
-//            	enSaveDb = false;
-            	setLinkUri();
 			    return true;
 			    
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-    
-    
-    void setLinkUri()
-    {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.edit_note_dlg_set_link);
-		
-		// select Web link
-		builder.setNegativeButton(R.string.note_web_link, new DialogInterface.OnClickListener()
-   	   {
-			@Override
-			public void onClick(DialogInterface dialog, int which) 
-			{
-	    		Intent intent_web_link = new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.google.com"));
-	    		startActivityForResult(intent_web_link,EDIT_LINK);	
-	    		enSaveDb = false;
-			}
-		});
-		
-		// select YouTube link
-		builder.setNeutralButton(R.string.note_youtube_link, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which) 
-			{
-				System.out.println("Note_edit  / onClick:  select YouTube link");
-	        	Intent intent_youtube_link = new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com"));
-	        	startActivityForResult(intent_youtube_link,EDIT_LINK);
-	        	enSaveDb = false;
-				MainAct.isEdited_link = true;
-				MainAct.edit_position = position;
-			}
-		});
-		// None
-		if(!Util.isEmptyString(linkUri))
-		{
-			builder.setPositiveButton(R.string.btn_None, new DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which) 
-				{
-					note_edit_ui.oriLinkUri = "";
-					linkUri = "";
-					note_edit_ui.removeLinkUriFromCurrentEditNote(noteId);
-					note_edit_ui.populateFields_all(noteId);
-				}
-			});		
-		}
-		
-		Dialog dialog = builder.create();
-		dialog.show();
     }
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent returnedIntent)

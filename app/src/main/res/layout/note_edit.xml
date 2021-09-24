@@ -62,23 +62,9 @@
 	    android:textSize="18sp"
 	    android:minLines="2"
 	    android:maxLines="20" />
-		<!-- expanded image -->
-	<ImageView
-          android:id="@+id/edit_picture"
-          android:layout_width="100dp"
-          android:layout_height="75dp"
-          android:layout_margin="3dp"
-          android:contentDescription="ImageView"/>
-	<ProgressBar
-          android:id="@+id/edit_progress_bar"
-          android:layout_width="100dp"
-          android:layout_height="75dp"
-          android:paddingRight="5dp"
-          android:visibility="gone"
-          android:contentDescription="ProgressBar"/>	
 	</LinearLayout>
 
-<!-- Link header -->
+	<!-- Body header -->
 	<LinearLayout
 		android:orientation="horizontal"
 		android:layout_width="match_parent"
@@ -88,18 +74,18 @@
 		<ImageView
 			android:layout_width="20dp"
 			android:layout_height="20dp"
-			android:src="@android:drawable/ic_menu_share"
-			android:contentDescription="@string/note_youtube_link"
+			android:src="@android:drawable/ic_menu_edit"
+			android:contentDescription="@string/edit_note_dlg_body"
 			/>
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textColor="@android:color/white"
-			android:labelFor="@+id/edit_link"
-			android:text="@string/edit_note_dlg_link" />
+			android:labelFor="@+id/edit_body"
+			android:text="@string/edit_note_dlg_body" />
 	</LinearLayout>
-	<EditText
-		android:id="@+id/edit_link"
+	<com.cw.sumlist.util.MyEditText
+		android:id="@+id/edit_body"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:inputType=""
@@ -108,25 +94,36 @@
 		android:textCursorDrawable="@null" />
 	<View android:layout_width="match_parent" android:layout_height="1dip" android:background="#4f4f4f" />
 
-<!-- expanded image  -->
-	
+	<!-- quantity header -->
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/bar_color"
+		tools:ignore="UseCompoundDrawables" >
+		<ImageView
+			android:layout_width="20dp"
+			android:layout_height="20dp"
+			android:src="@android:drawable/ic_menu_edit"
+			android:contentDescription="@string/edit_note_dlg_quantity"
+			/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"
+			android:labelFor="@+id/edit_body"
+			android:text="@string/edit_note_dlg_quantity" />
+	</LinearLayout>
+	<com.cw.sumlist.util.MyEditText
+		android:id="@+id/edit_quantity"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:inputType=""
+		android:minLines="2"
+		android:maxLines="5"
+		android:textCursorDrawable="@null" />
+	<View android:layout_width="match_parent" android:layout_height="1dip" android:background="#4f4f4f" />
 
-	<com.cw.sumlist.util.image.TouchImageView
-        android:id="@+id/expanded_image"
-        android:layout_width="400dp"
-		android:layout_height="300dp"
-		android:visibility="gone"
-		android:layout_margin="5dp"
-		android:layout_gravity="center"
-        android:contentDescription="description_zoom_touch_close" />
-	<ProgressBar
-        android:id="@+id/edit_progress_bar_expand"
-        android:layout_width="150dp"
-		android:layout_height="200dp"
-        android:visibility="gone"
-		android:layout_margin="5dp"
-		android:layout_gravity="center"
-        android:contentDescription="ProgressBarExpand"/>
 <!-- buttons  -->
 	
 	<LinearLayout
