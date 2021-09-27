@@ -220,7 +220,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	    else{
 		    holder.textBody.setVisibility(View.VISIBLE);
 		    holder.textBody.setText(strBody);
-		    holder.textBody.setTextSize((float) 34.00);
+		    holder.textBody.setTextSize((float) 24.00);
 		    holder.textBody.setTextColor(ColorSet.mText_ColorArray[style]);
 	    }
 
@@ -232,8 +232,8 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	    }
 	    else{
 		    holder.textQuantity.setVisibility(View.VISIBLE);
-		    holder.textQuantity.setText(String.valueOf(quantity));
-		    holder.textQuantity.setTextSize((float) 34.00);
+		    holder.textQuantity.setText("x"+String.valueOf(quantity));
+		    holder.textQuantity.setTextSize((float) 20.00);
 		    holder.textQuantity.setTextColor(ColorSet.mText_ColorArray[style]);
 	    }
 

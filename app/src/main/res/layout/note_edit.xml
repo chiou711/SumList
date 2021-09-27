@@ -9,8 +9,8 @@
 	android:layout_height="match_parent"
 	android:id="@+id/edit_main"
 	android:orientation="vertical"      >
-<include android:id="@+id/recorder_toolbar"
-	layout="@layout/recording_toolbar"
+<include android:id="@+id/edit_toolbar"
+	layout="@layout/edit_toolbar"
 	 />
 <ScrollView
 			android:layout_width="match_parent"

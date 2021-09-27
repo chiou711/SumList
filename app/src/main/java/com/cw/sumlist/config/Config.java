@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 CW Chiu
+ * Copyright (C) 2021 CW Chiu
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,11 +41,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
@@ -58,6 +55,10 @@ public class Config extends Fragment
 	// vibration
 	SharedPreferences mPref_vibration;
 	TextView mTextViewVibration;
+
+	// add new option
+	SharedPreferences mPref_add_new_note_location;
+	TextView textViewAddNewOption;
 
 	private AlertDialog dialog;
 	private Context mContext;
@@ -77,11 +78,8 @@ public class Config extends Fragment
 	    //Set text style
 		setNewPageTextStyle();
 
-		//set YouTube auto play
-		setYouTube_auto_play();
-		
-		//Set YouTube launch delay
-		setYouTubeLaunchDelay();
+		// add new option
+		setAddNewOption();
 
 		//Set vibration time length
 		setVibrationTimeLength();
@@ -97,13 +95,6 @@ public class Config extends Fragment
 
 		return mRootView;
 	}   	
-
-	/**
-	 *  set take picture option
-	 *  
-	 */
-	SharedPreferences mPref_takePicture;
-	TextView mTextViewTakePicture;	
 
 	/**
 	 *  select style
@@ -129,7 +120,7 @@ public class Config extends Fragment
 		});
 	}
 	
-	
+	// style
 	private void selectStyleDialog(View view)
 	{
 		mContext = getActivity();
@@ -197,54 +188,6 @@ public class Config extends Fragment
 		}
    };
 
-	/**
-	 * Set YouTube auto play
-	 *
-	 */
-	private void setYouTube_auto_play(){
-		Switch sw = mRootView.findViewById(R.id.switch_youtube_auto_play);
-		if(Pref.getPref_is_autoPlay_YouTubeApi(getActivity()) ) {
-			sw.setChecked(true);
-			sw.setText(R.string.config_status_enabled);
-		}
-		else {
-			sw.setChecked(false);
-			sw.setText(R.string.config_status_disabled);
-		}
-
-		sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				Pref.setPref_is_autoPlay_YouTubeApi(getActivity(),isChecked);
-				if(isChecked)
-					sw.setText(R.string.config_status_enabled);
-				else
-					sw.setText(R.string.config_status_disabled);
-			}
-		});
-	}
-
-	/**
-	 *  set YouTube launch delay
-	 *
-	 */
-	private void setYouTubeLaunchDelay()
-	{
-		//  set current
-		SharedPreferences pref_sw_time = getActivity().getSharedPreferences("youtube_launch_delay", 0);
-		View swTimeView = mRootView.findViewById(R.id.youtube_launch_delay);
-		TextView slideshow_text_view = (TextView)mRootView.findViewById(R.id.youtube_launch_delay_setting);
-		String strSwTime = pref_sw_time.getString("KEY_YOUTUBE_LAUNCH_DELAY","10");
-		slideshow_text_view.setText(strSwTime +"s");
-
-		// switch time picker
-		swTimeView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				youtubeLaunchDelayPickerDialog();
-			}
-		});
-	}
 
 	/**
 	 *  select vibration time length
@@ -272,51 +215,34 @@ public class Config extends Fragment
 		});
 	}
 
-
 	/**
-	 * Dialog for setting youtube launch delay
+	 *  add new option
+	 *
 	 */
-	private void youtubeLaunchDelayPickerDialog()
+	private void setAddNewOption()
 	{
-		final AlertDialog.Builder d = new AlertDialog.Builder(getActivity());
-		LayoutInflater inflater = getActivity().getLayoutInflater();
-		View dialogView = inflater.inflate(R.layout.config_slideshow_sw_time_picker, null);
-		d.setTitle(R.string.config_set_slideshow_dlg_title);
-		d.setMessage(R.string.config_set_slideshow_dlg_message);
-		d.setView(dialogView);
+		View addNewOption = mRootView.findViewById(R.id.addNewOption);
+		textViewAddNewOption = (TextView)mRootView.findViewById(R.id.TextViewAddNewOptionSetting);
+		mPref_add_new_note_location = getActivity().getSharedPreferences("add_new_note_option", 0);
+		// add to top: init
+		if(mPref_add_new_note_location.getString("KEY_ADD_NEW_NOTE_TO","bottom").equalsIgnoreCase("top"))
+		{
+			textViewAddNewOption.setText(getResources().getText(R.string.add_new_note_top).toString());
+		}
+		else if (mPref_add_new_note_location.getString("KEY_ADD_NEW_NOTE_TO","bottom").equalsIgnoreCase("bottom"))
+		{
+			textViewAddNewOption.setText(getResources().getText(R.string.add_new_note_bottom).toString());
+		}
 
-		final SharedPreferences pref_sw_time = getActivity().getSharedPreferences("youtube_launch_delay", 0);
-		final String strSwitchTime = pref_sw_time.getString("KEY_YOUTUBE_LAUNCH_DELAY","10");
+		// add new option
+		addNewOption.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				new Note_addNew_option(getActivity(),textViewAddNewOption);
+			}
+		});
 
-		final NumberPicker numberPicker = (NumberPicker) dialogView.findViewById(R.id.dialog_number_picker);
-		numberPicker.setMaxValue(20);
-		numberPicker.setMinValue(1);
-		numberPicker.setValue(Integer.valueOf(strSwitchTime));
-		numberPicker.setWrapSelectorWheel(true);
-		numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-			@Override
-			public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-			}
-		});
-		d.setPositiveButton(R.string.btn_OK, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialogInterface, int i) {
-				int len = numberPicker.getValue();
-				pref_sw_time.edit().putString("KEY_YOUTUBE_LAUNCH_DELAY",String.valueOf(len)).apply();
-				TextView slideshow_text_view = (TextView)mRootView.findViewById(R.id.youtube_launch_delay_setting);
-				slideshow_text_view.setText(len + "s");
-			}
-		});
-		d.setNegativeButton(R.string.btn_Cancel, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialogInterface, int i) {
-			}
-		});
-		AlertDialog alertDialog = d.create();
-		alertDialog.show();
 	}
-
-
 
 	private void selectVibrationLengthDialog()
 	{
@@ -354,7 +280,7 @@ public class Config extends Fragment
 					if(len.equalsIgnoreCase("00"))
 						mTextViewVibration.setText(getResources().getText(R.string.config_status_disabled).toString());
 					else
-						mTextViewVibration.setText(len + "ms");					
+						mTextViewVibration.setText(len + "ms");
 					
 					//end
 					dialog.dismiss();

@@ -70,7 +70,7 @@ public class Note_edit extends AppCompatActivity
     	
         System.out.println("Note_edit / onCreate");
         
-	    Toolbar toolbar = (Toolbar) findViewById(R.id.recorder_toolbar);
+	    Toolbar toolbar = (Toolbar) findViewById(R.id.edit_toolbar);
 	    toolbar.setPopupTheme(R.style.ThemeOverlay_AppCompat_Light);
 	    if (toolbar != null)
 		    setSupportActionBar(toolbar);

@@ -43,16 +43,6 @@ public class MenuId {
         static final int SHIFT_PAGE = R.id.SHIFT_PAGE;
         static final int DELETE_PAGES = R.id.DELETE_PAGES;
 
-        // operation
-        static final int IMPORT_JSON_FROM_WEB = R.id.IMPORT_JSON_FROM_WEB;
-        static final int IMPORT_FROM_SD_CARD_JSON = R.id.IMPORT_FROM_SD_CARD_JSON;
-        static final int IMPORT_FROM_GDRIVE_JSON = R.id.IMPORT_FROM_GDRIVE_JSON;
-        static final int EXPORT_TO_SD_CARD_JSON = R.id.EXPORT_TO_SD_CARD_JSON;
-        static final int EXPORT_TO_SD_CARD_ALL_JSON = R.id.EXPORT_TO_SD_CARD_ALL_JSON;
-        static final int EXPORT_TO_GDRIVE_ALL_JSON = R.id.EXPORT_TO_GDrive_ALL_JSON;
-        static final int SEND_JSON = R.id.SEND_JSON;
-        static final int IMPORT_RENEW = R.id.IMPORT_RENEW;
-
         // config
         static final int CONFIG = R.id.CONFIG;
 

@@ -30,7 +30,7 @@ import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.drawer.Drawer;
 import com.cw.sumlist.folder.Folder;
 import com.cw.sumlist.folder.FolderUi;
-import com.cw.sumlist.note_add.Add_note_option;
+import com.cw.sumlist.note_add.Note_addText;
 import com.cw.sumlist.operation.delete.DeleteFolders;
 import com.cw.sumlist.operation.delete.DeletePages;
 import com.cw.sumlist.page.Checked_notes_option;
@@ -46,10 +46,8 @@ import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.preferences.Pref;
 import com.mobeta.android.dslv.DragSortListView;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -60,7 +58,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.OnBackStackChangedListener;
 import androidx.fragment.app.FragmentTransaction;
@@ -78,8 +75,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import static android.os.Build.VERSION_CODES.M;
 
 public class MainAct extends AppCompatActivity implements OnBackStackChangedListener
 {
@@ -603,12 +598,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
              */
 //            mMenu.setGroupVisible(R.id.group_pages_and_more, foldersCnt >0);//todo temp need overall check
 
-            // EXPORT TO SD CARD ALL JSON
-            mMenu.findItem(R.id.EXPORT_TO_SD_CARD_ALL_JSON).setVisible(foldersCnt >0);
-
-            // EXPORT TO Google Drive ALL JSON
-            mMenu.findItem(R.id.EXPORT_TO_GDrive_ALL_JSON).setVisible(foldersCnt >0);
-
             if(foldersCnt>0)
             {
                 getSupportActionBar().setTitle(mFolderTitle);
@@ -643,11 +632,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
                 // note operation
                 mMenu.findItem(R.id.note_operation).setVisible( (pgsCnt >0) && (notesCnt>0) );
-
-
-	            // EXPORT TO SD CARD JSON
-	            mMenu.findItem(R.id.EXPORT_TO_SD_CARD_JSON).setVisible(pgsCnt >0);
-
 
                 /**
                  *  Note group
@@ -839,17 +823,16 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 return true;
 
             case MenuId.ADD_NEW_NOTE:
-                if(Build.VERSION.SDK_INT >= M)//api23
-                {
-                    // check permission
-                    int permissionWriteExtStorage = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                    if(permissionWriteExtStorage == PackageManager.PERMISSION_GRANTED)
-                        Add_note_option.createSelection(this,true);
-                    else
-                        Add_note_option.createSelection(this,false);
-                }
+                SharedPreferences mPref_add_new_note_location = getSharedPreferences("add_new_note_option", 0);
+                boolean bTop = mPref_add_new_note_location.getString("KEY_ADD_NEW_NOTE_TO","bottom").equalsIgnoreCase("top");
+
+                Intent intent = new Intent(this, Note_addText.class);
+                if(bTop)
+                    intent.putExtra("extra_ADD_NEW_TO_TOP", "true");
                 else
-                    Add_note_option.createSelection(this,true);
+                    intent.putExtra("extra_ADD_NEW_TO_TOP", "false");
+
+                startActivity(intent);
                 return true;
 
             case MenuId.CHECKED_OPERATION:

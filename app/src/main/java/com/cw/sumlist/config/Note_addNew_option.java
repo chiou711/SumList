@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 CW Chiu
+ * Copyright (C) 2021 CW Chiu
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.note_add;
+package com.cw.sumlist.config;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckedTextView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.cw.sumlist.R;
 
@@ -33,12 +32,11 @@ import java.util.Objects;
 public class Note_addNew_option
 {
 	private RadioGroup mRadioGroup0;
-    CheckedTextView check_add_link_if_exists;
     AlertDialog mDialog;
     private SharedPreferences mPref_add_new_note_location;
-    private boolean bAddToTop, bAddLink;
+    private boolean bAddToTop;
 
-	Note_addNew_option(final Activity activity)
+	Note_addNew_option(final Activity activity, TextView textViewAddNewOption)
 	{
 		mPref_add_new_note_location = activity.getSharedPreferences("add_new_note_option", 0);
   		// inflate select style layout
@@ -47,25 +45,10 @@ public class Note_addNew_option
   		View view = Objects.requireNonNull(inflater).inflate(R.layout.note_add_new_option, null);
 
 		mRadioGroup0 = (RadioGroup)view.findViewById(R.id.radioGroup_new_at);
-		check_add_link_if_exists = (CheckedTextView)view.findViewById(R.id.check_add_link_if_exists);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 	
-		builder.setTitle(R.string.dialog_add_new_option_title)
-			.setNegativeButton(R.string.btn_Cancel, new DialogInterface.OnClickListener()
-	        {	@Override
-	    		public void onClick(DialogInterface dialog, int which) {
-	    			//cancel
-	    		}
-	        });
-		
-		builder.setPositiveButton(R.string.btn_OK, new DialogInterface.OnClickListener()
-        {	@Override
-    		public void onClick(DialogInterface dialog, int which)
-        	{
-        		respondToSelection();
-			}
-        });
+		builder.setTitle(R.string.add_new_note_position);
 
 		// add to top: init
 		if(mPref_add_new_note_location.getString("KEY_ADD_NEW_NOTE_TO","bottom").equalsIgnoreCase("top"))
@@ -84,35 +67,22 @@ public class Note_addNew_option
             @Override
             public void onCheckedChanged(RadioGroup RG, int id) {
                 bAddToTop = mRadioGroup0.indexOfChild(mRadioGroup0.findViewById(id))==0;
+
+	            respondToSelection();
+
+	            if(mPref_add_new_note_location.getString("KEY_ADD_NEW_NOTE_TO","bottom").equalsIgnoreCase("top"))
+	            {
+		            textViewAddNewOption.setText(activity.getResources().getText(R.string.add_new_note_top).toString());
+	            }
+	            else if (mPref_add_new_note_location.getString("KEY_ADD_NEW_NOTE_TO","bottom").equalsIgnoreCase("bottom"))
+	            {
+		            textViewAddNewOption.setText(activity.getResources().getText(R.string.add_new_note_bottom).toString());
+	            }
+
+	            mDialog.dismiss();
             }
         });
 
-		// add link: init
-		if (mPref_add_new_note_location.getString("KEY_ENABLE_LINK_TITLE_SAVE","yes").equalsIgnoreCase("yes") )
-		{
-			check_add_link_if_exists.setChecked(true);
-			bAddLink = true;
-		}
-		else if (mPref_add_new_note_location.getString("KEY_ENABLE_LINK_TITLE_SAVE","yes").equalsIgnoreCase("no") )
-		{
-            check_add_link_if_exists.setChecked(false);
-			bAddLink = false;
-		}
-
-		// add link: listener
-        check_add_link_if_exists.setOnClickListener(new View.OnClickListener()
-        {	@Override
-        public void onClick(View view)
-        {
-            boolean currentCheck = ((CheckedTextView)view).isChecked();
-            ((CheckedTextView)view).setChecked(!currentCheck);
-
-            if(((CheckedTextView)view).isChecked())
-				bAddLink = true;
-            else
-				bAddLink = false;
-        }
-        });
 
 		builder.setView(view);
   		mDialog = builder.create();
@@ -126,10 +96,5 @@ public class Note_addNew_option
 			mPref_add_new_note_location.edit().putString("KEY_ADD_NEW_NOTE_TO", "top").apply();
 		else
 			mPref_add_new_note_location.edit().putString("KEY_ADD_NEW_NOTE_TO", "bottom").apply();
-
-		if(bAddLink)
-			mPref_add_new_note_location.edit().putString("KEY_ENABLE_LINK_TITLE_SAVE", "yes").apply();
-		else
-			mPref_add_new_note_location.edit().putString("KEY_ENABLE_LINK_TITLE_SAVE", "no").apply();
 	}
 }
