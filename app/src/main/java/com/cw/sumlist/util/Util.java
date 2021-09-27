@@ -65,8 +65,7 @@ public class Util
 
 	private static int STYLE_DEFAULT = 1;
     
-    public static int CHOOSER_SET_PICTURE = 4;
-	private int defaultBgClr;
+	private int defaultBgClr; //todo Not defined?
 	private int defaultTextClr;
 
 	public static final int PERMISSIONS_REQUEST_STORAGE = 10;

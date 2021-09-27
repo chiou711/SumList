@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 CW Chiu
+ * Copyright (C) 2021 CW Chiu
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,10 +70,7 @@ public class Note extends AppCompatActivity
     public static Long mNoteId;
     int mEntryPosition;
     static int mStyle;
-    
     static SharedPreferences mPref_show_note_attribute;
-
-    Button optionButton;
     Button backButton;
 
     public AppCompatActivity act;
@@ -170,18 +167,6 @@ public class Note extends AppCompatActivity
 		//       be called again after rotation
 		viewPager.setOnPageChangeListener(onPageChangeListener);//todo deprecated
 
-		// send note button
-		optionButton = (Button) findViewById(R.id.view_option);
-		optionButton.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_menu_more, 0, 0, 0);
-		optionButton.setOnClickListener(new View.OnClickListener()
-		{
-			public void onClick(View view)
-			{
-				View_note_option option = new View_note_option();
-				option.note_option(act,mNoteId);
-			}
-		});
-
 		// back button
 		backButton = (Button) findViewById(R.id.view_back);
 		backButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_menu_back, 0, 0, 0);
@@ -256,10 +241,6 @@ public class Note extends AppCompatActivity
         // renew pager
         showSelectedView();
 
-		LinearLayout buttonGroup = (LinearLayout) act.findViewById(R.id.view_button_group);
-        // button group
-        buttonGroup.setVisibility(View.VISIBLE);
-
         // renew options menu
         act.invalidateOptionsMenu();
 	}
@@ -326,19 +307,6 @@ public class Note extends AppCompatActivity
 		System.out.println("Note / _onPause");
 
 		isPagerActive = false;
-
-		// to stop YouTube web view running
-    	String tagStr = "current"+ viewPager.getCurrentItem()+"webView";
-    	CustomWebView webView = (CustomWebView) viewPager.findViewWithTag(tagStr);
-    	CustomWebView.pauseWebView(webView);
-    	CustomWebView.blankWebView(webView);
-
-		// to stop Link web view running
-    	tagStr = "current"+ viewPager.getCurrentItem()+"linkWebView";
-    	CustomWebView linkWebView = (CustomWebView) viewPager.findViewWithTag(tagStr);
-    	CustomWebView.pauseWebView(linkWebView);
-    	CustomWebView.blankWebView(linkWebView);
-
 	}
 	
 	@Override
@@ -395,11 +363,6 @@ public class Note extends AppCompatActivity
 		else
 			menu.findItem(R.id.VIEW_NOTE_CHECK).setIcon(R.drawable.btn_check_on_holo_dark);
 
-		// menu item: view mode
-   		markCurrentSelected(menu.findItem(R.id.VIEW_ALL),"ALL");
-		markCurrentSelected(menu.findItem(R.id.VIEW_PICTURE),"PICTURE_ONLY");
-		markCurrentSelected(menu.findItem(R.id.VIEW_TEXT),"TEXT_ONLY");
-
 	    // menu item: previous
 		MenuItem itemPrev = menu.findItem(R.id.ACTION_PREVIOUS);
 		itemPrev.setEnabled(viewPager.getCurrentItem() > 0);
@@ -440,9 +403,6 @@ public class Note extends AppCompatActivity
 
                 return true;
 
-            case R.id.VIEW_NOTE_MODE:
-            	return true;
-
 			case R.id.VIEW_NOTE_CHECK:
 				int markingNow = PageAdapter_recycler.toggleNoteMarking(this,NoteUi.getFocus_notePos());
 
@@ -454,17 +414,6 @@ public class Note extends AppCompatActivity
 
 				return true;
 
-            case R.id.VIEW_ALL:
-            	return true;
-            	
-            case R.id.VIEW_PICTURE:
-            	return true;
-
-            case R.id.VIEW_TEXT:
-        		setTextMode();
-				setOutline(act);
-            	return true;
-            	
             case R.id.ACTION_PREVIOUS:
                 // Go to the previous step in the wizard. If there is no previous step,
                 // setCurrentItem will do nothing.
@@ -522,7 +471,6 @@ public class Note extends AppCompatActivity
     		mPagerAdapter.notifyDataSetChanged(); // will call Note_adapter / _setPrimaryItem
     }
     
-    public static int mPositionOfChangeView;
     public static boolean mIsViewModeChanged;
     
     static void setTextMode()

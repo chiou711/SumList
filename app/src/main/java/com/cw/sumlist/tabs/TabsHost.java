@@ -166,8 +166,10 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         );
 
         mFooterMessage = (TextView) rootView.findViewById(R.id.footerText);
-        mFooterMessage.setBackgroundColor(Color.BLUE);
         mFooterMessage.setVisibility(View.VISIBLE);
+
+        mFooterSum = (TextView) rootView.findViewById(R.id.footerSum);
+        mFooterSum.setVisibility(View.VISIBLE);
 
 
         // AdMob support
@@ -635,6 +637,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     }
 
     public static TextView mFooterMessage;
+    public static TextView mFooterSum;
 
     // set footer
     public static void showFooter(AppCompatActivity mAct)
@@ -647,6 +650,14 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         {
             mFooterMessage.setText(getFooterMessage(mAct));//??? page table id = 0
             mFooterMessage.setBackgroundColor(ColorSet.getBarColor(mAct));
+        }
+
+        // show sum
+        mFooterSum.setTextColor(ColorSet.getHighlightColor(mAct));
+        if(mFooterSum != null)
+        {
+            mFooterSum.setText(getFooterSum(mAct));
+            mFooterSum.setBackgroundColor(Color.BLACK);
         }
     }
 
@@ -663,6 +674,27 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
                 mDb_page.getCheckedNotesCount() +
                 "/" +
                 mDb_page.getNotesCount(true);
+    }
+
+    // get footer sum of list view
+    static String getFooterSum(AppCompatActivity mAct)
+    {
+        int pageTableId = Pref.getPref_focusView_page_tableId(mAct);
+        DB_page mDb_page = new DB_page(mAct, pageTableId);
+
+        int count = mDb_page.getNotesCount(true);
+        int sum = 0;
+
+        for(int i=0;i<count;i++) {
+            int checked = mDb_page.getNoteMarking(i,true);
+            int value = Integer.valueOf(mDb_page.getNoteBody(i, true));
+            int qty = Integer.valueOf(mDb_page.getNoteQuantity(i, true));
+
+            if(checked==1)
+                sum += value*qty;
+        }
+
+        return " Sum = " + sum ;
     }
 
     /**

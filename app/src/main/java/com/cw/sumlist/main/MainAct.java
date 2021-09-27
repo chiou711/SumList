@@ -38,7 +38,6 @@ import com.cw.sumlist.page.PageUi;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.db.DB_drawer;
 import com.cw.sumlist.util.Dialog_EULA;
-import com.cw.sumlist.operation.slideshow.SlideshowInfo;
 import com.cw.sumlist.util.image.UtilImage;
 import com.cw.sumlist.define.Define;
 import com.cw.sumlist.util.OnBackPressedListener;
@@ -704,7 +703,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
      * on options item selected
      *
      ******************************/
-    public static SlideshowInfo slideshowInfo;
     public static FragmentTransaction mFragmentTransaction;
 
     static int mMenuUiState;

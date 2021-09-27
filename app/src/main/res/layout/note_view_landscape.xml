@@ -18,32 +18,14 @@
 
 	</LinearLayout>
 
-	<!-- buttons -->
-	<LinearLayout
-		android:id="@+id/view_button_group"
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-		android:background="@color/bar_color"
-    	android:orientation="horizontal" >
     <Button
         android:id="@+id/view_back"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
 		android:layout_margin="3dp"
 		android:background="@drawable/button"
 		android:textColor="@android:color/white"
+		android:layout_gravity="center"
         android:text="@string/view_note_button_back" />
-		<Button
-        android:id="@+id/view_option"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-		android:layout_margin="3dp"
-		android:background="@drawable/button"
-		android:textColor="@android:color/white"
-        android:text="@string/options" />
-
-	</LinearLayout>
 
 </LinearLayout>
