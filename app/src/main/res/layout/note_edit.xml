@@ -56,12 +56,12 @@
 	  	android:layout_width="0dp"
         android:layout_weight="1"
 		android:layout_height="wrap_content"
-	    android:textCursorDrawable="@null"
+		android:textCursorDrawable="@drawable/cursor_edit"
 		android:layout_gravity="center"
-	    android:inputType=""
+	    android:inputType="textPhonetic|textAutoComplete"
 	    android:textSize="18sp"
-	    android:minLines="2"
-	    android:maxLines="20" />
+	    android:minLines="1"
+	    android:maxLines="3" />
 	</LinearLayout>
 
 	<!-- Body header -->
@@ -88,10 +88,10 @@
 		android:id="@+id/edit_body"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:inputType=""
-		android:minLines="2"
-		android:maxLines="5"
-		android:textCursorDrawable="@null" />
+		android:textCursorDrawable="@drawable/cursor_edit"
+		android:inputType="numberSigned"
+		android:minLines="1"
+		android:maxLines="1"/>
 	<View android:layout_width="match_parent" android:layout_height="1dip" android:background="#4f4f4f" />
 
 	<!-- quantity header -->
@@ -118,10 +118,10 @@
 		android:id="@+id/edit_quantity"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:inputType=""
-		android:minLines="2"
-		android:maxLines="5"
-		android:textCursorDrawable="@null" />
+		android:inputType="numberSigned"
+		android:textCursorDrawable="@drawable/cursor_edit"
+		android:minLines="1"
+		android:maxLines="1" />
 	<View android:layout_width="match_parent" android:layout_height="1dip" android:background="#4f4f4f" />
 
 <!-- buttons  -->

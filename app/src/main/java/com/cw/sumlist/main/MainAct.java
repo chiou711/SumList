@@ -629,17 +629,11 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 // delete pages
                 mMenu.findItem(R.id.DELETE_PAGES).setVisible(pgsCnt >0);
 
-                // note operation
-                mMenu.findItem(R.id.note_operation).setVisible( (pgsCnt >0) && (notesCnt>0) );
-
                 /**
                  *  Note group
                  */
                 // group of notes
                 mMenu.setGroupVisible(R.id.group_notes, pgsCnt > 0);
-
-                // play
-                //mMenu.findItem(R.id.PLAY).setVisible( (pgsCnt >0) && (notesCnt>0) );
 
                 // HANDLE CHECKED NOTES
                 mMenu.findItem(R.id.HANDLE_CHECKED_NOTES).setVisible( (pgsCnt >0) && (notesCnt>0) );
@@ -673,28 +667,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
         // inflate menu
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
-        // enable drag note
-        mPref_show_note_attribute = getSharedPreferences("show_note_attribute", 0);
-        if(mPref_show_note_attribute.getString("KEY_ENABLE_DRAGGABLE", "yes").equalsIgnoreCase("yes"))
-            menu.findItem(R.id.ENABLE_NOTE_DRAG_AND_DROP)
-                    .setIcon(R.drawable.btn_check_on_holo_light)
-                    .setTitle(R.string.drag_note) ;
-        else
-            menu.findItem(R.id.ENABLE_NOTE_DRAG_AND_DROP)
-                    .setIcon(R.drawable.btn_check_off_holo_light)
-                    .setTitle(R.string.drag_note) ;
-
-        // enable show body
-        mPref_show_note_attribute = getSharedPreferences("show_note_attribute", 0);
-        if(mPref_show_note_attribute.getString("KEY_SHOW_BODY", "yes").equalsIgnoreCase("yes"))
-            menu.findItem(R.id.SHOW_BODY)
-                    .setIcon(R.drawable.btn_check_on_holo_light)
-                    .setTitle(R.string.preview_note_body) ;
-        else
-            menu.findItem(R.id.SHOW_BODY)
-                .setIcon(R.drawable.btn_check_off_holo_light)
-                .setTitle(R.string.preview_note_body) ;
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -893,26 +865,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 else {
                     mPref_show_note_attribute.edit().putString("KEY_ENABLE_DRAGGABLE", "yes").apply();
                     Toast.makeText(this,getResources().getString(R.string.drag_note) +
-                                        ": " +
-                                        getResources().getString(R.string.set_enable),
-                                   Toast.LENGTH_SHORT).show();
-                }
-                invalidateOptionsMenu();
-                TabsHost.reloadCurrentPage();
-                return true;
-
-            case MenuId.SHOW_BODY:
-                mPref_show_note_attribute = mContext.getSharedPreferences("show_note_attribute", 0);
-                if(mPref_show_note_attribute.getString("KEY_SHOW_BODY", "yes").equalsIgnoreCase("yes")) {
-                    mPref_show_note_attribute.edit().putString("KEY_SHOW_BODY", "no").apply();
-                    Toast.makeText(this,getResources().getString(R.string.preview_note_body) +
-                                        ": " +
-                                        getResources().getString(R.string.set_disable),
-                                    Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    mPref_show_note_attribute.edit().putString("KEY_SHOW_BODY", "yes").apply();
-                    Toast.makeText(this,getResources().getString(R.string.preview_note_body) +
                                         ": " +
                                         getResources().getString(R.string.set_enable),
                                    Toast.LENGTH_SHORT).show();

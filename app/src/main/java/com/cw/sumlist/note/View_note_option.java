@@ -77,16 +77,6 @@ class View_note_option {
 
         option_list = new ArrayList<>();
 
-        // mail
-        option_list.add(new View_note_option(ID_OPTION_MAIL ,
-                        android.R.drawable.ic_menu_send,
-                        R.string.mail_notes_btn));
-
-        // search youtube with keyword
-        option_list.add(new View_note_option(ID_OPTION_SEARCH_YOUTUBE ,
-                R.drawable.ic_youtube,
-                R.string.search_youtube));
-
         // Back
         option_list.add(new View_note_option(ID_OPTION_BACK,
                 R.drawable.ic_menu_back,

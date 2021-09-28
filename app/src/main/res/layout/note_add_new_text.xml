@@ -35,11 +35,12 @@
 	<EditText android:id="@+id/edit_title"
 		  	android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-		    android:textCursorDrawable="@null"
-		    android:inputType=""
+		    android:textCursorDrawable="@drawable/cursor_edit"
+		    android:inputType="textPhonetic|textAutoComplete"
 		    android:textSize="18sp"
 		    android:minLines="1"
-		    android:maxLines="20"
+		    android:maxLines="3"
+			android:cursorVisible="true"
 			/>
 
 	<!-- body -->
@@ -64,10 +65,10 @@
 			  android:layout_width="match_parent"
 			  android:layout_height="0dp"
 			  android:layout_weight="1"
-			  android:textCursorDrawable="@null"
-			  android:inputType=""
+              android:textCursorDrawable="@drawable/cursor_edit"
+			  android:inputType="numberSigned"
 			  android:minLines="1"
-			  android:maxLines="20"
+			  android:maxLines="1"
 			  android:autoLink="all"
 			  android:textSize="18sp"
 			  android:scrollbars="vertical"
@@ -95,11 +96,11 @@
 	<EditText android:id="@+id/edit_quantity"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:textCursorDrawable="@null"
-		android:inputType=""
+		android:textCursorDrawable="@drawable/cursor_edit"
+		android:inputType="numberSigned"
 		android:textSize="18sp"
 		android:minLines="1"
-		android:maxLines="20"
+		android:maxLines="1"
 		/>
 
 </LinearLayout>
