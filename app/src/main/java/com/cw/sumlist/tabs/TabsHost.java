@@ -682,7 +682,12 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
         for(int i=0;i<count;i++) {
             int checked = mDb_page.getNoteMarking(i,true);
-            int value = Integer.valueOf(mDb_page.getNoteBody(i, true));
+
+            // workaround for empty body
+            int value = -999999;
+            if(!Util.isEmptyString(mDb_page.getNoteBody(i, true)))
+                value = Integer.valueOf(mDb_page.getNoteBody(i, true));
+
             int qty = Integer.valueOf(mDb_page.getNoteQuantity(i, true));
 
             if(checked==1)

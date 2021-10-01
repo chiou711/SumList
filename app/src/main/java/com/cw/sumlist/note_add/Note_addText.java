@@ -92,7 +92,7 @@ public class Note_addText extends AppCompatActivity {
 	protected void onPause() {
 		System.out.println("Note_addText / _onPause");
 		super.onPause();
-		rowId = saveStateInDB(rowId, enSaveDb,"");
+		rowId = saveStateInDB(rowId, enSaveDb);
 		System.out.println("Note_addText / _onPause / rowId = " + rowId);
 	}
 
@@ -152,7 +152,7 @@ public class Note_addText extends AppCompatActivity {
 				if(isTextAdded())
 				{
 					enSaveDb = true;
-					rowId = saveStateInDB(rowId, enSaveDb,"" );
+					rowId = saveStateInDB(rowId, enSaveDb);
 
 					int notes_count = TabsHost.getCurrentPage().getNotesCountInPage(this);
 
@@ -296,12 +296,10 @@ public class Note_addText extends AppCompatActivity {
 			// renew body
 			bodyEditText.setText(strBlank);
 			bodyEditText.setSelection(strBlank.length());
-			bodyEditText.requestFocus();
 
 			// quantity
 			quantityEditText.setText(strBlank);
 			quantityEditText.setSelection(strBlank.length());
-			quantityEditText.requestFocus();
 		}
 	}
 
@@ -326,7 +324,7 @@ public class Note_addText extends AppCompatActivity {
 	}
 
 
-	Long saveStateInDB(Long rowId,boolean enSaveDb, String pictureUri)
+	Long saveStateInDB(Long rowId,boolean enSaveDb)
 	{
 		String title = titleEditText.getText().toString();
 
@@ -343,16 +341,19 @@ public class Note_addText extends AppCompatActivity {
 			if (rowId == null) // for Add new
 			{
 				if( (!Util.isEmptyString(title)) ||
-						(!Util.isEmptyString(pictureUri)) ||
 						(!Util.isEmptyString(body))            )
 				{
 					// insert
 					System.out.println("Note_addText / _saveStateInDB / insert");
-					rowId = dB_page.insertNote(title, body,  Integer.valueOf(quantity),  1);// add new note, get return row Id
+
+					int qty = 1; // default 1 if not specified
+					if(!Util.isEmptyString(quantity))
+						qty = Integer.valueOf(quantity);
+
+					rowId = dB_page.insertNote(title, body,  qty,  1);// add new note, get return row Id
 				}
 			}
 			else if ( Util.isEmptyString(title) &&
-					Util.isEmptyString(pictureUri) &&
 					Util.isEmptyString(body)         )
 			{
 				// delete
