@@ -62,16 +62,12 @@ class View_note_option {
     static List<View_note_option> option_list;
 
     private final static int ID_OPTION_MAIL = 0;
-    private final static int ID_OPTION_AUTO_PLAY = 1;
-    private final static int ID_OPTION_SEARCH_YOUTUBE = 2;
     private final static int ID_OPTION_BACK = 9;
-    private static long noteId;
     private static GridIconAdapter mGridIconAdapter;
 
     void note_option(final AppCompatActivity act, long _noteId)
     {
         AbsListView gridView;
-        noteId = _noteId;
         // get layout inflater
         View rootView = act.getLayoutInflater().inflate(R.layout.option_grid, null);
 

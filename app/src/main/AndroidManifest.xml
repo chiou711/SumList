@@ -6,10 +6,7 @@
     android:versionName="01.00.01">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-<!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
-<!--	<uses-permission android:name="android.permission.INTERNET" />-->
-<!--	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
 
     <application
         android:name="com.cw.sumlist.util.uil.UilApplication"
@@ -23,8 +20,6 @@
         android:requestLegacyExternalStorage="true"
         >
 
-        <!-- android:theme="@style/Theme.AppCompat" -->
-        <!-- android:theme="@style/CustomTheme" -->
         <activity
             android:name="com.cw.sumlist.main.MainAct"
             android:theme="@style/MyTheme"
@@ -67,27 +62,6 @@
              onPause/onSaveInstanceState/onStop/onDestroy/
                                                 onCreate/onStart/onRestoreInstanceState/onResume    -->
 
-<!--        <activity android:name="com.cw.sumlist.operation.youtube.YouTubePlayerAct"-->
-<!--                  android:configChanges="orientation|screenSize|keyboardHidden"/>-->
-<!--        <activity android:name="com.cw.sumlist.operation.import_export.Import_webJsonAct"-->
-<!--            android:theme="@style/MyTheme"/>-->
-<!--        <activity android:name="com.cw.sumlist.operation.gdrive.ImportGDriveAct"-->
-<!--            android:theme="@style/MyTheme"/>-->
-<!--        <activity android:name="com.cw.sumlist.operation.gdrive.ExportGDriveAct"-->
-<!--            android:theme="@style/MyTheme"/>-->
-<!--        <activity android:name="com.cw.sumlist.operation.gallery.GalleryGridAct"/>-->
-<!--        <activity android:name="com.cw.sumlist.operation.gallery.GalleryPagerAct"/>-->
-
-        <!--YouTube search -->
-<!--        <activity android:name="com.cw.sumlist.operation.youtube.SearchYouTube"-->
-<!--                  android:windowSoftInputMode="adjustPan"-->
-<!--                  android:theme="@style/MyTheme"/>-->
-
-        <!--receiver-->
-<!--        <receiver-->
-<!--            android:name="com.cw.sumlist.util.DeleteFileAlarmReceiver"-->
-<!--            android:enabled="true" />-->
-
         <!-- AdMob: formal case    -->
 <!--        <meta-data-->
 <!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
@@ -98,44 +72,6 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/ad_mob_app_id_test"/>
 
-        <!-- fetch Json -->
-<!--        <service-->
-<!--            android:name="com.cw.sumlist.data.FetchService_category"-->
-<!--            android:exported="false" />-->
-<!--        <provider-->
-<!--            android:name="com.cw.sumlist.data.Provider"-->
-<!--            android:authorities="${packageName}"-->
-<!--            android:permission="${applicationId}.ACCESS_VIDEO_DATA"-->
-<!--            android:protectionLevel="signature"-->
-<!--            android:exported="false">-->
-<!--            <path-permission-->
-<!--                android:pathPrefix="/search"-->
-<!--                android:readPermission="android.permission.GLOBAL_SEARCH" />-->
-<!--        </provider>-->
    </application>
 
 </manifest>
-<!-- reference 
-     theme:
-        android:theme="@style/AppTheme" 
-        android:theme="@style/CustomTheme"
-     screen orientation:       
-        android:screenOrientation="portrait"
-
-    For android tv:
-
-    - in manifest
-        <uses-feature android:name="android.software.leanback"
-        android:required="false" />
-        <uses-feature android:name="android.hardware.touchscreen"
-        android:required="false" />
-
-    - in application tag
-        android:banner="@drawable/ic_banner"
-
-    - in main activity
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-        </intent-filter>
- -->

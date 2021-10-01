@@ -8,27 +8,24 @@
     <string name="btn_Renew">更新</string>
     <string name="title_playing_audio">还在播放音频</string>
     <string name="message_continue_or_stop">继续或是停止播放音频？</string>
-    <string name="message_continue_or_stop_YouTube_title">继续运行下一个连结？</string>
-    <string name="message_continue_or_stop_YouTube_message">如果不运行，请在5秒内按“否”。</string>
     <string name="btn_Finish">完成</string>
     <string name="btn_Select">选择</string>
     <string name="btn_None">无</string>
-    <string name="app_name">SumList</string>
+    <string name="app_name">清单和</string>
     <string name="app_name_dir">SumList</string>
+    <string name="footer_text_total">总计</string>
     <string name="mark_handler">mark_handler</string>
     <string name="drag_handler">drag_handler</string>
     <string name="confirm_dialog_title">确认</string>
     <string name="confirm_dialog_message">您要删除这个笔记？</string>
-    <string name="confirm_dialog_message_page">您要删除这个页面？</string>
-    <string name="confirm_dialog_message_folder">您要删除这个文件夹？</string>
+    <string name="confirm_dialog_message_page">您要删除这个清单？</string>
+    <string name="confirm_dialog_message_folder">您要删除这个清单夹？</string>
     <string name="confirm_dialog_message_file">您想删除这个文件？</string>
     <string name="confirm_dialog_message_selection">要删除选择吗？</string>
     <string name="confirm_dialog_button_no">否</string>
     <string name="confirm_dialog_button_yes">是</string>
     <string name="footer_checked">勾选</string>
     <string name="footer_total">总计</string>
-    <string name="mail_notes_title">发送笔记页(文字)</string>
-    <string name="mail_json_title">发送JSON</string>
     <string name="mail_notes_btn">发送</string>
     <string name="mail_notes_dlg_title">发送笔记</string>
     <string name="mail_notes_dlg_message">收件人的电子邮件地址:</string>
@@ -44,16 +41,15 @@
     <string name="edit_page_button_ignore">取消</string>
     <string name="file_not_found">未找到文件</string>
     <string name="file_is_not_created">未建立文件</string>
-    <string name="folder_operation">文件夹操作</string>
-    <string name="page_operation">笔记页操作</string>
+    <string name="folder_operation">清单夹操作</string>
+    <string name="page_operation">清单操作</string>
     <string name="note_operation">笔记操作</string>
-    <string name="backup_operation">备份操作</string>
     <string name="settings_operation">设置</string>
     <string name="set_enable">启用</string>
     <string name="set_disable">停用</string>
-    <string name="no_page_yet">还没有页面</string>
-    <string name="blank_page">空白页</string>
-    <string name="blank_folder">空白文件夹</string>
+    <string name="no_page_yet">还没有清单</string>
+    <string name="blank_page">空白清单</string>
+    <string name="blank_folder">空白清单夹</string>
     <string name="sample_notes_title">笔记样本</string>
     <string name="sample_notes_message">你想创建笔记样本吗？ 如果是，则需要允许在下一个对话框中访问设备上的照片，媒体和文件。</string>
     <string name="select_folder">Select a folder</string>
@@ -61,7 +57,4 @@
     <string name="file_not_selected">No file selected, can not continue.</string>
     <string name="content_updated">Successfully exported.</string>
     <string name="content_update_failed">Error while editing contents.</string>
-    <string name="catalog_url_1">
-        https://drive.google.com/uc?export=download&amp;id=1rmE2Vm3F0bBWRWOWy-_HzAE-MAFd88F-
-    </string>
 </resources>

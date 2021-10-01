@@ -266,10 +266,6 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         System.out.println("TabsHost / _onTabSelected: " + tab.getPosition());
-//        System.out.println("TabsHost / _onTabSelected:  / Pref.getPref_DB_ready(getActivity()) = " + Pref.getPref_DB_ready(getActivity()));
-
-//        if( !Pref.getPref_DB_ready(getActivity()))
-//            return;
 
         setFocus_tabPos(tab.getPosition());
 
@@ -473,8 +469,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
             tabStrip.getChildAt(tabPos).setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if(Pref.getPref_DB_ready(getActivity())) // add for Renew DB exception
-                        editPageTitle(tabPos,MainAct.mAct);
+                    editPageTitle(tabPos,MainAct.mAct);
                     return false;
                 }
             });
@@ -694,7 +689,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
                 sum += value*qty;
         }
 
-        return " Sum = " + sum ;
+        return mAct.getResources().getString(R.string.footer_text_total)+ " : " + sum ;
     }
 
     /**

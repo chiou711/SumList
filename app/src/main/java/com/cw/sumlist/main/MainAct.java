@@ -94,11 +94,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public static Folder mFolder;
     public static Toolbar mToolbar;
 
-    public static MediaBrowserCompat mMediaBrowserCompat;
-    public static MediaControllerCompat mMediaControllerCompat;
-    public static int mCurrentState;
-    public final static int STATE_PAUSED = 0;
-    public final static int STATE_PLAYING = 1;
     public boolean bEULA_accepted;
     public static boolean isEdited_link;
     public static int edit_position;
@@ -188,7 +183,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
             dialog_EULA.show();
         }
         else {
-//            if(Pref.getPref_DB_ready(this))
                 doCreate();
         }
 
@@ -325,15 +319,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
      *                                      Life cycle
      *
      *********************************************************************************/
-
-    boolean isAdded_onNewIntent;
-    // if one YouLite Intent is already running, call it again in YouTube or Browser will run into this
-    @Override
-    protected void onNewIntent(Intent intent)
-    {
-        super.onNewIntent(intent);
-        System.out.println("MainAct / _onNewIntent ");
-    }
 
     @Override
     protected void onPause() {
@@ -507,42 +492,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
         this.onBackPressedListener = onBackPressedListener;
     }
-
-    /**
-     * on Activity Result
-     */
-    AlertDialog.Builder builder;
-    AlertDialog alertDlg;
-    Handler handler;
-    int count;
-    String countStr;
-    String nextLinkTitle;
-
-
-    /**
-     * runnable for counting down
-     */
-    Runnable runCountDown = new Runnable() {
-        public void run() {
-            // show count down
-            TextView messageView = (TextView) alertDlg.findViewById(android.R.id.message);
-            count--;
-            countStr = getResources().getString(R.string.message_continue_or_stop_YouTube_message);
-            countStr = countStr.replaceFirst("[0-9]",String.valueOf(count));
-            messageView.setText(nextLinkTitle + "\n\n" +countStr);
-
-            if(count>0)
-                handler.postDelayed(runCountDown,1000);
-            else
-            {
-                // launch next intent
-                alertDlg.dismiss();
-                System.out.println("MainAct / _runCountDown /alertDlg  dismiss ");
-            }
-        }
-    };
-
-
 
     /***********************************************************************************
      *
@@ -786,10 +735,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                     mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
                     mFragmentTransaction.replace(R.id.content_frame, delFoldersFragment).addToBackStack("delete_folders").commit();
                 }
-                else
-                {
-                    Toast.makeText(this, R.string.config_export_none_toast, Toast.LENGTH_SHORT).show();
-                }
                 return true;
 
             case MenuId.ADD_NEW_NOTE:
@@ -914,46 +859,5 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
         mFolder = new Folder(this);
         openFolder();
     }
-
-
-    // callback: media browser connection
-    public static MediaBrowserCompat.ConnectionCallback mMediaBrowserCompatConnectionCallback = new MediaBrowserCompat.ConnectionCallback() {
-        @Override
-        public void onConnected() {
-            super.onConnected();
-
-            System.out.println("MainAct / MediaBrowserCompat.Callback / _onConnected");
-            try {
-                mMediaControllerCompat = new MediaControllerCompat(mAct, mMediaBrowserCompat.getSessionToken());
-                mMediaControllerCompat.registerCallback(mMediaControllerCompatCallback);
-                MediaControllerCompat.setMediaController(mAct,mMediaControllerCompat);
-            } catch( RemoteException e ) {
-                System.out.println("MainAct / MediaBrowserCompat.Callback / RemoteException");
-            }
-        }
-    };
-
-    // callback: media controller
-    public static MediaControllerCompat.Callback mMediaControllerCompatCallback = new MediaControllerCompat.Callback() {
-        @Override
-        public void onPlaybackStateChanged(PlaybackStateCompat state) {
-            super.onPlaybackStateChanged(state);
-//            System.out.println("MainAct / _MediaControllerCompat.Callback / _onPlaybackStateChanged / state = " + state);
-            if( state == null ) {
-                return;
-            }
-
-            switch( state.getState() ) {
-                case STATE_PLAYING: {
-                    mCurrentState = STATE_PLAYING;
-                    break;
-                }
-                case STATE_PAUSED: {
-                    mCurrentState = STATE_PAUSED;
-                    break;
-                }
-            }
-        }
-    };
 
 }

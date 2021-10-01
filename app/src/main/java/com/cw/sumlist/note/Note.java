@@ -19,17 +19,12 @@ package com.cw.sumlist.note;
 import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_page;
-import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.page.PageAdapter_recycler;
 import com.cw.sumlist.tabs.TabsHost;
-import com.cw.sumlist.util.CustomWebView;
 import com.cw.sumlist.util.preferences.Pref;
 import com.cw.sumlist.util.uil.UilCommon;
 import com.cw.sumlist.util.Util;
 
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -41,15 +36,11 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 public class Note extends AppCompatActivity
 {
@@ -91,7 +82,6 @@ public class Note extends AppCompatActivity
 
 	    act = this;
 
-	    MainAct.mMediaBrowserCompat = null;
 	} //onCreate end
 
 	// callback of granted permission
@@ -486,55 +476,5 @@ public class Note extends AppCompatActivity
 	  	return mPref_show_note_attribute.getString("KEY_PAGER_VIEW_MODE", "ALL")
 										.equalsIgnoreCase("TEXT_ONLY");
     }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        int maskedAction = event.getActionMasked();
-        switch (maskedAction) {
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_POINTER_UP:
-    			 System.out.println("Note / _dispatchTouchEvent / MotionEvent.ACTION_UP / viewPager.getCurrentItem() =" + viewPager.getCurrentItem());
-
-    	  	  	 break;
-
-	        case MotionEvent.ACTION_MOVE:
-            case MotionEvent.ACTION_DOWN:
-            case MotionEvent.ACTION_POINTER_DOWN:
-	        case MotionEvent.ACTION_CANCEL: 
-	        	 break;
-        }
-
-        return super.dispatchTouchEvent(event);
-    }
-
-	public static void changeToNext(ViewPager mPager)
-	{
-		mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-	}
-
-	public static void changeToPrevious(ViewPager mPager)
-	{
-		mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-	}
-
-	//The BroadcastReceiver that listens for bluetooth broadcasts
-	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			System.out.println("MainAct / _BroadcastReceiver / onReceive");
-			String action = intent.getAction();
-			BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-			if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-				//Device is now connected
-				Toast.makeText(getApplicationContext(), "ACTION_ACL_CONNECTED: device is " + device, Toast.LENGTH_LONG).show();
-			}
-
-			Intent intentReceive = intent;
-			KeyEvent keyEvent = (KeyEvent) intentReceive.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
-			if(keyEvent != null)
-				onKeyDown( keyEvent.getKeyCode(),keyEvent);
-		}
-	};
 
 }
