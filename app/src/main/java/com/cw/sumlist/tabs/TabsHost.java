@@ -641,7 +641,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
         // show footer
         mFooterMessage.setTextColor(ColorSet.color_white);
-        if(mFooterMessage != null) //add this for avoiding null exception when after e-Mail action
+        if(mFooterMessage != null)
         {
             mFooterMessage.setText(getFooterMessage(mAct));//??? page table id = 0
             mFooterMessage.setBackgroundColor(ColorSet.getBarColor(mAct));

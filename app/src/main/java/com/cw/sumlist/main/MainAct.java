@@ -597,8 +597,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 // disable page operation sub menu entry
                 mMenu.findItem(R.id.page_operation).setVisible(false);
 
-                // disable note operation sub menu entry
-                mMenu.findItem(R.id.note_operation).setVisible(false);
             }
         }
         return super.onPrepareOptionsMenu(menu);
@@ -797,26 +795,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                     Toast.makeText(this, R.string.no_page_yet, Toast.LENGTH_SHORT).show();
                 }
             return true;
-
-            case MenuId.ENABLE_NOTE_DRAG_AND_DROP:
-                mPref_show_note_attribute = mContext.getSharedPreferences("show_note_attribute", 0);
-                if(mPref_show_note_attribute.getString("KEY_ENABLE_DRAGGABLE", "yes").equalsIgnoreCase("yes")) {
-                    mPref_show_note_attribute.edit().putString("KEY_ENABLE_DRAGGABLE", "no").apply();
-                    Toast.makeText(this,getResources().getString(R.string.drag_note)+
-                                        ": " +
-                                        getResources().getString(R.string.set_disable),
-                                   Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    mPref_show_note_attribute.edit().putString("KEY_ENABLE_DRAGGABLE", "yes").apply();
-                    Toast.makeText(this,getResources().getString(R.string.drag_note) +
-                                        ": " +
-                                        getResources().getString(R.string.set_enable),
-                                   Toast.LENGTH_SHORT).show();
-                }
-                invalidateOptionsMenu();
-                TabsHost.reloadCurrentPage();
-                return true;
 
             case MenuId.CONFIG:
                 mMenu.setGroupVisible(R.id.group_notes, false); //hide the menu

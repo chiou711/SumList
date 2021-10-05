@@ -88,7 +88,7 @@ class View_note_option {
         }
         else
         {
-            Toast.makeText(act,R.string.gallery_toast_no_file, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(act,R.string.gallery_toast_no_file, Toast.LENGTH_SHORT).show();
             act.finish();
         }
 

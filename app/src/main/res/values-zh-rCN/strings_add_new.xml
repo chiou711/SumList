@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="add_new_note">新增笔记</string>
-    <string name="add_new_note_position">清单新笔记位置：</string>
+    <string name="add_new_note">新增项目</string>
+    <string name="add_new_note_position">清单新项目位置：</string>
     <string name="add_new_note_top">到顶部</string>
     <string name="add_new_note_bottom">到底部</string>
     <string name="add_new_link_title_also">新增连结时,也包括连结的标题</string>
-    <string name="add_new_note_option_title">新增笔记：</string>
-    <string name="add_new_note_title">新增笔记</string>
-    <string name="add_new_note_message">笔记内容:</string>
+    <string name="add_new_note_option_title">新增项目：</string>
+    <string name="add_new_note_title">新增项目</string>
+    <string name="add_new_note_message">项目内容:</string>
     <string name="add_new_note_button_add">新增</string>
-    <string name="add_new_note_confirm_save">已经有内容在新笔记中，您要保存它吗？</string>
-    <string name="dialog_add_new_option_title">设定新增笔记的操作：</string>
-    <string name="dialog_add_new_multiple">新增本地文件笔记时：包括目录中的所有同类文件</string>
+    <string name="add_new_note_confirm_save">已经有内容在新项目中，您要保存它吗？</string>
+    <string name="dialog_add_new_option_title">设定新增项目的操作：</string>
+    <string name="dialog_add_new_multiple">新增本地文件项目时：包括目录中的所有同类文件</string>
     <string name="note_text">文字</string>
     <string name="note_cancel_add_new">取消</string>
-    <string name="add_new_start">开始新增笔记</string>
-    <string name="add_new_stop">停止新增笔记</string>
+    <string name="add_new_start">开始新增项目</string>
+    <string name="add_new_stop">停止新增项目</string>
     <string name="add_new_file_error">新增多个文件时，请确认您的选择是本地文件。</string>
 </resources>

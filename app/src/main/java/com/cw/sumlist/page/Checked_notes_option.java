@@ -80,7 +80,6 @@ public class Checked_notes_option {
     private final static int INVERT_SELECTED = 3;
     private final static int MOVE_CHECKED_NOTE = 4;
     private final static int COPY_CHECKED_NOTE = 5;
-    private final static int MAIL_CHECKED_NOTE = 6;
     private final static int DELETE_CHECKED_NOTE = 7;
 
 
@@ -124,11 +123,6 @@ public class Checked_notes_option {
                 R.drawable.ic_menu_copy_holo_dark,
                 R.string.checked_notes_copy_to));
 
-        // MAIL_CHECKED_NOTE
-        checkedOperationList.add(new Checked_notes_option(MAIL_CHECKED_NOTE,
-                android.R.drawable.ic_menu_send,
-                R.string.mail_notes_btn));
-
         // DELETE_CHECKED_NOTE
         checkedOperationList.add(new Checked_notes_option(DELETE_CHECKED_NOTE,
                 R.drawable.ic_menu_clear_playlist,
@@ -145,7 +139,7 @@ public class Checked_notes_option {
         }
         else
         {
-            Toast.makeText(act,R.string.gallery_toast_no_file, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(act,R.string.gallery_toast_no_file, Toast.LENGTH_SHORT).show();
             act.finish();
         }
 
@@ -231,9 +225,6 @@ public class Checked_notes_option {
                             Toast.LENGTH_SHORT)
                             .show();
                 dlgAddNew.dismiss();
-                break;
-
-            case MAIL_CHECKED_NOTE:
                 break;
 
             case DELETE_CHECKED_NOTE:

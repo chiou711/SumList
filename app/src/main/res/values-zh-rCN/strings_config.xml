@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="config_confirm_taken_picture">显示刚刚拍摄的相机图片:</string>
     <string name="config_delete_warning">删除前需要确认</string>
     <string name="config_warning_title">启用项目：</string>
-    <string name="config_checkbox_warn_delete_note">一项笔记</string>
-    <string name="config_checkbox_warn_delete_page">一页笔记</string>
-    <string name="config_checkbox_warn_delete_drawer">一个清单夹</string>
-    <string name="config_checkbox_warn_delete_checked">在当前清单中的选中笔记</string>
     <string name="config_set_vibration_title">启用振动提醒删除： </string>
     <string name="config_status_enabled">启用</string>
     <string name="config_status_disabled">关闭</string>
     <string name="config_set_style_title">新清单背景色：</string>
-    <string name="config_add_new_note_location">新增笔记的位置</string>
     <string name="config_delete_DB_title">删除所有的网页</string>
     <string name="config_recover_all_settings">将所有设置恢复为默认设置</string>
     <string name="config_delete_DB_btn">删除</string>
@@ -20,5 +14,4 @@
     <string name="config_select_pages_title">选择清单:</string>
     <string name="config_select_pages_delete_title">选择要删除的清单:</string>
     <string name="config_select_folders_title">选择要删除的清单夹:</string>
-    <string name="config_export_none_toast">还没有笔记</string>
 </resources>

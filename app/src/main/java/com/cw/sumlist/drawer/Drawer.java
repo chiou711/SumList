@@ -117,7 +117,7 @@ public class Drawer {
                         }
                         else
                         {
-                            Toast.makeText(act, R.string.config_export_none_toast, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(act, R.string.config_export_none_toast, Toast.LENGTH_SHORT).show();
                         }
                         return true;
 
