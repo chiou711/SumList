@@ -33,6 +33,9 @@ public class MenuId {
         // checked operation
         static final int CHECKED_OPERATION = R.id.HANDLE_CHECKED_NOTES;
 
+        // expand card view
+        static final int EXPAND_CARD_VIEW = R.id.EXPAND_CARD_VIEW;
+
         // page operation
         static final int ADD_NEW_PAGE = R.id.ADD_NEW_PAGE;
         static final int CHANGE_PAGE_COLOR = R.id.CHANGE_PAGE_COLOR;

@@ -24,6 +24,15 @@
             android:title="@string/checked_notes"
             android:icon="@drawable/ic_menu_mark">
         </item>
+
+        <!-- expand card view -->
+        <item
+            android:id="@+id/EXPAND_CARD_VIEW"
+            android:orderInCategory="3"
+            app:showAsAction="ifRoom|withText"
+            android:title="@string/expand_card_view"
+            android:icon="@drawable/ic_menu_expand">
+        </item>
     </group>
 
     <!-- more -->

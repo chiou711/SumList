@@ -569,6 +569,15 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                     }
                 }
 
+                // expand card view
+                SharedPreferences expand_card_view = MainAct.mAct.getSharedPreferences("show_note_attribute", 0);
+                boolean bExpand = expand_card_view.getBoolean("KEY_EXPAND_CARD_VIEW",true);
+
+                if(bExpand)
+                    mMenu.findItem(R.id.EXPAND_CARD_VIEW).setIcon(R.drawable.expander_close_holo_dark);
+                else
+                    mMenu.findItem(R.id.EXPAND_CARD_VIEW).setIcon(R.drawable.expander_open_holo_dark);
+
                 // change page color
                 mMenu.findItem(R.id.CHANGE_PAGE_COLOR).setVisible(pgsCnt >0);
 
@@ -751,6 +760,16 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
             case MenuId.CHECKED_OPERATION:
                 Checked_notes_option op = new Checked_notes_option(this);
                 op.open_option_grid(this);
+                return true;
+
+            case MenuId.EXPAND_CARD_VIEW:
+                SharedPreferences expand_card_view = getSharedPreferences("show_note_attribute", 0);
+                boolean bExpand = expand_card_view.getBoolean("KEY_EXPAND_CARD_VIEW",true);
+                expand_card_view.edit().putBoolean("KEY_EXPAND_CARD_VIEW",!bExpand).apply();
+
+                TabsHost.reloadCurrentPage();
+                invalidateOptionsMenu();
+
                 return true;
 
             case MenuId.ADD_NEW_PAGE:

@@ -23,6 +23,8 @@ import android.database.Cursor;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -85,7 +87,8 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
-        ImageView btnMarking;
+        View controls;
+    	ImageView btnMarking;
         ImageView btnViewNote;
         ImageView btnEditNote;
 		TextView rowId;
@@ -104,20 +107,29 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
                 }
             });
 
-	        btnMarking = (ImageView) v.findViewById(R.id.btn_marking);
-	        btnViewNote = (ImageView) v.findViewById(R.id.btn_view_note);
-	        btnEditNote = (ImageView) v.findViewById(R.id.btn_edit_note);
-	        btnDrag = (ImageViewCustom) v.findViewById(R.id.btn_drag);
+	        controls = v.findViewById(R.id.row_controls);
+	        btnMarking = v.findViewById(R.id.btn_marking);
+	        btnViewNote = v.findViewById(R.id.btn_view_note);
+	        btnEditNote = v.findViewById(R.id.btn_edit_note);
+	        btnDrag = v.findViewById(R.id.btn_drag);
 
-	        rowId= (TextView) v.findViewById(R.id.row_id);
-	        textTitle = (TextView) v.findViewById(R.id.row_title);
-	        textBody = (TextView) v.findViewById(R.id.row_body);
-	        textQuantity = (TextView) v.findViewById(R.id.row_quantity);
+	        rowId= v.findViewById(R.id.row_id);
+	        textTitle = v.findViewById(R.id.row_title);
+	        textBody = v.findViewById(R.id.row_body);
+	        textQuantity = v.findViewById(R.id.row_quantity);
         }
 
-        public TextView getTextView() {
+        public TextView getTitleView() {
             return textTitle;
         }
+
+	    public TextView getBodyView() {
+		    return textBody;
+	    }
+
+	    public TextView getQuantityView() {
+		    return textQuantity;
+	    }
 
         @Override
         public void onItemSelected() {
@@ -175,9 +187,17 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 		    marking = 0;
 	    }
 
-        /**
-         *  control block
-         */
+	    // expand card view or not
+	    SharedPreferences expand_card_view = MainAct.mAct.getSharedPreferences("show_note_attribute", 0);
+	    boolean bExpand = expand_card_view.getBoolean("KEY_EXPAND_CARD_VIEW",true);
+		if(bExpand)
+			holder.controls.setVisibility(View.VISIBLE);
+		else
+			holder.controls.setVisibility(View.GONE);
+
+	    /**
+		 *  control block
+		 */
         // show row Id
         holder.rowId.setText(String.valueOf(position+1));
         holder.rowId.setTextColor(ColorSet.mText_ColorArray[style]);
@@ -192,6 +212,16 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
                     R.drawable.btn_check_off_holo_light :
                     R.drawable.btn_check_off_holo_dark);
         }
+
+	    if(marking == 0) {
+		    holder.getTitleView().setPaintFlags(holder.getTitleView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		    holder.getBodyView().setPaintFlags(holder.getBodyView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		    holder.getQuantityView().setPaintFlags(holder.getQuantityView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+	    } else {
+		    holder.getTitleView().setPaintFlags(holder.getTitleView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+		    holder.getBodyView().setPaintFlags(holder.getBodyView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+		    holder.getQuantityView().setPaintFlags(holder.getQuantityView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+	    }
 
         // show drag button
         if(pref_show_note_attribute.getString("KEY_ENABLE_DRAGGABLE", "yes").equalsIgnoreCase("yes"))
@@ -283,6 +313,16 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	            }
 
 	            TabsHost.showFooter(MainAct.mAct);
+
+	            if(marking == 0) {
+		            viewHolder.getTitleView().setPaintFlags(viewHolder.getTitleView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		            viewHolder.getBodyView().setPaintFlags(viewHolder.getBodyView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		            viewHolder.getQuantityView().setPaintFlags(viewHolder.getQuantityView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+	            } else {
+		            viewHolder.getTitleView().setPaintFlags(viewHolder.getTitleView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+		            viewHolder.getBodyView().setPaintFlags(viewHolder.getBodyView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+		            viewHolder.getQuantityView().setPaintFlags(viewHolder.getQuantityView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+	            }
             }
         });
 
