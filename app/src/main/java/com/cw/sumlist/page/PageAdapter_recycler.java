@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -215,12 +216,18 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 	    if(marking == 0) {
 		    holder.getTitleView().setPaintFlags(holder.getTitleView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		    holder.getTitleView().setTextColor(Color.GRAY);
 		    holder.getBodyView().setPaintFlags(holder.getBodyView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		    holder.getBodyView().setTextColor(Color.GRAY);
 		    holder.getQuantityView().setPaintFlags(holder.getQuantityView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		    holder.getQuantityView().setTextColor(Color.GRAY);
 	    } else {
 		    holder.getTitleView().setPaintFlags(holder.getTitleView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+		    holder.getTitleView().setTextColor(ColorSet.mText_ColorArray[style]);
 		    holder.getBodyView().setPaintFlags(holder.getBodyView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+		    holder.getBodyView().setTextColor(ColorSet.mText_ColorArray[style]);
 		    holder.getQuantityView().setPaintFlags(holder.getQuantityView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+		    holder.getQuantityView().setTextColor(ColorSet.mText_ColorArray[style]);
 	    }
 
         // show drag button
@@ -238,7 +245,6 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 			holder.textTitle.setVisibility(View.VISIBLE);
 			holder.textTitle.setTextSize((float) 24.00);
 			holder.textTitle.setText(strTitle);
-			holder.textTitle.setTextColor(ColorSet.mText_ColorArray[style]);
 		}
 
 		// text body
@@ -250,8 +256,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	    else{
 		    holder.textBody.setVisibility(View.VISIBLE);
 		    holder.textBody.setText(strBody);
-		    holder.textBody.setTextSize((float) 24.00);
-		    holder.textBody.setTextColor(ColorSet.mText_ColorArray[style]);
+		    holder.textBody.setTextSize((float) 18.00);
 	    }
 
 	    // text quantity
@@ -263,8 +268,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	    else{
 		    holder.textQuantity.setVisibility(View.VISIBLE);
 		    holder.textQuantity.setText("x"+String.valueOf(quantity));
-		    holder.textQuantity.setTextSize((float) 20.00);
-		    holder.textQuantity.setTextColor(ColorSet.mText_ColorArray[style]);
+		    holder.textQuantity.setTextSize((float) 11.00);
 	    }
 
         setBindViewHolder_listeners(holder,position);
@@ -316,12 +320,18 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 	            if(marking == 0) {
 		            viewHolder.getTitleView().setPaintFlags(viewHolder.getTitleView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		            viewHolder.getTitleView().setTextColor(Color.GRAY);
 		            viewHolder.getBodyView().setPaintFlags(viewHolder.getBodyView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		            viewHolder.getBodyView().setTextColor(Color.GRAY);
 		            viewHolder.getQuantityView().setPaintFlags(viewHolder.getQuantityView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		            viewHolder.getQuantityView().setTextColor(Color.GRAY);
 	            } else {
 		            viewHolder.getTitleView().setPaintFlags(viewHolder.getTitleView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+		            viewHolder.getTitleView().setTextColor(ColorSet.mText_ColorArray[style]);
 		            viewHolder.getBodyView().setPaintFlags(viewHolder.getBodyView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+		            viewHolder.getBodyView().setTextColor(ColorSet.mText_ColorArray[style]);
 		            viewHolder.getQuantityView().setPaintFlags(viewHolder.getQuantityView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+		            viewHolder.getQuantityView().setTextColor(ColorSet.mText_ColorArray[style]);
 	            }
             }
         });
@@ -403,7 +413,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
         }
 
 	    String strNote = db_page.getNoteTitle(position,false);
-	    String strBody = db_page.getNoteBody(position,false);
+	    int strBody = db_page.getNoteBody(position,false);
         Integer quantity = db_page.getNoteQuantity(position,false);
         Long idNote =  db_page.getNoteId(position,false);
 

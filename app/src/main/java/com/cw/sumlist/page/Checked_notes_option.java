@@ -193,7 +193,7 @@ public class Checked_notes_option {
                 {
                     int count = mDb_page.getCheckedNotesCount();
                     String copyItemsTitle[] = new String[count];
-                    String copyItemsBody[] = new String[count];
+                    Integer copyItemsBody[] = new Integer[count];
                     Integer copyItemsQuantity[] = new Integer[count];
                     Integer copyItemsMarking[] = new Integer[count];
                     int cCopy = 0;
@@ -257,7 +257,7 @@ public class Checked_notes_option {
         {
             Long rowId = mDb_page.getNoteId(i,false);
             String noteTitle = mDb_page.getNoteTitle(i,false);
-            String noteBody = mDb_page.getNoteBody(i,false);
+            Integer noteBody = mDb_page.getNoteBody(i,false);
             Integer noteQuantity = mDb_page.getNoteQuantity(i,false);
             mDb_page.updateNote(rowId, noteTitle, noteBody,  noteQuantity, action,false);// action 1:check all, 0:uncheck all
             // Stop if unmarked item is at playing state
@@ -280,7 +280,7 @@ public class Checked_notes_option {
         {
             Long rowId = mDb_page.getNoteId(i,false);
             String noteTitle = mDb_page.getNoteTitle(i,false);
-            String noteBody = mDb_page.getNoteBody(i,false);
+            Integer noteBody = mDb_page.getNoteBody(i,false);
             Integer quantity = mDb_page.getNoteQuantity(i,false);
             Integer marking = (mDb_page.getNoteMarking(i,false)==1)?0:1;
             mDb_page.updateNote(rowId, noteTitle, noteBody, quantity, marking, false);// action 1:check all, 0:uncheck all
@@ -297,7 +297,7 @@ public class Checked_notes_option {
      *   operate checked to: move to, copy to
      *
      */
-    private void operateCheckedTo(final AppCompatActivity act,final String[] copyItemsTitle, final String[] copyItemsBody,
+    private void operateCheckedTo(final AppCompatActivity act,final String[] copyItemsTitle, final Integer[] copyItemsBody,
                                   final Integer[] copyItemsQuantity, final Integer[] copyRemarks, final int action)
     {
         //list all pages

@@ -678,20 +678,21 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         DB_page mDb_page = new DB_page(mAct, pageTableId);
 
         int count = mDb_page.getNotesCount(true);
-        int sum = 0;
+        long sum = 0;
 
         for(int i=0;i<count;i++) {
             int checked = mDb_page.getNoteMarking(i,true);
 
-            // workaround for empty body
-            int value = -999999;
-            if(!Util.isEmptyString(mDb_page.getNoteBody(i, true)))
-                value = Integer.valueOf(mDb_page.getNoteBody(i, true));
+            long value = 0;
+            long qty = 0;
+            if(mDb_page.getNoteBody(i, true)>0)
+                value = mDb_page.getNoteBody(i, true);
 
-            int qty = Integer.valueOf(mDb_page.getNoteQuantity(i, true));
+            if(mDb_page.getNoteQuantity(i, true)>0)
+                qty = mDb_page.getNoteQuantity(i, true);
 
             if(checked==1)
-                sum += value*qty;
+                sum += (value*qty);
         }
 
         return mAct.getResources().getString(R.string.footer_text_total)+ " : " + sum ;

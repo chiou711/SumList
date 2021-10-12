@@ -140,7 +140,7 @@ public class DB_page
     
     // Insert note
     // createTime: 0 will update time
-    public long insertNote(String title, String body,  int quantity,int marking )
+    public long insertNote(String title, int body,  int quantity,int marking )
     {
     	this.open();
 
@@ -191,7 +191,7 @@ public class DB_page
 
     // update note
     // 		createTime:  0 for Don't update time
-    public boolean updateNote(long rowId, String title, String body, Integer quantity, Integer marking, boolean enDbOpenClose)
+    public boolean updateNote(long rowId, String title, Integer body, Integer quantity, Integer marking, boolean enDbOpenClose)
     {
     	if(enDbOpenClose)
     		this.open();
@@ -245,11 +245,11 @@ public class DB_page
 	
 	
 	// get note quantity
-	public String getNoteQuantity_byId(Long mRowId)
+	public Integer getNoteQuantity_byId(Long mRowId)
 	{
 		this.open();
 
-		String quantity = queryNote(mRowId).getString(queryNote(mRowId)
+		int quantity = queryNote(mRowId).getInt(queryNote(mRowId)
 									   .getColumnIndexOrThrow(DB_page.KEY_NOTE_QUANTITY));
 		this.close();
 
@@ -268,11 +268,11 @@ public class DB_page
 		return title;
 	}
 
-	public String getNoteBody_byId(Long mRowId)
+	public Integer getNoteBody_byId(Long mRowId)
 	{
 		this.open();
 
-		String body = queryNote(mRowId).getString(queryNote(mRowId)
+		Integer body = queryNote(mRowId).getInt(queryNote(mRowId)
 				.getColumnIndexOrThrow(DB_page.KEY_NOTE_BODY));
 
 		this.close();
@@ -322,15 +322,15 @@ public class DB_page
 		return title;
 	}
 
-	public String getNoteBody(int position,boolean enDbOpenClose)
+	public Integer getNoteBody(int position,boolean enDbOpenClose)
 	{
-		String body = null;
+		Integer body = 0;
 
 		if(enDbOpenClose)
 			this.open();
 
 		if(mCursor_note.moveToPosition(position))
-			body = mCursor_note.getString(mCursor_note.getColumnIndex(KEY_NOTE_BODY));
+			body = mCursor_note.getInt(mCursor_note.getColumnIndex(KEY_NOTE_BODY));
 
 		if(enDbOpenClose)
 			this.close();

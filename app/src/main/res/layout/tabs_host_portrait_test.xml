@@ -49,10 +49,10 @@
                 android:id="@+id/footerText"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 android:maxLines="1"
                 android:background="@drawable/bg_gray_border" />
 
@@ -60,10 +60,10 @@
                 android:id="@+id/footerSum"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:maxLines="1"
                 android:textStyle="bold"/>
         </LinearLayout>

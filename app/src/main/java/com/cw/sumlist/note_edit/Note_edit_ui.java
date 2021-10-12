@@ -37,7 +37,7 @@ public class Note_edit_ui {
 	private MyEditText bodyEditText;
 	private MyEditText quantityEditText;
 	private String oriTitle;
-	private String oriBody;
+	private Integer oriBody;
 	private Integer oriQuantity;
 	private Integer oriMarking;
 
@@ -47,7 +47,7 @@ public class Note_edit_ui {
 	private Activity act;
 	private int style;
 
-	Note_edit_ui(Activity act, DB_page _db, Long noteId, String strTitle, String body ,Integer quantity)
+	Note_edit_ui(Activity act, DB_page _db, Long noteId, String strTitle, Integer body ,Integer quantity)
     {
     	this.act = act;
 	    dB_page = _db;//Page.mDb_page;
@@ -126,9 +126,9 @@ public class Note_edit_ui {
 			titleEditText.setSelection(strTitleEdit.length());
 
 			// body
-			String strBodyEdit = dB_page.getNoteBody_byId(rowId);
-			bodyEditText.setText(strBodyEdit);
-			bodyEditText.setSelection(strBodyEdit.length());
+			int strBodyEdit = dB_page.getNoteBody_byId(rowId);
+			bodyEditText.setText(String.valueOf(strBodyEdit));
+			bodyEditText.setSelection(String.valueOf(strBodyEdit).length());
 
 			// request cursor
 			titleEditText.requestFocus();
@@ -158,14 +158,14 @@ public class Note_edit_ui {
 		    titleEditText.setSelection(strTitleEdit.length());
 
 		    // body
-		    String strBodyEdit = dB_page.getNoteBody_byId(rowId);
-		    bodyEditText.setText(strBodyEdit);
-		    bodyEditText.setSelection(strBodyEdit.length());
+		    int strBodyEdit = dB_page.getNoteBody_byId(rowId);
+		    bodyEditText.setText(String.valueOf(strBodyEdit));
+		    bodyEditText.setSelection(String.valueOf(strBodyEdit).length());
 
 		    // quantity
-		    String strQuantityEdit = dB_page.getNoteQuantity_byId(rowId);
-		    quantityEditText.setText(strQuantityEdit);
-		    quantityEditText.setSelection(strQuantityEdit.length());
+		    int strQuantityEdit = dB_page.getNoteQuantity_byId(rowId);
+		    quantityEditText.setText(String.valueOf(strQuantityEdit));
+		    quantityEditText.setSelection(String.valueOf(strQuantityEdit).length());
 
         } else {
             // renew
@@ -192,7 +192,12 @@ public class Note_edit_ui {
 
 	private boolean isBodyModified()
     {
-    	return !oriBody.equals(bodyEditText.getText().toString());
+    	int value = Integer.valueOf(bodyEditText.getText().toString());
+	    System.out.println("--- value = " + value);
+	    System.out.println("--- oriBody = " + oriBody);
+
+
+    	return (oriBody != value);
     }
 
 	private boolean isTitleModified()
@@ -235,7 +240,7 @@ public class Note_edit_ui {
 	        	{
 	        		// insert
 	        		System.out.println("Note_edit_ui / _saveStateInDB / insert");
-	        		rowId = dB_page.insertNote(title, body,  Integer.valueOf(quantity), 1);// add new note, get return row Id
+	        		rowId = dB_page.insertNote(title, Integer.valueOf(body),  Integer.valueOf(quantity), 1);// add new note, get return row Id
 	        	}
 	        }
 	        else // for Edit
@@ -248,7 +253,7 @@ public class Note_edit_ui {
 	        		if(bRollBackData) //roll back
 	        		{
 			        	System.out.println("Note_edit_ui / _saveStateInDB / update: roll back");
-	        			dB_page.updateNote(rowId, oriBody, oriTitle, oriQuantity,oriMarking,true);
+	        			dB_page.updateNote(rowId, oriTitle, oriBody,  oriQuantity,oriMarking,true);
 	        		}
 	        		else // update new
 	        		{
@@ -262,7 +267,7 @@ public class Note_edit_ui {
                         else
                             marking = oriMarking;
 
-	        			dB_page.updateNote(rowId, title, body,  Integer.valueOf(quantity),
+	        			dB_page.updateNote(rowId, title, Integer.valueOf(body),  Integer.valueOf(quantity),
 												marking, true); // update note
 	        		}
 	        	}

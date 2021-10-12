@@ -248,7 +248,7 @@ public class Note_adapter extends FragmentStatePagerAdapter
     	
     	System.out.println("Note_adapter / _getHtmlStringWithViewPort");
 	    String strTitle = db_page.getNoteTitle(position,true);
-	    String strBody = db_page.getNoteBody(position,true);
+	    Integer strBody = db_page.getNoteBody(position,true);
 	    Integer quantity = db_page.getNoteQuantity(position,true);
 
     	// replace note title

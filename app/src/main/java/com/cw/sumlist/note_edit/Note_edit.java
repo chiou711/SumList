@@ -42,8 +42,8 @@ public class Note_edit extends AppCompatActivity
 {
 
     private Long noteId;
-    Integer quantity;
-    private String title, body;
+    Integer body,quantity;
+    private String title;
     Note_edit_ui note_edit_ui;
     private boolean enSaveDb = true;
     DB_page dB;
@@ -86,7 +86,7 @@ public class Note_edit extends AppCompatActivity
     	position = extras.getInt("list_view_position");
     	noteId = extras.getLong(DB_page.KEY_NOTE_ID);
     	title = extras.getString(DB_page.KEY_NOTE_TITLE);
-    	body = extras.getString(DB_page.KEY_NOTE_BODY);
+    	body = extras.getInt(DB_page.KEY_NOTE_BODY);
     	quantity = extras.getInt(DB_page.KEY_NOTE_QUANTITY);
 
 		//initialization
@@ -190,11 +190,8 @@ public class Note_edit extends AppCompatActivity
 					@Override
 					public void onClick(DialogInterface dialog, int which) 
 					{
-						Bundle extras = getIntent().getExtras();
-
 						note_edit_ui.bRollBackData = true;
 						enSaveDb = true;
-
 	                    finish();
 					}})
 			   .show();

@@ -275,14 +275,14 @@ public class Note_addText extends AppCompatActivity {
 			titleEditText.setSelection(strTitleEdit.length());
 
 			// body
-			String strBodyEdit = dB_page.getNoteBody_byId(rowId);
+			int strBodyEdit = dB_page.getNoteBody_byId(rowId);
 			bodyEditText.setText(strBodyEdit);
-			bodyEditText.setSelection(strBodyEdit.length());
+			bodyEditText.setSelection(String.valueOf(strBodyEdit).length());
 
 			// quantity
-			String strQuantityEdit = dB_page.getNoteQuantity_byId(rowId);
+			int strQuantityEdit = dB_page.getNoteQuantity_byId(rowId);
 			quantityEditText.setText(strQuantityEdit);
-			quantityEditText.setSelection(strQuantityEdit.length());
+			quantityEditText.setSelection(String.valueOf(strQuantityEdit).length());
 
 		}
 		else
@@ -341,16 +341,22 @@ public class Note_addText extends AppCompatActivity {
 			if (rowId == null) // for Add new
 			{
 				if( (!Util.isEmptyString(title)) ||
-						(!Util.isEmptyString(body))            )
+					(!Util.isEmptyString(body))    )
 				{
 					// insert
 					System.out.println("Note_addText / _saveStateInDB / insert");
 
-					int qty = 1; // default 1 if not specified
+					// value
+					int value = 0;
+					if(!Util.isEmptyString(body))
+						value = Integer.valueOf(body);
+
+					// quantity
+					int qty = 0;
 					if(!Util.isEmptyString(quantity))
 						qty = Integer.valueOf(quantity);
 
-					rowId = dB_page.insertNote(title, body,  qty,  1);// add new note, get return row Id
+					rowId = dB_page.insertNote(title, value,  qty,  1);// add new note, get return row Id
 				}
 			}
 			else if ( Util.isEmptyString(title) &&

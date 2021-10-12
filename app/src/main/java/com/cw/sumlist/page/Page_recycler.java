@@ -139,12 +139,12 @@ public class Page_recycler extends Fragment implements OnStartDragListener {
     {
         Long noteNumber1;
         String noteTitle1;
-        String noteBody1;
+        Integer noteBody1;
         Integer noteQuantity1;
         Integer markingIndex1;
         Long noteNumber2 ;
         String noteTitle2;
-        String noteBody2;
+        Integer noteBody2;
         Integer noteQuantity2;
         Integer markingIndex2;
 
