@@ -91,7 +91,7 @@
         <!-- text block start -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="65dp"
             android:layout_margin="5dp"
             android:background="@drawable/bg_gray_border"
             android:orientation="horizontal">
@@ -117,6 +117,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:contentDescription="@string/note_text"
+                android:minLines="2"
                 android:maxLines="2"
                 android:minHeight="15dp"
                 android:paddingLeft="5dp"

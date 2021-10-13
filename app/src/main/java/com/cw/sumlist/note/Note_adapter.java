@@ -301,6 +301,17 @@ public class Note_adapter extends FragmentStatePagerAdapter
 
     	long subTotal = price * quantity;
     	long total = TabsHost.getTotal();
+
+	    String tag_start, tag_end;
+	    int marking = db_page.getNoteMarking(position,true);
+	    if(marking == 1) {
+	    	tag_start = "<b>";
+	    	tag_end = "</b>";
+	    } else {
+		    tag_start = "<strike>";
+		    tag_end = "</strike>";
+	    }
+
 	    String labelTitle = act.getResources().getString(R.string.edit_note_dlg_title);
 	    String labelPrice = act.getResources().getString(R.string.edit_note_dlg_body);
 	    String labelQty = act.getResources().getString(R.string.edit_note_dlg_quantity);
@@ -312,38 +323,38 @@ public class Note_adapter extends FragmentStatePagerAdapter
 				"<br>" +
 
 			    // title
-		        "<p align=\"left\"><b>" +
+		        "<p align=\"left\">" + tag_start +
 		        "<font color=\"" + colorStr + "\">" +
 			    labelTitle + " " + strTitle +
-			    "</font>" + "</b></p>" +
+			    "</font>" + tag_end + "</p>" +
 			    separatedLineTitle +
 
 		        // body
-			    "<p align=\"left\">" +
+			    "<p align=\"left\">" + tag_start +
 				"<font color=\"" + colorStr + "\">"  +
 			    labelPrice + " " + price +
-			    "</font>" + "</p>" +
+			    "</font>" + tag_end + "</p>" +
 			    separatedLineTitle +
 
 			    // quantity
-			    "<p align=\"left\">" +
+			    "<p align=\"left\">" + tag_start +
 			    "<font color=\"" + colorStr + "\">"  +
 			    labelQty + " " + quantity +
-			    "</font>" + "</p>"+
+			    "</font>" + tag_end + "</p>"+
 				separatedLineTitle +
 
 			    // sub total
-			    "<p align=\"right\"><b>" +
+			    "<p align=\"right\">" + tag_start +
 			    "<font color=\"" + colorStr + "\">"  +
 			    labelSubtotal + " " + subTotal +
-			    "</font>" + "</b></p>" +
+			    "</font>" + tag_end + "</p>" +
 			    separatedLineTitle +
 
 			    // total
 			    "<p align=\"center\"><b>" +
 			    "<font color=\"" + colorStr + "\">"  +
 			    labelTotal + " " + total +
-			    "</font>" + "</b></p>" +
+			    "</font></b>" + "</p>" +
 
 			    "</body>" +
 			    "</html>";

@@ -243,7 +243,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 			holder.textTitle.setText("");
 		} else {
 			holder.textTitle.setVisibility(View.VISIBLE);
-			holder.textTitle.setTextSize((float) 24.00);
+			holder.textTitle.setTextSize((float) 18.00);
 			holder.textTitle.setText(strTitle);
 		}
 
