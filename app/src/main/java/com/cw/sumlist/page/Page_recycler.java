@@ -36,7 +36,6 @@ import com.cw.sumlist.page.item_touch_helper.OnStartDragListener;
 import com.cw.sumlist.page.item_touch_helper.SimpleItemTouchHelperCallback;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.preferences.Pref;
-import com.cw.sumlist.util.uil.UilCommon;
 
 /**
  * Demonstrates the use of {@link RecyclerView} with a {@link LinearLayoutManager} and a
@@ -92,8 +91,6 @@ public class Page_recycler extends Fragment implements OnStartDragListener {
         layoutMgr = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutMgr);
         recyclerView.scrollToPosition(scrollPosition);
-
-        UilCommon.init();
 
         fillData();
 

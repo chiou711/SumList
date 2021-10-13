@@ -12,6 +12,7 @@
     <string name="edit_note_dlg_title">名称:</string>
     <string name="edit_note_dlg_body">价钱:</string>
     <string name="edit_note_dlg_quantity">数量:</string>
+    <string name="edit_note_dlg_subtotal">小计:</string>
     <string name="view_note_title">查看项目</string>
     <string name="view_note_button_back">返回</string>
     <string name="view_note_button_edit">编辑</string>

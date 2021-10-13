@@ -672,7 +672,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     }
 
     // get footer sum of list view
-    static String getFooterSum(AppCompatActivity mAct)
+    public static String getFooterSum(AppCompatActivity mAct)
     {
         int pageTableId = Pref.getPref_focusView_page_tableId(mAct);
         DB_page mDb_page = new DB_page(mAct, pageTableId);
@@ -695,8 +695,23 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
                 sum += (value*qty);
         }
 
+        setTotal(sum);
+
         return mAct.getResources().getString(R.string.footer_text_total)+ " : " + sum ;
     }
+
+    // total
+    static long total;
+
+    public static long getTotal() {
+        return total;
+    }
+
+    public static void setTotal(long _total) {
+        total = _total;
+    }
+
+
 
     /**
      * Get focus tab position

@@ -22,7 +22,6 @@ import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.page.PageAdapter_recycler;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.preferences.Pref;
-import com.cw.sumlist.util.uil.UilCommon;
 import com.cw.sumlist.util.Util;
 
 import android.content.Intent;
@@ -132,8 +131,6 @@ public class Note extends AppCompatActivity
 
 		mPref_show_note_attribute = getSharedPreferences("show_note_attribute", 0);
 
-		UilCommon.init();
-
 		// DB
 		DB_folder dbFolder = new DB_folder(act,Pref.getPref_focusView_folder_tableId(act));
 		mStyle = dbFolder.getPageStyle(TabsHost.getFocus_tabPos(), true);
@@ -145,10 +142,6 @@ public class Note extends AppCompatActivity
 		mPagerAdapter = new Note_adapter(viewPager,this);
 		viewPager.setAdapter(mPagerAdapter);
 		viewPager.setCurrentItem(NoteUi.getFocus_notePos());
-
-		// tab style
-//		if(TabsHost.mDbFolder != null)
-//			TabsHost.mDbFolder.close();
 
 		if(mDb_page != null)
 			mNoteId = mDb_page.getNoteId(NoteUi.getFocus_notePos(), true);
@@ -221,12 +214,9 @@ public class Note extends AppCompatActivity
 	public static void setOutline(AppCompatActivity act)
 	{
         // Set full screen or not, and action bar
-		if(isTextMode())
-		{
-			Util.setFullScreen_noImmersive(act);
-            if(act.getSupportActionBar() != null)
-			    act.getSupportActionBar().show();
-		}
+		Util.setFullScreen_noImmersive(act);
+        if(act.getSupportActionBar() != null)
+		    act.getSupportActionBar().show();
 
         // renew pager
         showSelectedView();
@@ -265,8 +255,6 @@ public class Note extends AppCompatActivity
 
         setLayoutView();
 
-        Note.setTextMode();
-
         // Set outline of view mode
         setOutline(act);
 	}
@@ -285,8 +273,6 @@ public class Note extends AppCompatActivity
 		setLayoutView();
 
 		isPagerActive = true;
-
-        Note.setTextMode();
 
 		setOutline(act);
 	}
@@ -385,11 +371,8 @@ public class Note extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-            	if(isTextMode())
-            	{
-        			// back to view all mode
-					finish();
-            	}
+                // back to view all mode
+				finish();
 
                 return true;
 
@@ -401,6 +384,10 @@ public class Note extends AppCompatActivity
 					mMenu.findItem(R.id.VIEW_NOTE_CHECK).setIcon(R.drawable.btn_check_on_holo_dark);
 				else
 					mMenu.findItem(R.id.VIEW_NOTE_CHECK).setIcon(R.drawable.btn_check_off_holo_dark);
+
+				// update new total
+				TabsHost.reloadCurrentPage();
+				mPagerAdapter.notifyDataSetChanged();
 
 				return true;
 
@@ -439,23 +426,10 @@ public class Note extends AppCompatActivity
 		}
 	};
     
-    // Mark current selected
-    void markCurrentSelected(MenuItem subItem, String str)
-    {
-        if(mPref_show_note_attribute.getString("KEY_PAGER_VIEW_MODE", "ALL")
-                .equalsIgnoreCase(str))
-            subItem.setIcon(R.drawable.btn_radio_on_holo_dark);
-        else
-            subItem.setIcon(R.drawable.btn_radio_off_holo_dark);
-    }
-
     // Show selected view
     static void showSelectedView()
     {
    		mIsViewModeChanged = false;
-
-		if(!Note.isTextMode())
-   			Note_adapter.mLastPosition = -1;
 
     	if(mPagerAdapter != null)
     		mPagerAdapter.notifyDataSetChanged(); // will call Note_adapter / _setPrimaryItem
@@ -463,18 +437,4 @@ public class Note extends AppCompatActivity
     
     public static boolean mIsViewModeChanged;
     
-    static void setTextMode()
-    {
-		 mPref_show_note_attribute.edit()
-		   						  .putString("KEY_PAGER_VIEW_MODE","TEXT_ONLY")
-		   						  .apply();
-    }
-    
-    
-    public static boolean isTextMode()
-    {
-	  	return mPref_show_note_attribute.getString("KEY_PAGER_VIEW_MODE", "ALL")
-										.equalsIgnoreCase("TEXT_ONLY");
-    }
-
 }

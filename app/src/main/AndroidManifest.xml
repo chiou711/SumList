@@ -9,7 +9,6 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name="com.cw.sumlist.util.uil.UilApplication"
         android:allowBackup="false"
 		android:largeHeap="true"        
         android:icon="@drawable/ic_launcher"

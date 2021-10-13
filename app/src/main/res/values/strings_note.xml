@@ -12,6 +12,7 @@
     <string name="edit_note_dlg_title">Name:</string>
     <string name="edit_note_dlg_body">Price:</string>
     <string name="edit_note_dlg_quantity">Quantity:</string>
+    <string name="edit_note_dlg_subtotal">Subtotal:</string>
     <string name="view_note_title">View item</string>
     <string name="view_note_button_back">Back</string>
     <string name="view_note_button_edit">Edit</string>

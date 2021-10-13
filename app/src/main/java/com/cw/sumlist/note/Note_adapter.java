@@ -47,12 +47,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 public class Note_adapter extends FragmentStatePagerAdapter
 {
 	static int mLastPosition;
 	private static LayoutInflater inflater;
 	private AppCompatActivity act;
-	private static String mWebTitle;
 	private ViewPager pager;
 	DB_page db_page;
 
@@ -78,17 +79,15 @@ public class Note_adapter extends FragmentStatePagerAdapter
     {
     	System.out.println("Note_adapter / instantiateItem / position = " + position);
     	// Inflate the layout containing 
-    	// 1. picture group: image,video, thumb nail, control buttons
-    	// 2. text group: title, body, time 
     	View pagerView = inflater.inflate(R.layout.note_view_adapter, container, false);
     	int style = Note.getStyle();
         pagerView.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
 
     	// text group
-        ViewGroup textGroup = (ViewGroup) pagerView.findViewById(R.id.textGroup);
+        ViewGroup textGroup = pagerView.findViewById(R.id.textGroup);
 
         // Set tag for text web view
-    	CustomWebView textWebView = ((CustomWebView) textGroup.findViewById(R.id.textBody));
+    	CustomWebView textWebView = textGroup.findViewById(R.id.textBody);
 
     	// set accessibility
         textGroup.setContentDescription(act.getResources().getString(R.string.note_text));
@@ -99,23 +98,16 @@ public class Note_adapter extends FragmentStatePagerAdapter
 
         String strTitle = db_page.getNoteTitle(position,true);
 
-        // View mode
-	    // text only
-	  	if(Note.isTextMode())
-	  	{
-			System.out.println("Note_adapter / _instantiateItem / isTextMode ");
+        textGroup.setVisibility(View.VISIBLE);
 
-	  		textGroup.setVisibility(View.VISIBLE);
-
-		    if( !Util.isEmptyString(strTitle) )
-			    showTextWebView(position,textWebView);
-	  	}
-
+	    if( !Util.isEmptyString(strTitle) )
+		    showTextWebView(position,textWebView);
 
 		// footer of note view
-		TextView footerText = (TextView) pagerView.findViewById(R.id.note_view_footer);
+		TextView footerText = pagerView.findViewById(R.id.note_view_footer);
 		footerText.setVisibility(View.VISIBLE);
-		footerText.setText(String.valueOf(position+1)+"/"+ pager.getAdapter().getCount());
+		String footer = (position+1)+"/"+ Objects.requireNonNull(pager.getAdapter()).getCount();
+		footerText.setText(footer);
         footerText.setTextColor(ColorSet.mText_ColorArray[Note.mStyle]);
         footerText.setBackgroundColor(ColorSet.mBG_ColorArray[Note.mStyle]);
 
@@ -127,7 +119,7 @@ public class Note_adapter extends FragmentStatePagerAdapter
     // show text web view
     private void showTextWebView(int position,CustomWebView textWebView)
     {
-    	System.out.println("Note_adapter/ _showTextView / position = " + position);
+    	System.out.println("Note_adapter/ _showTextWebView / position = " + position);
 
     	int viewPort;
     	// load text view data
@@ -248,14 +240,11 @@ public class Note_adapter extends FragmentStatePagerAdapter
     	
     	System.out.println("Note_adapter / _getHtmlStringWithViewPort");
 	    String strTitle = db_page.getNoteTitle(position,true);
-	    Integer strBody = db_page.getNoteBody(position,true);
-	    Integer quantity = db_page.getNoteQuantity(position,true);
+	    long price = db_page.getNoteBody(position,true);
+	    long quantity = db_page.getNoteQuantity(position,true);
 
     	// replace note title
 		boolean bSetGray = false;
-		if( Util.isEmptyString(strTitle)    )
-		{
-		}
 
     	String head = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"+
 		       	  	  "<html><head>" +
@@ -283,25 +272,25 @@ public class Note_adapter extends FragmentStatePagerAdapter
        	String separatedLineTitle = (!Util.isEmptyString(strTitle))?"<hr size=2 color=blue width=99% >":"";
 
        	// title
-       	if(!Util.isEmptyString(strTitle))
-       	{
-       		Spannable spanTitle = new SpannableString(strTitle);
-       		Linkify.addLinks(spanTitle, Linkify.ALL);
-       		spanTitle.setSpan(new AlignmentSpan.Standard(Alignment.ALIGN_CENTER),
-       							0,
-       							spanTitle.length(),
-       							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-			//ref http://stackoverflow.com/questions/3282940/set-color-of-textview-span-in-android
-			if(bSetGray) {
-				ForegroundColorSpan foregroundSpan = new ForegroundColorSpan(Color.GRAY);
-				spanTitle.setSpan(foregroundSpan, 0, spanTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			}
-
-       		strTitle = Html.toHtml(spanTitle);
-       	}
-       	else
-       		strTitle = "";
+//       	if(!Util.isEmptyString(strTitle))
+//       	{
+//       		Spannable spanTitle = new SpannableString(strTitle);
+//       		Linkify.addLinks(spanTitle, Linkify.ALL);
+//       		spanTitle.setSpan(new AlignmentSpan.Standard(Alignment.ALIGN_CENTER),
+//       							0,
+//       							spanTitle.length(),
+//       							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//
+//			//ref http://stackoverflow.com/questions/3282940/set-color-of-textview-span-in-android
+//			if(bSetGray) {
+//				ForegroundColorSpan foregroundSpan = new ForegroundColorSpan(Color.GRAY);
+//				spanTitle.setSpan(foregroundSpan, 0, spanTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//			}
+//
+//       		strTitle = Html.toHtml(spanTitle);
+//       	}
+//       	else
+//       		strTitle = "";
     	
     	// set web view text color
     	String colorStr = Integer.toHexString(ColorSet.mText_ColorArray[mStyle]);
@@ -309,20 +298,55 @@ public class Note_adapter extends FragmentStatePagerAdapter
     	
     	String bgColorStr = Integer.toHexString(ColorSet.mBG_ColorArray[mStyle]);
     	bgColorStr = bgColorStr.substring(2);
-    	
-    	return   head + "<body color=\"" + bgColorStr + "\">" +
-				 "<br>" + //Note: text mode needs this, otherwise title is overlaid
-		         "<p align=\"center\"><b>" +
-		         "<font color=\"" + colorStr + "\">" + strTitle + "</font>" +
-         		 "</b></p>" + separatedLineTitle +
-		         "<p align=\"left\">" +
-				 "<font color=\"" + colorStr + "\">"  + strBody + "</font>" +
-		         "</p>" +
-			     "</b></p>" + separatedLineTitle +
-			     "<p align=\"right\">" +
-			     "<font color=\"" + colorStr + "\">"  + quantity + "</font>" +
-			     "</p>" +
-			     "</body></html>";
+
+    	long subTotal = price * quantity;
+    	long total = TabsHost.getTotal();
+	    String labelTitle = act.getResources().getString(R.string.edit_note_dlg_title);
+	    String labelPrice = act.getResources().getString(R.string.edit_note_dlg_body);
+	    String labelQty = act.getResources().getString(R.string.edit_note_dlg_quantity);
+	    String labelSubtotal = act.getResources().getString(R.string.edit_note_dlg_subtotal);
+	    String labelTotal = act.getResources().getString(R.string.footer_text_total);
+
+    	return  head + "<body color=\"" + bgColorStr + "\">" +
+
+				"<br>" +
+
+			    // title
+		        "<p align=\"left\"><b>" +
+		        "<font color=\"" + colorStr + "\">" +
+			    labelTitle + " " + strTitle +
+			    "</font>" + "</b></p>" +
+			    separatedLineTitle +
+
+		        // body
+			    "<p align=\"left\">" +
+				"<font color=\"" + colorStr + "\">"  +
+			    labelPrice + " " + price +
+			    "</font>" + "</p>" +
+			    separatedLineTitle +
+
+			    // quantity
+			    "<p align=\"left\">" +
+			    "<font color=\"" + colorStr + "\">"  +
+			    labelQty + " " + quantity +
+			    "</font>" + "</p>"+
+				separatedLineTitle +
+
+			    // sub total
+			    "<p align=\"right\"><b>" +
+			    "<font color=\"" + colorStr + "\">"  +
+			    labelSubtotal + " " + subTotal +
+			    "</font>" + "</b></p>" +
+			    separatedLineTitle +
+
+			    // total
+			    "<p align=\"center\"><b>" +
+			    "<font color=\"" + colorStr + "\">"  +
+			    labelTotal + " " + total +
+			    "</font>" + "</b></p>" +
+
+			    "</body>" +
+			    "</html>";
     }
 
 }
