@@ -89,6 +89,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
      */
     public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
         View controls;
+	    ImageViewCustom btnDrag;
     	ImageView btnMarking;
         ImageView btnViewNote;
         ImageView btnEditNote;
@@ -96,7 +97,6 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	    TextView textTitle;
 	    TextView textBody;
 		TextView textQuantity;
-        ImageViewCustom btnDrag;
 
         public ViewHolder(View v) {
             super(v);
@@ -336,21 +336,28 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
             }
         });
 
+        // item click
+	    viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+			    viewNote(position);
+		    }
+	    });
+
+	    // item long click
+	    viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+		    @Override
+		    public boolean onLongClick(View view) {
+		    	editNote(position);
+			    return false;
+		    }
+	    });
+
         // on view note
         viewHolder.btnViewNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TabsHost.getCurrentPage().mCurrPlayPosition = position;
-                DB_page db_page = new DB_page(mAct,TabsHost.getCurrentPageTableId());
-                int count = db_page.getNotesCount(true);
-                if(position < count)
-                {
-                    // apply Note class
-                    Intent intent;
-                    intent = new Intent(mAct, Note.class);
-                    intent.putExtra("POSITION", position);
-                    mAct.startActivity(intent);
-                }
+	            viewNote(position);
             }
         });
 
@@ -358,16 +365,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
         viewHolder.btnEditNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DB_page db_page = new DB_page(mAct, TabsHost.getCurrentPageTableId());
-                Long rowId = db_page.getNoteId(position,true);
-
-                Intent i = new Intent(mAct, Note_edit.class);
-                i.putExtra("list_view_position", position);
-                i.putExtra(DB_page.KEY_NOTE_ID, rowId);
-	            i.putExtra(DB_page.KEY_NOTE_TITLE, db_page.getNoteTitle_byId(rowId));
-	            i.putExtra(DB_page.KEY_NOTE_BODY, db_page.getNoteBody_byId(rowId));
-	            i.putExtra(DB_page.KEY_NOTE_QUANTITY, db_page.getNoteQuantity_byId(rowId));
-                mAct.startActivity(i);
+				editNote(position);
             }
         });
 
@@ -504,4 +502,32 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 		mDb_page.close();
 	}
 
+	// view note
+	void viewNote(int position) {
+		TabsHost.getCurrentPage().mCurrPlayPosition = position;
+		DB_page db_page = new DB_page(mAct,TabsHost.getCurrentPageTableId());
+		int count = db_page.getNotesCount(true);
+		if(position < count)
+		{
+			// apply Note class
+			Intent intent;
+			intent = new Intent(mAct, Note.class);
+			intent.putExtra("POSITION", position);
+			mAct.startActivity(intent);
+		}
+	}
+
+	// edit note
+	void editNote(int position) {
+		DB_page db_page = new DB_page(mAct, TabsHost.getCurrentPageTableId());
+		Long rowId = db_page.getNoteId(position,true);
+
+		Intent i = new Intent(mAct, Note_edit.class);
+		i.putExtra("list_view_position", position);
+		i.putExtra(DB_page.KEY_NOTE_ID, rowId);
+		i.putExtra(DB_page.KEY_NOTE_TITLE, db_page.getNoteTitle_byId(rowId));
+		i.putExtra(DB_page.KEY_NOTE_BODY, db_page.getNoteBody_byId(rowId));
+		i.putExtra(DB_page.KEY_NOTE_QUANTITY, db_page.getNoteQuantity_byId(rowId));
+		mAct.startActivity(i);
+	}
 }
