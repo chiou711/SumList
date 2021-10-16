@@ -17,9 +17,15 @@
 package com.cw.sumlist.page.item_touch_helper;
 
 import android.graphics.Canvas;
+import com.cw.sumlist.db.DB_page;
+import com.cw.sumlist.page.PageAdapter_recycler;
+import com.cw.sumlist.tabs.TabsHost;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
+
+import static com.cw.sumlist.main.MainAct.mAct;
 
 /**
  * An implementation of {@link ItemTouchHelper.Callback} that enables basic drag & drop and
@@ -35,9 +41,9 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     public static final float ALPHA_FULL = 1.0f;
 
-    private final ItemTouchHelperAdapter mAdapter;
+    private final PageAdapter_recycler mAdapter;
 
-    public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
+    public SimpleItemTouchHelperCallback(PageAdapter_recycler adapter) {
         mAdapter = adapter;
     }
 
@@ -49,8 +55,8 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean isItemViewSwipeEnabled() {
-//        return true;
-        return false;//disabled
+        return true; // enable card view Swipe
+//        return false;//disabled
     }
 
     @Override
@@ -87,7 +93,23 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
         // Notify the adapter of the dismissal
-        mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+//        mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+
+//        DB_page db_page = new DB_page(mAct,TabsHost.getCurrentPageTableId());
+//        int currMarking = db_page.getNoteMarking(viewHolder.getAdapterPosition(),true);
+
+        // i = 32: from left to right, from Checked to Unchecked
+        // i = 16: from right to left, from Unchecked to Checked
+//        if( ((i == 32) && (currMarking == 1)) ||
+//            ((i == 16) && (currMarking == 0))    )
+        {
+            // toggle marking
+            PageAdapter_recycler.toggleNoteMarking(mAct, viewHolder.getAdapterPosition());
+        }
+
+        mAdapter.updateDbCache();
+        mAdapter.notifyDataSetChanged();
+        TabsHost.showFooter(mAct);
     }
 
     @Override

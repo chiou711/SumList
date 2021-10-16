@@ -72,6 +72,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	DB_page mDb_page;
 	int page_table_id;
 	List<Db_cache> listCache;
+	int UNCHECKED_COLOR = Color.DKGRAY;
 
     PageAdapter_recycler(int pagePos,  int pageTableId, OnStartDragListener dragStartListener) {
 	    mAct = MainAct.mAct;
@@ -162,11 +163,6 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 	    int position = holder.getAdapterPosition();
 
-	    // style
-        style = dbFolder.getPageStyle(page_pos, true);
-
-        ((CardView)holder.itemView).setCardBackgroundColor(ColorSet.mBG_ColorArray[style]);
-
 		SharedPreferences pref_show_note_attribute = MainAct.mAct.getSharedPreferences("show_note_attribute", 0);
 
 	    // get DB data
@@ -187,6 +183,13 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 		    quantity = 0;
 		    marking = 0;
 	    }
+
+	    // style
+	    style = dbFolder.getPageStyle(page_pos, true);
+		if(marking == 1)
+	        ((CardView)holder.itemView).setCardBackgroundColor(ColorSet.mBG_ColorArray[style]);
+		else
+			((CardView)holder.itemView).setCardBackgroundColor(UNCHECKED_COLOR);
 
 	    // expand card view or not
 	    SharedPreferences expand_card_view = MainAct.mAct.getSharedPreferences("show_note_attribute", 0);
@@ -214,21 +217,8 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
                     R.drawable.btn_check_off_holo_dark);
         }
 
-	    if(marking == 0) {
-		    holder.getTitleView().setPaintFlags(holder.getTitleView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-		    holder.getTitleView().setTextColor(Color.GRAY);
-		    holder.getBodyView().setPaintFlags(holder.getBodyView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-		    holder.getBodyView().setTextColor(Color.GRAY);
-		    holder.getQuantityView().setPaintFlags(holder.getQuantityView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-		    holder.getQuantityView().setTextColor(Color.GRAY);
-	    } else {
-		    holder.getTitleView().setPaintFlags(holder.getTitleView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-		    holder.getTitleView().setTextColor(ColorSet.mText_ColorArray[style]);
-		    holder.getBodyView().setPaintFlags(holder.getBodyView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-		    holder.getBodyView().setTextColor(ColorSet.mText_ColorArray[style]);
-		    holder.getQuantityView().setPaintFlags(holder.getQuantityView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-		    holder.getQuantityView().setTextColor(ColorSet.mText_ColorArray[style]);
-	    }
+	    // set strike through
+	    setStrikeThroughText(holder);
 
         // show drag button
         if(pref_show_note_attribute.getString("KEY_ENABLE_DRAGGABLE", "yes").equalsIgnoreCase("yes"))
@@ -318,21 +308,13 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 	            TabsHost.showFooter(MainAct.mAct);
 
-	            if(marking == 0) {
-		            viewHolder.getTitleView().setPaintFlags(viewHolder.getTitleView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-		            viewHolder.getTitleView().setTextColor(Color.GRAY);
-		            viewHolder.getBodyView().setPaintFlags(viewHolder.getBodyView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-		            viewHolder.getBodyView().setTextColor(Color.GRAY);
-		            viewHolder.getQuantityView().setPaintFlags(viewHolder.getQuantityView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-		            viewHolder.getQuantityView().setTextColor(Color.GRAY);
-	            } else {
-		            viewHolder.getTitleView().setPaintFlags(viewHolder.getTitleView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-		            viewHolder.getTitleView().setTextColor(ColorSet.mText_ColorArray[style]);
-		            viewHolder.getBodyView().setPaintFlags(viewHolder.getBodyView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-		            viewHolder.getBodyView().setTextColor(ColorSet.mText_ColorArray[style]);
-		            viewHolder.getQuantityView().setPaintFlags(viewHolder.getQuantityView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-		            viewHolder.getQuantityView().setTextColor(ColorSet.mText_ColorArray[style]);
-	            }
+	            // set background color
+	            if(marking == 0)
+		            ((CardView)viewHolder.itemView).setCardBackgroundColor(UNCHECKED_COLOR);
+	            else((CardView)viewHolder.itemView).setCardBackgroundColor(ColorSet.mBG_ColorArray[style]);
+
+	            // set strike through
+	            setStrikeThroughText(viewHolder);
             }
         });
 
@@ -529,5 +511,24 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 		i.putExtra(DB_page.KEY_NOTE_BODY, db_page.getNoteBody_byId(rowId));
 		i.putExtra(DB_page.KEY_NOTE_QUANTITY, db_page.getNoteQuantity_byId(rowId));
 		mAct.startActivity(i);
+	}
+
+	// set strike through
+	void setStrikeThroughText(ViewHolder holder){
+		if(marking == 0) {
+			holder.getTitleView().setPaintFlags(holder.getTitleView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+			holder.getTitleView().setTextColor(Color.GRAY);
+			holder.getBodyView().setPaintFlags(holder.getBodyView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+			holder.getBodyView().setTextColor(Color.GRAY);
+			holder.getQuantityView().setPaintFlags(holder.getQuantityView().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+			holder.getQuantityView().setTextColor(Color.GRAY);
+		} else {
+			holder.getTitleView().setPaintFlags(holder.getTitleView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+			holder.getTitleView().setTextColor(ColorSet.mText_ColorArray[style]);
+			holder.getBodyView().setPaintFlags(holder.getBodyView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+			holder.getBodyView().setTextColor(ColorSet.mText_ColorArray[style]);
+			holder.getQuantityView().setPaintFlags(holder.getQuantityView().getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+			holder.getQuantityView().setTextColor(ColorSet.mText_ColorArray[style]);
+		}
 	}
 }

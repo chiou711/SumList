@@ -147,7 +147,7 @@ public class Checked_notes_option {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println("Checked_notes_option / _open_option_grid / _onItemClick / position = " + position +" id = " + id);
-                if(noItemChecked() && (position > CHECK_ALL))
+                if(noItemChecked() && (position > INVERT_SELECTED))
                     Toast.makeText(act,R.string.delete_checked_no_checked_items,Toast.LENGTH_SHORT).show();
                 else
                     startCheckedOperation(act, checkedOperationList.get(position).option_id);
@@ -476,7 +476,7 @@ public class Checked_notes_option {
                 holder.imageView = (ImageView) view.findViewById(R.id.grid_item_image);
                 holder.text = (TextView) view.findViewById(R.id.grid_item_text);
 
-                if( hasNoCheckedItems && (position > CHECK_ALL))
+                if( hasNoCheckedItems && (position > INVERT_SELECTED))
                     view.setBackgroundColor(Color.DKGRAY);
 
                 view.setTag(holder);

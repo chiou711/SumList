@@ -65,7 +65,7 @@ import java.util.ArrayList;
 public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTabSelectedListener
 {
     public static TabLayout mTabLayout;
-    public static ViewPager mViewPager;
+    public static CustomViewPager mViewPager;
     public static TabsPagerAdapter mTabsPagerAdapter;
     public static int mFocusPageTableId;
     public static int mFocusTabPos;
@@ -74,7 +74,6 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
     public static int firstPos_pageId;
 
-    public static boolean isDoingMarking;
     private AdView adView;
 
     public TabsHost()
@@ -117,8 +116,9 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
                 rootView = inflater.inflate(R.layout.tabs_host_portrait, container, false);
         }
 
-        // view pager
-        mViewPager = (ViewPager) rootView.findViewById(R.id.tabs_pager);
+        // apply custom view pager:
+        // Disable touch event in order to Enable card view swipe
+        mViewPager = (CustomViewPager) rootView.findViewById(R.id.tabs_pager);
 
         // mTabsPagerAdapter
         mTabsPagerAdapter = new TabsPagerAdapter(MainAct.mAct,MainAct.mAct.getSupportFragmentManager());
