@@ -168,6 +168,33 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
             dialog_EULA.clickListener_Ok = (DialogInterface dialog, int i) -> {
                 dialog_EULA.applyPreference();
 
+                // default add new: 1 folder
+                DB_drawer db_drawer = new DB_drawer(this);
+                int newTableId = 1;
+                String folderTitle;
+                folderTitle = getResources().getString(R.string.default_folder_name).concat(String.valueOf(newTableId));
+
+                // insert new folder Id and Title
+                db_drawer.insertFolder(newTableId, folderTitle,true );
+
+                // insert folder table
+                db_drawer.insertFolderTable(newTableId, true);
+
+                // default add new: 1 page
+                String pageName;
+                pageName = Define.getTabTitle(this, newTableId);
+                DB_folder dbFolder = new DB_folder(this,Pref.getPref_focusView_folder_tableId(this));
+
+                // insert page name
+                int style = Util.getNewPageStyle(this);
+                dbFolder.insertPage(DB_folder.getFocusFolder_tableName(),pageName,newTableId,style,true );
+
+                // insert table for new page
+                dbFolder.insertPageTable(dbFolder,DB_folder.getFocusFolder_tableId(),newTableId, true);
+
+                // commit: final page viewed
+                Pref.setPref_focusView_page_tableId(this, newTableId);
+
                 recreate();
 
             };

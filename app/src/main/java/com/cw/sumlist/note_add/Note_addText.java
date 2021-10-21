@@ -26,6 +26,7 @@ import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.preferences.Pref;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.core.app.NavUtils;
@@ -35,9 +36,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 
 public class Note_addText extends AppCompatActivity {
@@ -94,6 +95,11 @@ public class Note_addText extends AppCompatActivity {
 		super.onPause();
 		rowId = saveStateInDB(rowId, enSaveDb);
 		System.out.println("Note_addText / _onPause / rowId = " + rowId);
+
+		// hide IME
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		EditText titleEditText =  findViewById(R.id.edit_title);
+		imm.hideSoftInputFromWindow(titleEditText.getWindowToken(), 0);
 	}
 
 	@Override
@@ -160,7 +166,7 @@ public class Note_addText extends AppCompatActivity {
 							(notes_count > 0) )
 						TabsHost.getCurrentPage().swapTopBottom();
 
-					Toast.makeText(Note_addText.this, getString(R.string.toast_saved) +" + 1", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Note_addText.this, getString(R.string.toast_saved) +" + 1", Toast.LENGTH_SHORT).show();
 
 					UI_init_text();
 					rowId = null;
@@ -254,6 +260,13 @@ public class Note_addText extends AppCompatActivity {
 		//set title color
 		titleEditText.setTextColor(ColorSet.mText_ColorArray[style]);
 		titleEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
+
+		// show IME for focus view
+		if(titleEditText.requestFocus()) {
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+			//	imm.showSoftInput(titleEditText, InputMethodManager.SHOW_IMPLICIT); //todo ? not work
+		}
 
 		//set body color
 		bodyEditText.setTextColor(ColorSet.mText_ColorArray[style]);

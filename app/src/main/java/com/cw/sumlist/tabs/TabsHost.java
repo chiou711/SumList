@@ -652,7 +652,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         if(mFooterSum != null)
         {
             mFooterSum.setText(getFooterSum(mAct));
-            mFooterSum.setBackgroundColor(Color.BLACK);
+            mFooterSum.setBackgroundColor(mAct.getResources().getColor(R.color.bar_color));//Color.BLACK);
         }
     }
 

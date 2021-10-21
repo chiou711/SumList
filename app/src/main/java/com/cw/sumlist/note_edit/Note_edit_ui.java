@@ -60,33 +60,7 @@ public class Note_edit_ui {
 	    bRollBackData = false;
     }
 
-	void UI_init()
-    {
-
-		UI_init_text();
-
-	    bodyEditText = (MyEditText) act.findViewById(R.id.edit_body);
-	    quantityEditText = (MyEditText) act.findViewById(R.id.edit_quantity);
-
-		DB_folder dbFolder = new DB_folder(act, Pref.getPref_focusView_folder_tableId(act));
-		style = dbFolder.getPageStyle(TabsHost.getFocus_tabPos(), true);
-
-		//set body color
-		if(bodyEditText != null){
-			bodyEditText.setTextColor(ColorSet.mText_ColorArray[style]);
-			bodyEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
-		}
-
-	    //set quantity color
-	    if(quantityEditText != null){
-		    quantityEditText.setTextColor(ColorSet.mText_ColorArray[style]);
-		    quantityEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
-	    }
-
-	    final InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
-    }
-
-	private void UI_init_text()
+	public void UI_init()
 	{
         int focusFolder_tableId = Pref.getPref_focusView_folder_tableId(act);
         DB_folder db = new DB_folder(MainAct.mAct, focusFolder_tableId);
@@ -98,14 +72,23 @@ public class Note_edit_ui {
 
 		titleEditText =  (MyEditText) act.findViewById(R.id.edit_title);
 		bodyEditText =  (MyEditText) act.findViewById(R.id.edit_body);
+		quantityEditText = (MyEditText) act.findViewById(R.id.edit_quantity);
 
 		//set title color
 		titleEditText.setTextColor(ColorSet.mText_ColorArray[style]);
 		titleEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
 
 		//set body color
-		bodyEditText.setTextColor(ColorSet.mText_ColorArray[style]);
-		bodyEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
+		if(bodyEditText != null){
+			bodyEditText.setTextColor(ColorSet.mText_ColorArray[style]);
+			bodyEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
+		}
+
+		//set quantity color
+		if(quantityEditText != null){
+			quantityEditText.setTextColor(ColorSet.mText_ColorArray[style]);
+			quantityEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
+		}
 	}
 
 	void deleteNote(Long rowId)
