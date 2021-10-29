@@ -92,24 +92,39 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
+
+        DB_page db_page = new DB_page(mAct,TabsHost.getCurrentPageTableId());
+        int qty = db_page.getNoteQuantity(viewHolder.getAdapterPosition(),true);
+        // i = 32: from left to right
+        // i = 16: from right to left
+        boolean isSwipeRight = (i==32);
+        boolean isSwipeLeft = (i==16);
+        int position = viewHolder.getAdapterPosition();
+
+        if(isSwipeRight && (qty > 0))
+            updateNote_addInt(position,-1);
+
+        if(isSwipeLeft && (qty >= 0))
+            updateNote_addInt(position,1);
+
         // Notify the adapter of the dismissal
-//        mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
-
-//        DB_page db_page = new DB_page(mAct,TabsHost.getCurrentPageTableId());
-//        int currMarking = db_page.getNoteMarking(viewHolder.getAdapterPosition(),true);
-
-        // i = 32: from left to right, from Checked to Unchecked
-        // i = 16: from right to left, from Unchecked to Checked
-//        if( ((i == 32) && (currMarking == 1)) ||
-//            ((i == 16) && (currMarking == 0))    )
-        {
-            // toggle marking
-            PageAdapter_recycler.toggleNoteMarking(mAct, viewHolder.getAdapterPosition());
-        }
+        // the following item will shift up when Dismiss
+        //mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
 
         mAdapter.updateDbCache();
-        mAdapter.notifyDataSetChanged();
+//        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemChanged(position);
         TabsHost.showFooter(mAct);
+    }
+
+    void updateNote_addInt(int position, int i){
+        DB_page db_page = new DB_page(mAct,TabsHost.getCurrentPageTableId());
+        db_page.updateNote(db_page.getNoteId(position,true),
+                db_page.getNoteTitle(position,true),
+                db_page.getNoteBody(position,true),
+                db_page.getNoteQuantity(position,true)+i,
+                db_page.getNoteMarking(position,true),
+                true);
     }
 
     @Override

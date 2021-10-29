@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 CW Chiu
+ * Copyright (C) 2021 CW Chiu
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,10 +80,9 @@ public class Note_addText extends AppCompatActivity {
 
 	    dB_page = new DB_page(this, TabsHost.getCurrentPageTableId());
 
-	    UI_init_text();
+	    init_text_color();
 
-	    if(rowId != null)
-	        populateFields_text(rowId);
+	    populate_text_view(rowId);
     }
 
 
@@ -168,9 +167,11 @@ public class Note_addText extends AppCompatActivity {
 
 					//Toast.makeText(Note_addText.this, getString(R.string.toast_saved) +" + 1", Toast.LENGTH_SHORT).show();
 
-					UI_init_text();
+					init_text_color();
+
+					// new input
 					rowId = null;
-					populateFields_text(rowId);
+					populate_text_view(rowId);
 				}
 				return true;
 		}
@@ -235,7 +236,7 @@ public class Note_addText extends AppCompatActivity {
 		String curQuantiry = quantityEditText.getText().toString();
 
 		if(!Util.isEmptyString(curTitle)||
-				!Util.isEmptyString(curBody)   )
+		   !Util.isEmptyString(curBody)   )
 		{
 			bEdit = true;
 		}
@@ -243,7 +244,7 @@ public class Note_addText extends AppCompatActivity {
 		return bEdit;
 	}
 
-	void UI_init_text()
+	void init_text_color()
 	{
 		titleEditText = (EditText) findViewById(R.id.edit_title);
 		bodyEditText = (EditText) findViewById(R.id.edit_body);
@@ -275,11 +276,10 @@ public class Note_addText extends AppCompatActivity {
 		//set quantity color
 		quantityEditText.setTextColor(ColorSet.mText_ColorArray[style]);
 		quantityEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
-
 	}
 
-	// populate text fields
-	void populateFields_text(Long rowId)
+	// populate text view
+	void populate_text_view(Long rowId)
 	{
 		if (rowId != null) {
 			// title
@@ -297,9 +297,7 @@ public class Note_addText extends AppCompatActivity {
 			quantityEditText.setText(strQuantityEdit);
 			quantityEditText.setSelection(String.valueOf(strQuantityEdit).length());
 
-		}
-		else
-		{
+		} else {
 			// renew title
 			String strBlank = "";
 			titleEditText.setText(strBlank);
@@ -311,9 +309,10 @@ public class Note_addText extends AppCompatActivity {
 			bodyEditText.setSelection(strBlank.length());
 
 			// quantity
-			quantityEditText.setText(strBlank);
+			quantityEditText.setText("1"); // default
 			quantityEditText.setSelection(strBlank.length());
 		}
+
 	}
 
     void stopEdit()
@@ -365,7 +364,7 @@ public class Note_addText extends AppCompatActivity {
 						value = Integer.valueOf(body);
 
 					// quantity
-					int qty = 0;
+					int qty = 1; // default 1
 					if(!Util.isEmptyString(quantity))
 						qty = Integer.valueOf(quantity);
 

@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by cw on 2017/11/4.
+ * Created by cw on 2021/10/27.
  */
 public class Checked_notes_option {
     private int option_id;
@@ -92,11 +92,6 @@ public class Checked_notes_option {
 
         checkedOperationList = new ArrayList<>();
 
-        // Back
-        checkedOperationList.add(new Checked_notes_option(BACK,
-                R.drawable.ic_menu_back,
-                R.string.view_note_button_back));
-
         // CHECK_ALL
         checkedOperationList.add(new Checked_notes_option(CHECK_ALL,
                 R.drawable.btn_check_on_holo_dark,
@@ -128,6 +123,10 @@ public class Checked_notes_option {
                 R.drawable.ic_menu_clear_playlist,
                 R.string.checked_notes_delete));
 
+        // Back
+        checkedOperationList.add(new Checked_notes_option(BACK,
+                R.drawable.ic_menu_back,
+                R.string.view_note_button_back));
 
         gridView = (GridView) rootView.findViewById(R.id.option_grid_view);
 
@@ -286,7 +285,6 @@ public class Checked_notes_option {
             mDb_page.updateNote(rowId, noteTitle, noteBody, quantity, marking, false);// action 1:check all, 0:uncheck all
         }
         mDb_page.close();
-
 
         TabsHost.reloadCurrentPage();
         TabsHost.showFooter(MainAct.mAct);

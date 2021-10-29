@@ -71,7 +71,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	DB_page mDb_page;
 	int page_table_id;
 	List<Db_cache> listCache;
-	int UNCHECKED_COLOR;
+	int QTY_ZERO_COLOR;
 
 	PageAdapter_recycler(int pagePos, int pageTableId, OnStartDragListener dragStartListener) {
 		mAct = MainAct.mAct;
@@ -81,7 +81,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 		page_pos = pagePos;
 		page_table_id = pageTableId;
 
-		UNCHECKED_COLOR = Color.rgb(77, 77, 77);
+		QTY_ZERO_COLOR = Color.rgb(77, 77, 77);
 
 		updateDbCache();
 	}
@@ -176,13 +176,12 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 		// add check to avoid exception during Copy/Move checked
 //        System.out.println("PageAdapter / _onBindViewHolder / listCache.size() = " + listCache.size());
 		if ((listCache != null) &&
-				(listCache.size() > 0) &&
-				(position != listCache.size())) {
+			(listCache.size() > 0) &&
+			(position != listCache.size())) {
 			strTitle = listCache.get(position).title;
 			strBody = listCache.get(position).body;
 			quantity = listCache.get(position).quantity;
 			marking = listCache.get(position).marking;
-
 		} else {
 			strTitle = "";
 			strBody = "";
@@ -192,10 +191,10 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 		// style
 		style = dbFolder.getPageStyle(page_pos, true);
-		if (marking == 1)
+		if (quantity > 0)
 			((CardView) holder.itemView).setCardBackgroundColor(ColorSet.mBG_ColorArray[style]);
 		else
-			((CardView) holder.itemView).setCardBackgroundColor(UNCHECKED_COLOR);
+			((CardView) holder.itemView).setCardBackgroundColor(QTY_ZERO_COLOR);
 
 		// expand card view or not
 		SharedPreferences expand_card_view = MainAct.mAct.getSharedPreferences("show_note_attribute", 0);
@@ -210,7 +209,6 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 		 */
 		// show row Id
 		holder.rowId.setText(String.valueOf(position + 1));
-		holder.rowId.setTextColor(ColorSet.mText_ColorArray[style]);
 
 		// show marking check box
 		if (marking == 1) {
@@ -224,7 +222,10 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 		}
 
 		// set strike through
-		setStrikeThrough(holder);
+		setTextStrikeThrough(holder);
+
+		// set Text Color;
+		setTextColor(holder);
 
 		// show drag button
 		if (pref_show_note_attribute.getString("KEY_ENABLE_DRAGGABLE", "yes").equalsIgnoreCase("yes"))
@@ -399,7 +400,10 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 	@Override
 	public void onItemDismiss(int position) {
+		System.out.println("PageAdapter_recycler / _onItemDismiss");
 		notifyItemRemoved(position);
+
+//		mDb_page.deleteNote(mDb_page.getNoteId(position,true),true);
 	}
 
 	@Override
@@ -497,21 +501,31 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	}
 
 	// set strike through
-	void setStrikeThrough(ViewHolder holder) {
-		setStrikeThroughTextView(holder.getItemIdView());
-		setStrikeThroughTextView(holder.getTitleView());
-		setStrikeThroughTextView(holder.getBodyView());
-		setStrikeThroughTextView(holder.getQuantityView());
+	void setTextStrikeThrough(ViewHolder holder) {
+		setTextView_strikeThrough(holder.getItemIdView());
+		setTextView_strikeThrough(holder.getTitleView());
+		setTextView_strikeThrough(holder.getBodyView());
+		setTextView_strikeThrough(holder.getQuantityView());
 	}
 
-	// set strike through text view
-	void setStrikeThroughTextView(TextView textView) {
-		if (marking == 0) {
+	// set text view strike through
+	void setTextView_strikeThrough(TextView textView) {
+		if (marking == 0)
 			textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-			textView.setTextColor(Color.GRAY);
-		} else {
+		else
 			textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-			textView.setTextColor(ColorSet.mText_ColorArray[style]);
-		}
+	}
+
+	// set text color
+	void setTextColor(ViewHolder holder) {
+		setTextView_color(holder.getItemIdView());
+		setTextView_color(holder.getTitleView());
+		setTextView_color(holder.getBodyView());
+		setTextView_color(holder.getQuantityView());
+	}
+
+	// set text view color
+	void setTextView_color(TextView textView) {
+		textView.setTextColor(ColorSet.mText_ColorArray[style]);
 	}
 }
