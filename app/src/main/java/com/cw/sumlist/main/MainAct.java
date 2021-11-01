@@ -45,11 +45,8 @@ import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.preferences.Pref;
 import com.mobeta.android.dslv.DragSortListView;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
-import android.os.Handler;
-import android.os.RemoteException;
 import android.os.StrictMode;
 import android.content.Context;
 import android.content.Intent;

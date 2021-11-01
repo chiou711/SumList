@@ -33,13 +33,12 @@ import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.preferences.Pref;
-import com.mobeta.android.dslv.DragSortListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by cw on 2017/9/21.
+ * Created by cw on 2021/11/1.
  */
 
 public class List_selectPage
@@ -49,22 +48,14 @@ public class List_selectPage
     ListView mListView;
     public List<String> mListStrArr; // list view string array
     public List<Boolean> mCheckedTabs; // checked list view items array
-    DB_drawer dB_drawer;
     DB_folder mDb_folder;
     public int count;
     Activity mAct;
-    public String mFolderTitle;
     public boolean isCheckAll;
 
-    public List_selectPage(Activity act, View rootView, View view)
+    public List_selectPage(Activity act, View rootView, ListView listView)
     {
         mAct = act;
-
-        dB_drawer = new DB_drawer(act);
-        DragSortListView listView = (DragSortListView) act.findViewById(R.id.drawer_listview);
-        int pos = listView.getCheckedItemPosition();
-        mFolderTitle = dB_drawer.getFolderTitle(pos,true);
-
         mDb_folder = new DB_folder(mAct, Pref.getPref_focusView_folder_tableId(mAct));
 
         // checked Text View: select all
@@ -90,7 +81,7 @@ public class List_selectPage
         });
 
         // list view: selecting which pages to send
-        mListView = (ListView)view;
+        mListView = listView;
         showPageList(rootView);
 
         isCheckAll = false;

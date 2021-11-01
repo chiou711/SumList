@@ -350,6 +350,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
             if(pageTableId == Pref.getPref_focusView_page_tableId(MainAct.mAct)) {
                 setFocus_tabPos(i);
                 mFocusPageTableId = pageTableId;
+                setCurrentPageTableId(pageTableId);
             }
         }
 
