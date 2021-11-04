@@ -19,6 +19,7 @@ package com.cw.sumlist.page;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,14 +75,17 @@ public class Checked_notes_option {
      */
     static List<Checked_notes_option> checkedOperationList;
 
-    private final static int BACK = 0;
-    private final static int CHECK_ALL = 1;
-    private final static int UN_CHECK_ALL = 2;
+    private final static int CHECK_ALL = 0;
+    private final static int UN_CHECK_ALL = 1;
+    // operate: toggle checked/unchecked
+    private final static int SHOW_CHECKED_NOTE_ONLY = 2;
+    // operate checked items
     private final static int INVERT_SELECTED = 3;
     private final static int MOVE_CHECKED_NOTE = 4;
     private final static int COPY_CHECKED_NOTE = 5;
-    private final static int DELETE_CHECKED_NOTE = 7;
+    private final static int DELETE_CHECKED_NOTE = 6;
 
+    private final static int BACK = 7;
 
     public void open_option_grid(final AppCompatActivity act)
     {
@@ -102,9 +106,19 @@ public class Checked_notes_option {
                 R.drawable.btn_check_off_holo_dark,
                 R.string.checked_notes_uncheck_all));
 
+        // SHOW_CHECKED_NOTE
+        SharedPreferences pref_show_note_attribute = mAct.getSharedPreferences("show_note_attribute", 0);
+        if(pref_show_note_attribute.getString("KEY_SHOW_CHECKED_ONLY", "no").equalsIgnoreCase("yes"))
+            checkedOperationList.add(new Checked_notes_option(SHOW_CHECKED_NOTE_ONLY,
+                    R.drawable.ic_menu_find,
+                    R.string.show_all_notes));
+        else
+            checkedOperationList.add(new Checked_notes_option(SHOW_CHECKED_NOTE_ONLY,
+                    R.drawable.ic_menu_find,
+                    R.string.show_checked_notes_only));
+
         // INVERT_SELECTED
         checkedOperationList.add(new Checked_notes_option(INVERT_SELECTED,
-//                R.drawable.btn_check_on_focused_holo_dark,
                 android.R.drawable.ic_menu_set_as,
                 R.string.checked_notes_invert_selected));
 
@@ -146,7 +160,9 @@ public class Checked_notes_option {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println("Checked_notes_option / _open_option_grid / _onItemClick / position = " + position +" id = " + id);
-                if(noItemChecked() && (position > INVERT_SELECTED))
+                if( noItemChecked() &&
+                    (position >= MOVE_CHECKED_NOTE) &&
+                    (position != BACK)                )
                     Toast.makeText(act,R.string.delete_checked_no_checked_items,Toast.LENGTH_SHORT).show();
                 else
                     startCheckedOperation(act, checkedOperationList.get(position).option_id);
@@ -234,6 +250,12 @@ public class Checked_notes_option {
                             R.string.delete_checked_no_checked_items,
                             Toast.LENGTH_SHORT)
                             .show();
+                dlgAddNew.dismiss();
+                break;
+
+            case SHOW_CHECKED_NOTE_ONLY:
+                setShowCheckedNotesOnly(act);
+
                 dlgAddNew.dismiss();
                 break;
 
@@ -429,6 +451,22 @@ public class Checked_notes_option {
         d.show();
     }
 
+    // set show checked notes only
+    private void setShowCheckedNotesOnly(AppCompatActivity act)
+    {
+        // set preference flag
+        SharedPreferences pref_show_note_attribute = act.getSharedPreferences("show_note_attribute", 0);
+        if(pref_show_note_attribute.getString("KEY_SHOW_CHECKED_ONLY", "no").equalsIgnoreCase("no"))
+            pref_show_note_attribute.edit().putString("KEY_SHOW_CHECKED_ONLY","yes").apply();
+        else
+            pref_show_note_attribute.edit().putString("KEY_SHOW_CHECKED_ONLY","no").apply();
+
+        // reload list view
+        TabsHost.reloadCurrentPage();
+
+        //TabsHost.showFooter(MainAct.mAct);
+    }
+
     private boolean noItemChecked()
     {
         DB_page mDb_page = new DB_page(mAct, TabsHost.getCurrentPageTableId());
@@ -474,7 +512,9 @@ public class Checked_notes_option {
                 holder.imageView = (ImageView) view.findViewById(R.id.grid_item_image);
                 holder.text = (TextView) view.findViewById(R.id.grid_item_text);
 
-                if( hasNoCheckedItems && (position > INVERT_SELECTED))
+                if( hasNoCheckedItems &&
+                    (position >= MOVE_CHECKED_NOTE) &&
+                    (position != BACK)                   )
                     view.setBackgroundColor(Color.DKGRAY);
 
                 view.setTag(holder);

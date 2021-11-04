@@ -222,7 +222,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     {
         lastPageTableId = 0;
         int pageCount = adapter.dbFolder.getPagesCount(true);
-        System.out.println("TabsHost / _addPages / pagesCount = " + pageCount);
+//        System.out.println("TabsHost / _addPages / pagesCount = " + pageCount);
 
         if(pageCount > 0) {
             for (int i = 0; i < pageCount; i++) {
@@ -239,7 +239,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
                 args.putInt("page_pos",i);
                 args.putInt("page_table_id",pageTableId);
                 page.setArguments(args);
-                System.out.println("TabsHost / _addPages / page_tableId = " + pageTableId);
+//                System.out.println("TabsHost / _addPages / page_tableId = " + pageTableId);
                 adapter.addFragment(page);
             }
         }
@@ -734,7 +734,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
     public static void removeTabs()
     {
-        System.out.println("TabsHost / _removeTabs");
+//        System.out.println("TabsHost / _removeTabs");
     	if(TabsHost.mTabsPagerAdapter == null)
     		return;
 
@@ -748,7 +748,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
                 TabsHost.store_listView_vScroll(listView);
 
             for (int i = 0; i < fragmentList.size(); i++) {
-                System.out.println("TabsHost / _removeTabs / i = " + i);
+//                System.out.println("TabsHost / _removeTabs / i = " + i);
                 MainAct.mAct.getSupportFragmentManager().beginTransaction().remove(fragmentList.get(i)).commit();
             }
         }

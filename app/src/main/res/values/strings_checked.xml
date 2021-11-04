@@ -3,12 +3,14 @@
     <string name="checked_notes">Select items</string>
     <string name="checked_notes_check_all">Select all</string>
     <string name="checked_notes_uncheck_all">Deselect all</string>
-    <string name="checked_notes_invert_selected">Invert selected</string>
+    <string name="checked_notes_invert_selected">Reverse selection</string>
     <string name="checked_notes_move_to">Move to</string>
     <string name="checked_notes_move_to_dlg">Move selected items to</string>
     <string name="checked_notes_copy_to">Copy to</string>
     <string name="checked_notes_copy_to_dlg">Copy selected items to:</string>
     <string name="checked_notes_delete">Delete selected</string>
+    <string name="show_checked_notes_only">Show selected only</string>
+    <string name="show_all_notes">Show all</string>
     <string name="delete_checked_note_title">Delete selected</string>
     <string name="delete_checked_message">The selected items will be deleted.</string>
     <string name="delete_checked_no_checked_items">No selected item.</string>

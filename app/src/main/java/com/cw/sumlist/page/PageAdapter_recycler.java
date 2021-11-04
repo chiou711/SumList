@@ -191,6 +191,24 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 		// style
 		style = dbFolder.getPageStyle(page_pos, true);
+
+		// show checked only or not
+		if(pref_show_note_attribute.getString("KEY_SHOW_CHECKED_ONLY", "no").equalsIgnoreCase("yes")) {
+			if (marking == 0) {
+				holder.itemView.setVisibility(View.GONE);
+				// hide unchecked item of recycler view
+				holder.itemView.setLayoutParams(new RecyclerView
+						.LayoutParams(0, 0));
+			}
+			else {
+				holder.itemView.setVisibility(View.VISIBLE);
+				// cf https://stackoverflow.com/questions/41223413/how-to-hide-an-item-from-recycler-view-on-a-particular-condition
+				holder.itemView.setLayoutParams(new RecyclerView
+						.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+									  ViewGroup.LayoutParams.WRAP_CONTENT));
+			}
+		}
+
 		if (quantity > 0)
 			((CardView) holder.itemView).setCardBackgroundColor(ColorSet.mBG_ColorArray[style]);
 		else
