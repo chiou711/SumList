@@ -29,7 +29,6 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.tabs.TabLayout;
 import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -652,7 +651,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         mFooterSum.setTextColor(ColorSet.getHighlightColor(mAct));
         if(mFooterSum != null)
         {
-            mFooterSum.setText(getFooterSum(mAct));
+            mFooterSum.setText(getFooterSumString(mAct));
             mFooterSum.setBackgroundColor(mAct.getResources().getColor(R.color.bar_color));//Color.BLACK);
         }
     }
@@ -673,7 +672,15 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     }
 
     // get footer sum of list view
-    public static String getFooterSum(AppCompatActivity mAct)
+    public static String getFooterSumString(AppCompatActivity mAct)
+    {
+        long sum = getListSum(mAct);
+        setTotal(sum);
+        return mAct.getResources().getString(R.string.footer_text_total)+ " : " + sum ;
+    }
+
+    // get sum of list view
+    public static long getListSum(AppCompatActivity mAct)
     {
         int pageTableId = Pref.getPref_focusView_page_tableId(mAct);
         DB_page mDb_page = new DB_page(mAct, pageTableId);
@@ -695,10 +702,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
             if(checked==1)
                 sum += (value*qty);
         }
-
-        setTotal(sum);
-
-        return mAct.getResources().getString(R.string.footer_text_total)+ " : " + sum ;
+        return sum ;
     }
 
     // total

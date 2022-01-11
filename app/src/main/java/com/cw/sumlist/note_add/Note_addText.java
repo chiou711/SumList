@@ -39,6 +39,7 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 public class Note_addText extends AppCompatActivity {
@@ -50,6 +51,7 @@ public class Note_addText extends AppCompatActivity {
 	EditText titleEditText;
 	EditText bodyEditText;
 	EditText quantityEditText;
+	TextView newSumText;
 	Menu mMenu;
 
     @Override
@@ -188,6 +190,20 @@ public class Note_addText extends AppCompatActivity {
 					mMenu.findItem(R.id.ADD_TEXT_NOTE).setVisible(false);
 				else
 					mMenu.findItem(R.id.ADD_TEXT_NOTE).setVisible(true);
+
+					int price = 0;
+					String priceStr = String.valueOf(bodyEditText.getText());
+					if(!priceStr.equalsIgnoreCase(""))
+						price = Integer.parseInt(priceStr);
+
+					int qty = 0;
+					String qtyStr = String.valueOf(quantityEditText.getText());
+					if(!qtyStr.equalsIgnoreCase(""))
+						qty = Integer.valueOf(qtyStr);
+
+					long newSum = TabsHost.getListSum(Note_addText.this) + (int) (price * qty);
+					newSumText.setText(" : " + newSum);
+
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
 			public void onTextChanged(CharSequence s, int start, int before, int count){}
@@ -249,6 +265,7 @@ public class Note_addText extends AppCompatActivity {
 		titleEditText = (EditText) findViewById(R.id.edit_title);
 		bodyEditText = (EditText) findViewById(R.id.edit_body);
 		quantityEditText = (EditText) findViewById(R.id.edit_quantity);
+		newSumText = findViewById(R.id.new_sum);
 
 		int focusFolder_tableId = Pref.getPref_focusView_folder_tableId(this);
 		DB_folder db = new DB_folder(MainAct.mAct, focusFolder_tableId);
@@ -276,6 +293,8 @@ public class Note_addText extends AppCompatActivity {
 		//set quantity color
 		quantityEditText.setTextColor(ColorSet.mText_ColorArray[style]);
 		quantityEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
+
+		newSumText.setText(" : " + TabsHost.getListSum(this));
 	}
 
 	// populate text view
@@ -310,9 +329,8 @@ public class Note_addText extends AppCompatActivity {
 
 			// quantity
 			quantityEditText.setText("1"); // default
-			quantityEditText.setSelection(strBlank.length());
+			quantityEditText.setSelection(1);
 		}
-
 	}
 
     void stopEdit()

@@ -103,6 +103,29 @@
 		android:maxLines="1"
 		/>
 
+	<!-- new sum -->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/accent_500"
+		android:orientation="horizontal" >
+		<ImageView
+			android:layout_width="20dp"
+			android:layout_height="20dp"
+			android:src="@android:drawable/ic_menu_add"
+			/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/footer_text_total"
+			android:textColor="@android:color/white"/>
+		<TextView
+			android:id="@+id/new_sum"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"/>
+	</LinearLayout>
+
 </LinearLayout>
 </ScrollView>
 </LinearLayout>
