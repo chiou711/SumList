@@ -31,6 +31,7 @@ import com.cw.sumlist.drawer.Drawer;
 import com.cw.sumlist.folder.Folder;
 import com.cw.sumlist.folder.FolderUi;
 import com.cw.sumlist.note_add.Note_addText;
+import com.cw.sumlist.operation.FolderSum;
 import com.cw.sumlist.operation.delete.DeleteFolders;
 import com.cw.sumlist.operation.delete.DeletePages;
 import com.cw.sumlist.page.Checked_notes_option;
@@ -78,6 +79,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public static CharSequence mAppTitle;
     public Context mContext;
     public Config mConfigFragment;
+    public FolderSum mFolderSum;
     public About mAboutFragment;
     public static Menu mMenu;
     public static List<String> mFolderTitles;
@@ -838,6 +840,16 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                     Toast.makeText(this, R.string.no_page_yet, Toast.LENGTH_SHORT).show();
                 }
             return true;
+
+            case MenuId.FOLDER_SUM:
+                mMenu.setGroupVisible(R.id.group_notes, false); //hide the menu
+                mMenu.setGroupVisible(R.id.group_pages_and_more, false);
+                setTitle(R.string.folder_sum);
+
+                mFolderSum = new FolderSum();
+                mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+                mFragmentTransaction.replace(R.id.content_frame, mFolderSum).addToBackStack("config").commit();
+                return true;
 
             case MenuId.CONFIG:
                 mMenu.setGroupVisible(R.id.group_notes, false); //hide the menu

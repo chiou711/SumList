@@ -25,6 +25,7 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.cw.sumlist.Utils;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.tabs.TabLayout;
@@ -680,29 +681,9 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     }
 
     // get sum of list view
-    public static long getListSum(AppCompatActivity mAct)
-    {
-        int pageTableId = Pref.getPref_focusView_page_tableId(mAct);
-        DB_page mDb_page = new DB_page(mAct, pageTableId);
-
-        int count = mDb_page.getNotesCount(true);
-        long sum = 0;
-
-        for(int i=0;i<count;i++) {
-            int checked = mDb_page.getNoteMarking(i,true);
-
-            long value = 0;
-            long qty = 0;
-            if(mDb_page.getNoteBody(i, true)>0)
-                value = mDb_page.getNoteBody(i, true);
-
-            if(mDb_page.getNoteQuantity(i, true)>0)
-                qty = mDb_page.getNoteQuantity(i, true);
-
-            if(checked==1)
-                sum += (value*qty);
-        }
-        return sum ;
+    public static long getListSum(AppCompatActivity act){
+        int pageTableId = Pref.getPref_focusView_page_tableId(act);
+        return Utils.getPageSum(act,pageTableId) ;
     }
 
     // total

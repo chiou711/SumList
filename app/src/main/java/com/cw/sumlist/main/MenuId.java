@@ -42,6 +42,9 @@ public class MenuId {
         static final int SHIFT_PAGE = R.id.SHIFT_PAGE;
         static final int DELETE_PAGES = R.id.DELETE_PAGES;
 
+        // folder sum
+        static final int FOLDER_SUM = R.id.FOLDER_SUM;
+
         // config
         static final int CONFIG = R.id.CONFIG;
 

@@ -33,6 +33,8 @@
     <string name="folder_operation">清單夾操作</string>
     <string name="page_operation">清單操作</string>
     <string name="settings_operation">設定</string>
+    <string name="folder_sum">文件夾總和</string>
+    <string name="folder_sum_title">選擇列表：</string>
     <string name="set_enable">啟用</string>
     <string name="set_disable">停用</string>
     <string name="no_page_yet">還沒有清單</string>

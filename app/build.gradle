@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '29.0.2'
 
 //    lintOptions {
 //        checkReleaseBuilds false
@@ -39,6 +38,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES']
+        }
+    }
 
     //https://stackoverflow.com/questions/44342455/more-than-one-file-was-found-with-os-independent-path-meta-inf-license
 //    packagingOptions {
@@ -49,9 +53,7 @@ android {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
     }
 
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-    }
+    namespace 'com.cw.sumlist'
 }
 
 dependencies {

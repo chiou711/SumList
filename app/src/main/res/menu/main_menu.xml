@@ -76,10 +76,18 @@
         </menu>
         </item>
 
+        <!-- folder sum -->
+        <item
+            android:id="@+id/FOLDER_SUM"
+            android:orderInCategory="4"
+            app:showAsAction="never"
+            android:title="@string/folder_sum"
+            />
+
         <!-- Config -->
         <item
             android:id="@+id/CONFIG"
-            android:orderInCategory="4"
+            android:orderInCategory="5"
             app:showAsAction="never"
             android:title="@string/settings_operation"
             />
@@ -87,7 +95,7 @@
         <!-- About -->
         <item
             android:id="@+id/ABOUT"
-            android:orderInCategory="5"
+            android:orderInCategory="6"
             app:showAsAction="never"
             android:title="@string/about_menu"
         />

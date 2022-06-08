@@ -16,10 +16,13 @@
 
 package com.cw.sumlist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
+
+import com.cw.sumlist.db.DB_page;
 
 /**
  * A collection of utility methods, all static.
@@ -52,5 +55,28 @@ public class Utils {
         return Math.round((float) dp * density);
     }
 
+    // get sum of a page
+    public static long getPageSum(Activity act, int pageTableId){
+        DB_page mDb_page = new DB_page(act, pageTableId);
+
+        int count = mDb_page.getNotesCount(true);
+        long sum = 0;
+
+        for(int i=0;i<count;i++) {
+            int checked = mDb_page.getNoteMarking(i,true);
+
+            long value = 0;
+            long qty = 0;
+            if(mDb_page.getNoteBody(i, true)>0)
+                value = mDb_page.getNoteBody(i, true);
+
+            if(mDb_page.getNoteQuantity(i, true)>0)
+                qty = mDb_page.getNoteQuantity(i, true);
+
+            if(checked==1)
+                sum += (value*qty);
+        }
+        return sum;
+    }
 
 }
