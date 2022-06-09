@@ -37,13 +37,13 @@ import static com.cw.sumlist.main.MainAct.mAct;
  *
  * @author Paul Burke (ipaulpro)
  */
-public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
+public class SwipeItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     public static final float ALPHA_FULL = 1.0f;
 
     private final PageAdapter_recycler mAdapter;
 
-    public SimpleItemTouchHelperCallback(PageAdapter_recycler adapter) {
+    public SwipeItemTouchHelperCallback(PageAdapter_recycler adapter) {
         mAdapter = adapter;
     }
 

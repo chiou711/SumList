@@ -33,9 +33,11 @@ import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.page.item_touch_helper.OnStartDragListener;
-import com.cw.sumlist.page.item_touch_helper.SimpleItemTouchHelperCallback;
+import com.cw.sumlist.page.item_touch_helper.SwipeItemTouchHelperCallback;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.preferences.Pref;
+
+import static com.cw.sumlist.define.Define.ENABLE_ITEM_TOUCH_SWIPE;
 
 /**
  * Demonstrates the use of {@link RecyclerView} with a {@link LinearLayoutManager} and a
@@ -96,9 +98,12 @@ public class Page_recycler extends Fragment implements OnStartDragListener {
 
         TabsHost.showFooter(MainAct.mAct);
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemAdapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        // swipe callback
+        if(ENABLE_ITEM_TOUCH_SWIPE) {
+            ItemTouchHelper.Callback callback = new SwipeItemTouchHelperCallback(itemAdapter);
+            itemTouchHelper = new ItemTouchHelper(callback);
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+        }
 
         if( (itemAdapter != null) &&
             (itemAdapter.getItemCount() ==0) ){ //todo bug: Attempt to invoke interface method 'int android.database.Cursor.getCount()' on a null object reference
@@ -201,6 +206,7 @@ public class Page_recycler extends Fragment implements OnStartDragListener {
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        itemTouchHelper.startDrag(viewHolder);
+        if(ENABLE_ITEM_TOUCH_SWIPE)
+            itemTouchHelper.startDrag(viewHolder);
     }
 }

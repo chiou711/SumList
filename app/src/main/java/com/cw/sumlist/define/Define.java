@@ -72,6 +72,7 @@ public class Define {
     public static int CODE_MODE;// = DEBUG_MODE; //DEBUG_MODE; //RELEASE_MODE;
     public static int DEBUG_MODE = 0;
     public static int RELEASE_MODE = 1;
+    public static boolean ENABLE_ITEM_TOUCH_SWIPE = false;//true;
 
 
     /****************************************************************************
@@ -130,7 +131,8 @@ public class Define {
     public static String getTabTitle(Context context, Integer Id)
     {
         String title;
-            title = context.getResources().getString(R.string.default_page_name).concat(String.valueOf(Id));
+//        title = context.getResources().getString(R.string.default_page_name).concat(String.valueOf(Id));
+        title = "#".concat(String.valueOf(Id));
         return title;
     }
 

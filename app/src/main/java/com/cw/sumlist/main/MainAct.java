@@ -31,7 +31,7 @@ import com.cw.sumlist.drawer.Drawer;
 import com.cw.sumlist.folder.Folder;
 import com.cw.sumlist.folder.FolderUi;
 import com.cw.sumlist.note_add.Note_addText;
-import com.cw.sumlist.operation.FolderSum;
+import com.cw.sumlist.operation.folder_sum.FolderSum;
 import com.cw.sumlist.operation.delete.DeleteFolders;
 import com.cw.sumlist.operation.delete.DeletePages;
 import com.cw.sumlist.page.Checked_notes_option;
@@ -59,9 +59,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.OnBackStackChangedListener;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.support.v4.media.MediaBrowserCompat;
-import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -70,7 +67,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainAct extends AppCompatActivity implements OnBackStackChangedListener

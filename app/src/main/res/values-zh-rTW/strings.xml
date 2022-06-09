@@ -8,7 +8,7 @@
     <string name="btn_Finish">完成</string>
     <string name="btn_Select">選擇</string>
     <string name="btn_None">無</string>
-    <string name="app_name">清單和</string>
+    <string name="app_name">清單之和</string>
     <string name="app_name_dir">SumList</string>
     <string name="footer_text_total">總計</string>
     <string name="mark_handler">mark_handler</string>
@@ -33,8 +33,8 @@
     <string name="folder_operation">清單夾操作</string>
     <string name="page_operation">清單操作</string>
     <string name="settings_operation">設定</string>
-    <string name="folder_sum">文件夾總和</string>
-    <string name="folder_sum_title">選擇列表：</string>
+    <string name="folder_sum">清單夾總和</string>
+    <string name="folder_sum_title">選擇清單：</string>
     <string name="set_enable">啟用</string>
     <string name="set_disable">停用</string>
     <string name="no_page_yet">還沒有清單</string>

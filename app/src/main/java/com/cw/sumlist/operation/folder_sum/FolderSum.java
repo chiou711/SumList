@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.operation;
+package com.cw.sumlist.operation.folder_sum;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,7 +39,7 @@ public class FolderSum extends Fragment{
     TextView title;
 	CheckedTextView mCheckTvSelAll;
     ListView mListView;
-	List_folderSum list_folderSum;
+	FolderSum_list folderSumList;
 	public static View rootView;
     AppCompatActivity act;
     TextView textFolderSum;
@@ -75,9 +75,9 @@ public class FolderSum extends Fragment{
                 ((CheckedTextView)checkSelAll).setChecked(!currentCheck);
 
                 if(((CheckedTextView)checkSelAll).isChecked())
-                    list_folderSum.selectAllPages(true);
+                    folderSumList.selectAllPages(true);
                 else
-                    list_folderSum.selectAllPages(false);
+                    folderSumList.selectAllPages(false);
             }
         });
 
@@ -119,7 +119,7 @@ public class FolderSum extends Fragment{
     public void onResume() {
         super.onResume();
         //show list for selection
-        list_folderSum = new List_folderSum(act,rootView , mListView);
+        folderSumList = new FolderSum_list(act,rootView , mListView);
         mCheckTvSelAll.callOnClick();
     }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.operation;
+package com.cw.sumlist.operation.folder_sum;
 
 import android.app.Activity;
 import android.content.Context;
@@ -43,7 +43,7 @@ import java.util.List;
  * Created by cw on 2022/6/7
  */
 
-public class List_folderSum
+public class FolderSum_list
 {
     View mView;
     CheckedTextView mCheckTvSelAll;
@@ -57,7 +57,7 @@ public class List_folderSum
     long folderSum;
     View rootView;
 
-    public List_folderSum(Activity act, View _rootView, ListView listView)
+    public FolderSum_list(Activity act, View _rootView, ListView listView)
     {
         mAct = act;
         mDb_folder = new DB_folder(mAct, Pref.getPref_focusView_folder_tableId(mAct));
@@ -87,7 +87,7 @@ public class List_folderSum
         // list view: selecting which pages to send
         mListView = listView;
         rootView = _rootView;
-        showPageList(_rootView);
+        showPagesOfFolder(_rootView);
 
         folderSum = 0;
     }
@@ -114,9 +114,7 @@ public class List_folderSum
         mDb_folder.close();
 
         // show folder sum
-        TextView textFolderSum = (TextView) rootView.findViewById(R.id.textFolderSum);
-        String sum = String.valueOf(folderSum);
-        textFolderSum.setText(sum);
+        showFolerSum();
 
         mChkNum = (enAll == true)? pageCount : 0;
 
@@ -127,9 +125,9 @@ public class List_folderSum
         mListView.setAdapter(listAdapter);
     }
 
-    // show list for Select
+    // show pages in folder for Selection
     public int mChkNum;
-    void showPageList(View root)
+    void showPagesOfFolder(View root)
     {
         mChkNum = 0;
         // set list view
@@ -138,7 +136,7 @@ public class List_folderSum
         {
             public void onItemClick(AdapterView<?> parent, View vw, int position, long id)
             {
-                System.out.println("List_folderSum / _showPageList / _onItemClick / position = " + position);
+                System.out.println("FolderSum_list / _showListViewInFolder / _onItemClick / position = " + position);
                 CheckedTextView chkTV = (CheckedTextView) vw.findViewById(R.id.checkTV);
                 chkTV.setChecked(!chkTV.isChecked());
                 mCheckedTabs.set(position, chkTV.isChecked());
@@ -152,19 +150,26 @@ public class List_folderSum
                     mCheckTvSelAll.setChecked(false);
                 }
 
+                int pageTableId = mDb_folder.getPageTableId(position,true);
+
                 // set for contrast
                 int mStyle = mDb_folder.getPageStyle(position, true);
                 if( chkTV.isChecked()) {
                     chkTV.setCompoundDrawablesWithIntrinsicBounds(mStyle % 2 == 1 ?
                             R.drawable.btn_check_on_holo_light :
                             R.drawable.btn_check_on_holo_dark, 0, 0, 0);
+                    folderSum += Utils.getPageSum(mAct,pageTableId);
+                    showFolerSum();
                 }
                 else {
                     chkTV.setCompoundDrawablesWithIntrinsicBounds(mStyle % 2 == 1 ?
                             R.drawable.btn_check_off_holo_light :
                             R.drawable.btn_check_off_holo_dark, 0, 0, 0);
                     isCheckAll = false;
+                    folderSum -= Utils.getPageSum(mAct,pageTableId);
+                    showFolerSum();
                 }
+
             }
         });
 
@@ -242,12 +247,9 @@ public class List_folderSum
             // Show current page
             // workaround: set single line to true and add one space in front of the text
             if(pageTableId == Integer.valueOf(Pref.getPref_focusView_page_tableId(activity)))
-            {
                 chkTV.setTypeface(chkTV.getTypeface(), Typeface.BOLD_ITALIC);
-                chkTV.setText( " " + mList.get(position) + "*" + " : " + pageSum);
-            }
-            else
-                chkTV.setText( " " + mList.get(position) + " : " + pageSum);
+
+            chkTV.setText( " " + mList.get(position) + " : " + pageSum);
 
             chkTV.setChecked(mCheckedTabs.get(position));
 
@@ -266,5 +268,12 @@ public class List_folderSum
 
             return mView;
         }
+    }
+
+    // show folder sum
+    void showFolerSum(){
+        TextView textFolderSum = (TextView) rootView.findViewById(R.id.textFolderSum);
+        String sum = String.valueOf(folderSum);
+        textFolderSum.setText(sum);
     }
 }
