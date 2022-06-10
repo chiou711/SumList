@@ -72,7 +72,12 @@ public class Define {
     public static int CODE_MODE;// = DEBUG_MODE; //DEBUG_MODE; //RELEASE_MODE;
     public static int DEBUG_MODE = 0;
     public static int RELEASE_MODE = 1;
-    public static boolean ENABLE_ITEM_TOUCH_SWIPE = false;//true;
+
+    // enable/disable Swipe of list view item
+    public static boolean ENABLE_ITEM_TOUCH_SWIPE = false;
+
+    // preference
+    public static boolean PREFERENCE_ENABLE_EXPAND_CARD_VIEW = false;
 
 
     /****************************************************************************

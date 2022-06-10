@@ -69,6 +69,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import static com.cw.sumlist.define.Define.PREFERENCE_ENABLE_EXPAND_CARD_VIEW;
+
 public class MainAct extends AppCompatActivity implements OnBackStackChangedListener
 {
     public static CharSequence mFolderTitle;
@@ -593,7 +595,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
                 // expand card view
                 SharedPreferences expand_card_view = MainAct.mAct.getSharedPreferences("show_note_attribute", 0);
-                boolean bExpand = expand_card_view.getBoolean("KEY_EXPAND_CARD_VIEW",true);
+                boolean bExpand = expand_card_view.getBoolean("KEY_EXPAND_CARD_VIEW", PREFERENCE_ENABLE_EXPAND_CARD_VIEW);
 
                 if(bExpand)
                     mMenu.findItem(R.id.EXPAND_CARD_VIEW).setIcon(R.drawable.expander_close_holo_dark);
@@ -786,7 +788,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
             case MenuId.EXPAND_CARD_VIEW:
                 SharedPreferences expand_card_view = getSharedPreferences("show_note_attribute", 0);
-                boolean bExpand = expand_card_view.getBoolean("KEY_EXPAND_CARD_VIEW",true);
+                boolean bExpand = expand_card_view.getBoolean("KEY_EXPAND_CARD_VIEW", PREFERENCE_ENABLE_EXPAND_CARD_VIEW);
                 expand_card_view.edit().putBoolean("KEY_EXPAND_CARD_VIEW",!bExpand).apply();
 
                 TabsHost.reloadCurrentPage();

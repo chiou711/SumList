@@ -61,6 +61,8 @@ import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 
+import static com.cw.sumlist.define.Define.ENABLE_ITEM_TOUCH_SWIPE;
+
 
 public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTabSelectedListener
 {
@@ -117,8 +119,13 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         }
 
         // apply custom view pager:
-        // Disable touch event in order to Enable card view swipe
         mViewPager = (CustomViewPager) rootView.findViewById(R.id.tabs_pager);
+
+        // Disable touch event in order to Enable card view swipe
+        if(ENABLE_ITEM_TOUCH_SWIPE)
+            mViewPager.setPagingEnabled(false);
+        else
+            mViewPager.setPagingEnabled(true);
 
         // mTabsPagerAdapter
         mTabsPagerAdapter = new TabsPagerAdapter(MainAct.mAct,MainAct.mAct.getSupportFragmentManager());

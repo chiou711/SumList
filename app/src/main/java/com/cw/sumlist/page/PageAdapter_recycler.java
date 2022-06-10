@@ -54,6 +54,7 @@ import static com.cw.sumlist.db.DB_page.KEY_NOTE_MARKING;
 import static com.cw.sumlist.db.DB_page.KEY_NOTE_QUANTITY;
 import static com.cw.sumlist.db.DB_page.KEY_NOTE_TITLE;
 import static com.cw.sumlist.db.DB_page.KEY_NOTE_BODY;
+import static com.cw.sumlist.define.Define.PREFERENCE_ENABLE_EXPAND_CARD_VIEW;
 import static com.cw.sumlist.page.Page_recycler.swapRows;
 
 // Pager adapter
@@ -216,7 +217,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 		// expand card view or not
 		SharedPreferences expand_card_view = MainAct.mAct.getSharedPreferences("show_note_attribute", 0);
-		boolean bExpand = expand_card_view.getBoolean("KEY_EXPAND_CARD_VIEW", true);
+		boolean bExpand = expand_card_view.getBoolean("KEY_EXPAND_CARD_VIEW", PREFERENCE_ENABLE_EXPAND_CARD_VIEW);
 		if (bExpand)
 			holder.controls.setVisibility(View.VISIBLE);
 		else
