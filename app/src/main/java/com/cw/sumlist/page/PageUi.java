@@ -447,6 +447,80 @@ public class PageUi
         });
     }
 
+	// add multi new pages
+	public static  void addNewPage_multi(final AppCompatActivity act, final int newTabId) {
+		// get tab name
+		String pageName = Define.getTabTitle_multi();
+
+		// check if name is duplicated
+		DB_folder dbFolder = new DB_folder(act,Pref.getPref_focusView_folder_tableId(act));
+		dbFolder.open();
+		final int pagesCount = dbFolder.getPagesCount(false);
+
+		for (int i = 0; i < pagesCount; i++) {
+			String tabTitle = dbFolder.getPageTitle(i, false);
+			// new name for differentiation
+			if (pageName.equalsIgnoreCase(tabTitle)) {
+				pageName = tabTitle.concat("b");
+			}
+		}
+		dbFolder.close();
+
+		// get layout inflater
+		View rootView = act.getLayoutInflater().inflate(R.layout.add_new_page_multi, null);
+		final MyEditText editPageName = (MyEditText)rootView.findViewById(R.id.new_page_name);
+		final MyEditText editPagesNumber = (MyEditText)rootView.findViewById(R.id.new_pages_quantity);
+		final String hintPageName = pageName;
+
+		// set hint
+//		((EditText)editPageName).setHint(hintPageName);
+
+		// set default text
+		editPageName.setText(hintPageName);
+
+		// request cursor
+		editPageName.requestFocus();
+
+		// radio buttons
+		final RadioGroup mRadioGroup = (RadioGroup) rootView.findViewById(R.id.radioGroup_new_page_at);
+
+		// set view to dialog
+		Builder builder1 = new Builder(act);
+		builder1.setView(rootView);
+		final AlertDialog dialog1 = builder1.create();
+		dialog1.show();
+
+		// cancel button
+		Button btnCancel = (Button) rootView.findViewById(R.id.new_page_cancel);
+		btnCancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog1.dismiss();
+			}
+		});
+
+		// add button
+		Button btnAdd = (Button) rootView.findViewById(R.id.new_page_add);
+		btnAdd.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				int pagesQuantity = Integer.parseInt(editPagesNumber.getText().toString());
+
+				String pageName;
+				if (!Util.isEmptyString(editPageName.getText().toString()))
+					pageName = editPageName.getText().toString();
+				else
+					pageName = Define.getTabTitle_multi();
+
+				insertPage_rightmost_multi(act, newTabId, pageName,pagesQuantity);
+
+				dialog1.dismiss();
+			}
+		});
+	}
+
+
 	/*
 	 * Insert Page to Rightmost
 	 * 
@@ -484,7 +558,7 @@ public class PageUi
 
 	/* 
 	 * Insert Page to Leftmost
-	 * 
+	 *
 	 */
 	private static void insertPage_leftmost(final AppCompatActivity act, int newTabId, String tabName)
 	{
@@ -494,7 +568,7 @@ public class PageUi
 	    // insert tab name
 		int style = Util.getNewPageStyle(act);
 		dbFolder.insertPage(DB_folder.getFocusFolder_tableName(),tabName, newTabId, style,true );
-		
+
 		// insert table for new tab
 		dbFolder.insertPageTable(dbFolder,DB_folder.getFocusFolder_tableId(),newTabId, true);
 
@@ -527,8 +601,48 @@ public class PageUi
 		MainAct.mAct.invalidateOptionsMenu();
 		TabsHost.setFocus_tabPos(0);
 	}
-	
-	
+
+	/*
+	 * Insert multiple Pages to Rightmost
+	 */
+	private static void insertPage_rightmost_multi(final AppCompatActivity act,
+	                                               int newTableId,
+	                                               String tabName,
+	                                               int pagesQuantity)
+	{
+		DB_folder dbFolder = new DB_folder(act,Pref.getPref_focusView_folder_tableId(act));
+
+		int style = Util.getNewPageStyle(act);
+
+		for(int i=newTableId;i<(newTableId+pagesQuantity);i++) {
+			// insert tab name
+			String tab_name = tabName.concat(String.valueOf(i));
+			dbFolder.insertPage(DB_folder.getFocusFolder_tableName(), tab_name, i, style, true);
+
+			// insert table for new tab
+			dbFolder.insertPageTable(dbFolder, DB_folder.getFocusFolder_tableId(), i, true);
+		}
+
+		int tabTotalCount = dbFolder.getPagesCount(true);
+
+		// commit: final page viewed
+		Pref.setPref_focusView_page_tableId(act, newTableId);
+
+		// set scroll X
+		final int scrollX = (tabTotalCount) * 60 * 5; //over the last scroll X
+
+		FolderUi.startTabsHostRun();
+
+		if(TabsHost.mTabLayout != null) {
+			TabsHost.mTabLayout.post(() -> {
+				TabsHost.mTabLayout.scrollTo(scrollX, 0);
+			});
+		}
+
+		MainAct.mAct.invalidateOptionsMenu();
+	}
+
+
 	/*
 	 * Update Final page which was focus view
 	 * 

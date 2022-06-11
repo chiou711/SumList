@@ -38,6 +38,7 @@ public class MenuId {
 
         // page operation
         static final int ADD_NEW_PAGE = R.id.ADD_NEW_PAGE;
+        static final int ADD_NEW_PAGE_MULTI = R.id.ADD_NEW_PAGE_MULTI;
         static final int CHANGE_PAGE_COLOR = R.id.CHANGE_PAGE_COLOR;
         static final int SHIFT_PAGE = R.id.SHIFT_PAGE;
         static final int DELETE_PAGES = R.id.DELETE_PAGES;

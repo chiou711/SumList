@@ -24,7 +24,9 @@
     <string name="footer_checked">Selected</string>
     <string name="footer_total">Total</string>
     <string name="edit_page_tab_title">Edit the tab name</string>
+    <string name="edit_page_prefix_message">Prefix name:</string>
     <string name="edit_page_tab_message">Tab name:</string>
+    <string name="edit_page_quantity">Pages quantity:</string>
     <string name="edit_page_button_update">OK</string>
     <string name="edit_page_button_delete">Delete</string>
     <string name="edit_page_button_ignore">Cancel</string>

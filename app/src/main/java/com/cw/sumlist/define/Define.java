@@ -141,4 +141,11 @@ public class Define {
         return title;
     }
 
+    public static String getTabTitle_multi()
+    {
+        String title;
+        title = "#";
+        return title;
+    }
+
 }

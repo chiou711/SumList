@@ -797,20 +797,11 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 return true;
 
             case MenuId.ADD_NEW_PAGE:
+                PageUi.addNewPage(this, getCurrentMaxPageTableId() + 1);
+                return true;
 
-                // get current Max page table Id
-                int currentMaxPageTableId = 0;
-                int pgCnt = FolderUi.getFolder_pagesCount(this,FolderUi.getFocus_folderPos());
-                DB_folder db_folder = new DB_folder(this,DB_folder.getFocusFolder_tableId());
-
-                for(int i=0;i< pgCnt;i++)
-                {
-                    int id = db_folder.getPageTableId(i,true);
-                    if(id >currentMaxPageTableId)
-                        currentMaxPageTableId = id;
-                }
-
-                PageUi.addNewPage(this, currentMaxPageTableId + 1);
+            case MenuId.ADD_NEW_PAGE_MULTI:
+                PageUi.addNewPage_multi(this, getCurrentMaxPageTableId() + 1);
                 return true;
 
             case MenuId.CHANGE_PAGE_COLOR:
@@ -891,4 +882,18 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
         openFolder();
     }
 
+    // get current max page table Id
+    int getCurrentMaxPageTableId(){
+        int currentMaxPageTableId = 0;
+        int pgCnt = FolderUi.getFolder_pagesCount(this,FolderUi.getFocus_folderPos());
+        DB_folder db_folder = new DB_folder(this,DB_folder.getFocusFolder_tableId());
+
+        for(int i=0;i< pgCnt;i++)
+        {
+            int id = db_folder.getPageTableId(i,true);
+            if(id >currentMaxPageTableId)
+                currentMaxPageTableId = id;
+        }
+        return currentMaxPageTableId;
+    }
 }

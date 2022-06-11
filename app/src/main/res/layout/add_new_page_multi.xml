@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue_grey"
-    android:theme="@style/Theme.AppCompat">
+	android:theme="@style/Theme.AppCompat">
 
 <LinearLayout
 	android:id="@+id/container"
@@ -29,25 +29,24 @@
 			android:layout_height="40dp"
             android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-			android:text="@string/edit_folder_title"
+			android:text="@string/edit_page_tab_title"
             android:gravity="center_vertical"
             android:textSize="18sp"
-            />
+            android:textColor="@android:color/white"/>
 	</LinearLayout>
 
-    <!-- input title -->
+	<!-- input page name -->
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
-		android:text="@string/edit_folder_message"
-		/>
+		android:text="@string/edit_page_prefix_message"
+		android:textColor="@android:color/white"/>
 
-	<!-- input content -->
 	<com.cw.sumlist.util.MyEditText
-        android:id="@+id/new_folder_name"
+		android:id="@+id/new_page_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType=""
@@ -56,39 +55,29 @@
         android:minLines="2"
         android:maxLines="20" />
 
-    <!-- select Add new folder location option-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:text="@string/add_new_page_select_position"
-        />
+	<View android:layout_width="match_parent" android:layout_height="1dip" android:background="#ffff4f" />
 
-    <RadioGroup
-        android:id="@+id/radioGroup_new_folder_at"
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical">
-        <RadioButton
-            android:id="@+id/radio_new_folder_at_top"
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:text="@string/add_new_note_top" />
-        <RadioButton
-            android:id="@+id/radio_new_folder_at_bottom"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-			android:layout_height="0dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:text="@string/add_new_note_bottom" />
-    </RadioGroup>
+	<!-- input quantity-->
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="5dp"
+		android:layout_marginStart="5dp"
+		android:layout_marginLeft="5dp"
+		android:text="@string/edit_page_quantity"
+		android:textColor="@android:color/white"/>
+
+	<com.cw.sumlist.util.MyEditText
+		android:id="@+id/new_pages_quantity"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:inputType="numberSigned"
+		android:layout_margin="3dp"
+		android:textSize="18sp"
+		android:minLines="2"
+		android:maxLines="20" />
+
+	<View android:layout_width="match_parent" android:layout_height="1dip" android:background="#ffff4f" />
 
     <!-- buttons -->
 	<LinearLayout
@@ -97,7 +86,7 @@
         android:background="@color/bar_color"
 	    android:orientation="horizontal" >
 	    <Button
-	        android:id="@+id/new_folder_cancel"
+	        android:id="@+id/new_page_cancel"
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
@@ -111,7 +100,7 @@
 			android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
             />
 	     <Button
-	        android:id="@+id/new_folder_add"
+	        android:id="@+id/new_page_add"
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
@@ -123,7 +112,7 @@
             android:textColor="@android:color/white"
             android:drawableLeft="@android:drawable/ic_menu_save"
             android:drawableStart="@android:drawable/ic_menu_save"
-			/>
+            />
 	</LinearLayout>
 
 </LinearLayout>

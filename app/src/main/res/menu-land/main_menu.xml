@@ -57,6 +57,12 @@
                     android:title="@string/add_new_page"
                     android:icon="@drawable/ic_menu_add_new_page"/>
                 <item
+                    android:id="@+id/ADD_NEW_PAGE_MULTI"
+                    android:orderInCategory="1"
+                    app:showAsAction="never"
+                    android:title="@string/add_new_page_multi"
+                    android:icon="@drawable/ic_menu_add_new_page"/>
+                <item
                     android:id="@+id/CHANGE_PAGE_COLOR"
                     android:orderInCategory="2"
                     app:showAsAction="never"

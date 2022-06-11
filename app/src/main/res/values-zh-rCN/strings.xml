@@ -24,7 +24,9 @@
     <string name="footer_checked">勾选</string>
     <string name="footer_total">总计</string>
     <string name="edit_page_tab_title">编辑标签名称</string>
+    <string name="edit_page_prefix_message">前缀名称:</string>
     <string name="edit_page_tab_message">标签名称：</string>
+    <string name="edit_page_quantity">页数:</string>
     <string name="edit_page_button_update">OK</string>
     <string name="edit_page_button_delete">删除</string>
     <string name="edit_page_button_ignore">取消</string>

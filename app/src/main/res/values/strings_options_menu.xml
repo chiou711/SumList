@@ -5,6 +5,7 @@
     <string name="rearrange_page">List order</string>
     <string name="delete_pages">Delete lists</string>
     <string name="add_new_page">Add list</string>
+    <string name="add_new_page_multi">Add multiple lists</string>
     <string name="add_new_page_select_position">Select position:</string>
     <string name="add_new_page_leftmost">To leftmost</string>
     <string name="add_new_page_rightmost">To rightmost</string>

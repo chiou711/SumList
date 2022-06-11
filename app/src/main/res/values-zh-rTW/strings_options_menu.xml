@@ -5,6 +5,7 @@
     <string name="rearrange_page">清單順序</string>
     <string name="delete_pages">刪除清單</string>
     <string name="add_new_page">新增清單</string>
+    <string name="add_new_page_multi">添加多個清單</string>
     <string name="add_new_page_select_position">選擇位置:</string>
     <string name="add_new_page_leftmost">到最左邊</string>
     <string name="add_new_page_rightmost">到最右邊</string>
