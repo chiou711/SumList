@@ -69,7 +69,7 @@
     <RadioGroup
         android:id="@+id/radioGroup_new_folder_at"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="100dp"
         android:layout_marginTop="5dp"
         android:orientation="vertical">
         <RadioButton
