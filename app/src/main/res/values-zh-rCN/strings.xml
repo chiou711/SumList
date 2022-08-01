@@ -8,7 +8,7 @@
     <string name="btn_Finish">完成</string>
     <string name="btn_Select">选择</string>
     <string name="btn_None">无</string>
-    <string name="app_name">清单之和</string>
+    <string name="app_name">月结</string>
     <string name="app_name_dir">SumList</string>
     <string name="footer_text_total">总计</string>
     <string name="mark_handler">mark_handler</string>
