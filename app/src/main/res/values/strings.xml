@@ -11,6 +11,8 @@
     <string name="app_name">Sum of month</string>
     <string name="app_name_dir">SumList</string>
     <string name="footer_text_total">total</string>
+    <string name="footer_text_day">day</string>
+    <string name="footer_text_month">month</string>
     <string name="mark_handler">mark_handler</string>
     <string name="drag_handler">drag_handler</string>
     <string name="confirm_dialog_title">Confirmation</string>

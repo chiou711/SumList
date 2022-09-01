@@ -114,7 +114,7 @@ public class FolderSum_list
         mDb_folder.close();
 
         // show folder sum
-        showFolerSum();
+        showFolderSum();
 
         mChkNum = (enAll == true)? pageCount : 0;
 
@@ -159,7 +159,7 @@ public class FolderSum_list
                             R.drawable.btn_check_on_holo_light :
                             R.drawable.btn_check_on_holo_dark, 0, 0, 0);
                     folderSum += Utils.getPageSum(mAct,pageTableId);
-                    showFolerSum();
+                    showFolderSum();
                 }
                 else {
                     chkTV.setCompoundDrawablesWithIntrinsicBounds(mStyle % 2 == 1 ?
@@ -167,7 +167,7 @@ public class FolderSum_list
                             R.drawable.btn_check_off_holo_dark, 0, 0, 0);
                     isCheckAll = false;
                     folderSum -= Utils.getPageSum(mAct,pageTableId);
-                    showFolerSum();
+                    showFolderSum();
                 }
 
             }
@@ -271,7 +271,7 @@ public class FolderSum_list
     }
 
     // show folder sum
-    void showFolerSum(){
+    void showFolderSum(){
         TextView textFolderSum = (TextView) rootView.findViewById(R.id.textFolderSum);
         String sum = String.valueOf(folderSum);
         textFolderSum.setText(sum);

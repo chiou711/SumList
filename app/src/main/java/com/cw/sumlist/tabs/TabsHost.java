@@ -682,15 +682,28 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     // get footer sum of list view
     public static String getFooterSumString(AppCompatActivity mAct)
     {
-        long sum = getListSum(mAct);
-        setTotal(sum);
-        return mAct.getResources().getString(R.string.footer_text_total)+ " : " + sum ;
+        long listSum = getListSum(mAct);
+        long folderSum = getFolderSum(mAct);
+        setListTotal(listSum);
+        return mAct.getResources().getString(R.string.footer_text_day)+
+               mAct.getResources().getString(R.string.footer_text_total)+
+                " : " + listSum +
+                " / " +
+               mAct.getResources().getString(R.string.footer_text_month)+
+               //mAct.getResources().getString(R.string.footer_text_total) +
+                " : " + folderSum;
     }
 
-    // get sum of list view
+    // get sum of list
     public static long getListSum(AppCompatActivity act){
         int pageTableId = Pref.getPref_focusView_page_tableId(act);
         return Utils.getPageSum(act,pageTableId) ;
+    }
+
+    // get sum of folder
+    public static long getFolderSum(AppCompatActivity act){
+        int folderTableId = Pref.getPref_focusView_folder_tableId(act);
+        return Utils.getFolderSum(act,folderTableId) ;
     }
 
     // total
@@ -700,7 +713,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         return total;
     }
 
-    public static void setTotal(long _total) {
+    public static void setListTotal(long _total) {
         total = _total;
     }
 

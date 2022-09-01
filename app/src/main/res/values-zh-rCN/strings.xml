@@ -11,6 +11,8 @@
     <string name="app_name">月结</string>
     <string name="app_name_dir">SumList</string>
     <string name="footer_text_total">总计</string>
+    <string name="footer_text_day">日</string>
+    <string name="footer_text_month">月</string>
     <string name="mark_handler">mark_handler</string>
     <string name="drag_handler">drag_handler</string>
     <string name="confirm_dialog_title">确认</string>

@@ -22,6 +22,7 @@ import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_page;
 
 /**
@@ -77,6 +78,21 @@ public class Utils {
                 sum += (value*qty);
         }
         return sum;
+    }
+
+    // get sum of a folder
+    public static long getFolderSum(Activity act,int folder_table_id){
+        int folderSum = 0;
+        DB_folder mDb_folder = new DB_folder(act, folder_table_id);
+        mDb_folder.open();
+        int pageCount = mDb_folder.getPagesCount(false);
+        for(int i = 0; i< pageCount; i++){
+            // get sum of each page
+            int pageTableId = mDb_folder.getPageTableId(i,false);
+            folderSum += Utils.getPageSum(act,pageTableId);
+        }
+        mDb_folder.close();
+        return folderSum;
     }
 
 }
