@@ -120,9 +120,10 @@ public class Define {
      *  Need to choose a case in AndroidManifest.xml
      *     <!-- AdMob: formal case    -->
      *     <!-- AdMob: debug case    -->
-     *
+     * If true, enable relative tags com.google.android.gms.ads.AdView
+     * keywords: // if ENABLE_ADMOB = true, enable the following
      ***************************************************************************/
-    public static boolean ENABLE_ADMOB = true; //true; //false;
+    public static boolean ENABLE_ADMOB = false; //true; //false;
 
 
     // Apply system default for picture path

@@ -4,6 +4,9 @@
     android:versionCode="00001"
     android:versionName="01.00.01">
 
+    <!-- if ENABLE_ADMOB = true, enable the following-->
+<!--    <uses-permission android:name="android.permission.INTERNET" />-->
+
     <uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
@@ -23,7 +26,8 @@
             android:theme="@style/MyTheme"
             android:launchMode="singleTop"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -51,7 +55,8 @@
                  android:windowSoftInputMode="adjustPan"/>
         <activity android:name="com.cw.sumlist.note.Note"
                   android:theme="@style/MyTheme"
-            	  android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode">
+            	  android:configChanges="orientation|keyboard|keyboardHidden|screenSize|screenLayout|uiMode"
+                  android:exported="true">
             <intent-filter android:priority="0">
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
@@ -66,9 +71,10 @@
 <!--            android:value="@string/ad_mob_app_id"/>-->
 
         <!-- AdMob: debug case        -->
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/ad_mob_app_id_test"/>
+        <!-- if ENABLE_ADMOB = true, enable the following-->
+<!--        <meta-data-->
+<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
+<!--            android:value="@string/ad_mob_app_id_test"/>-->
 
    </application>
 
