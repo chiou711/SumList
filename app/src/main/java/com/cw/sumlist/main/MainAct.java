@@ -34,6 +34,7 @@ import com.cw.sumlist.note_add.Note_addText;
 import com.cw.sumlist.operation.folder_sum.FolderSum;
 import com.cw.sumlist.operation.delete.DeleteFolders;
 import com.cw.sumlist.operation.delete.DeletePages;
+import com.cw.sumlist.operation.folder_sum.FolderSum_grid;
 import com.cw.sumlist.page.Checked_notes_option;
 import com.cw.sumlist.page.PageUi;
 import com.cw.sumlist.tabs.TabsHost;
@@ -77,7 +78,8 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public static CharSequence mAppTitle;
     public Context mContext;
     public Config mConfigFragment;
-    public FolderSum mFolderSum;
+//    public FolderSum mFolderSum;
+    public FolderSum_grid mFolderSum;
     public About mAboutFragment;
     public static Menu mMenu;
     public static List<String> mFolderTitles;
@@ -835,7 +837,8 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 mMenu.setGroupVisible(R.id.group_pages_and_more, false);
                 setTitle(R.string.folder_sum);
 
-                mFolderSum = new FolderSum();
+//                mFolderSum = new FolderSum();
+                mFolderSum = new FolderSum_grid();
                 mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
                 mFragmentTransaction.replace(R.id.content_frame, mFolderSum).addToBackStack("config").commit();
                 return true;
