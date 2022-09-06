@@ -36,7 +36,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -85,8 +87,16 @@ public class Note_addText extends AppCompatActivity {
 	    init_text_color();
 
 	    populate_text_view(rowId);
-    }
 
+		// add new button
+		Button addBtn = findViewById(R.id.btn_add);
+		addBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				addNewNote();
+			}
+		});
+    }
 
 	// for Add new note
 	// for Rotate screen
@@ -154,35 +164,39 @@ public class Note_addText extends AppCompatActivity {
 				stopEdit();
 				return true;
 
+			//add new note
 			case ADD_TEXT_NOTE:
-				//add new note again
-				if(isTextAdded())
-				{
-					enSaveDb = true;
-					rowId = saveStateInDB(rowId, enSaveDb);
-
-					int notes_count = TabsHost.getCurrentPage().getNotesCountInPage(this);
-
-					if( getIntent().getExtras().getString("extra_ADD_NEW_TO_TOP", "false").equalsIgnoreCase("true") &&
-							(notes_count > 0) )
-						TabsHost.getCurrentPage().swapTopBottom();
-
-					//Toast.makeText(Note_addText.this, getString(R.string.toast_saved) +" + 1", Toast.LENGTH_SHORT).show();
-
-					init_text_color();
-
-					// new input
-					rowId = null;
-					populate_text_view(rowId);
-				}
+				addNewNote();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	// add new note
+	void addNewNote(){
+		//add new note
+		if(isTextAdded())
+		{
+			enSaveDb = true;
+			rowId = saveStateInDB(rowId, enSaveDb);
 
-	TextWatcher setTextWatcher()
-	{
+			int notes_count = TabsHost.getCurrentPage().getNotesCountInPage(this);
+
+			if( getIntent().getExtras().getString("extra_ADD_NEW_TO_TOP", "false").equalsIgnoreCase("true") &&
+					(notes_count > 0) )
+				TabsHost.getCurrentPage().swapTopBottom();
+
+			//Toast.makeText(Note_addText.this, getString(R.string.toast_saved) +" + 1", Toast.LENGTH_SHORT).show();
+
+			init_text_color();
+
+			// new input
+			rowId = null;
+			populate_text_view(rowId);
+		}
+	}
+
+	TextWatcher setTextWatcher(){
 		return new TextWatcher(){
 			public void afterTextChanged(Editable s)
 			{
@@ -211,8 +225,7 @@ public class Note_addText extends AppCompatActivity {
 	}
 
 	// confirmation to update change or not
-	void confirmUpdateChangeDlg()
-	{
+	void confirmUpdateChangeDlg(){
 		getIntent().putExtra("NOTE_ADDED","edited");
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(Note_addText.this);
@@ -244,8 +257,7 @@ public class Note_addText extends AppCompatActivity {
 	}
 
 
-	boolean isTextAdded()
-	{
+	boolean isTextAdded(){
 		boolean bEdit = false;
 		String curTitle = titleEditText.getText().toString();
 		String curBody = bodyEditText.getText().toString();
@@ -260,8 +272,7 @@ public class Note_addText extends AppCompatActivity {
 		return bEdit;
 	}
 
-	void init_text_color()
-	{
+	void init_text_color(){
 		titleEditText = (EditText) findViewById(R.id.edit_title);
 		bodyEditText = (EditText) findViewById(R.id.edit_body);
 		quantityEditText = (EditText) findViewById(R.id.edit_quantity);
@@ -298,8 +309,7 @@ public class Note_addText extends AppCompatActivity {
 	}
 
 	// populate text view
-	void populate_text_view(Long rowId)
-	{
+	void populate_text_view(Long rowId){
 		if (rowId != null) {
 			// title
 			String strTitleEdit = dB_page.getNoteTitle_byId(rowId);
@@ -333,8 +343,7 @@ public class Note_addText extends AppCompatActivity {
 		}
 	}
 
-    void stopEdit()
-    {
+    void stopEdit(){
 	    if(isTextAdded())
 		    confirmUpdateChangeDlg();
 	    else
@@ -345,8 +354,7 @@ public class Note_addText extends AppCompatActivity {
 	    }
     }
 
-	void deleteNote(Long rowId)
-	{
+	void deleteNote(Long rowId){
 		System.out.println("Note_addText / _deleteNote");
 		// for Add new note (noteId is null first), but decide to cancel
 		if(rowId != null)
@@ -354,8 +362,7 @@ public class Note_addText extends AppCompatActivity {
 	}
 
 
-	Long saveStateInDB(Long rowId,boolean enSaveDb)
-	{
+	Long saveStateInDB(Long rowId,boolean enSaveDb){
 		String title = titleEditText.getText().toString();
 
 		String body = "";

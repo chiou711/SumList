@@ -11,6 +11,7 @@
     <string name="app_name">Sum of month</string>
     <string name="app_name_dir">SumList</string>
     <string name="footer_text_total">total</string>
+    <string name="footer_text_reference_total">Reference total</string>
     <string name="footer_text_day">day</string>
     <string name="footer_text_month">month</string>
     <string name="mark_handler">mark_handler</string>

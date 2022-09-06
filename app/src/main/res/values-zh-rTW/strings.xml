@@ -11,6 +11,7 @@
     <string name="app_name">月結</string>
     <string name="app_name_dir">SumList</string>
     <string name="footer_text_total">總計</string>
+    <string name="footer_text_reference_total">參考總計</string>
     <string name="footer_text_day">日</string>
     <string name="footer_text_month">月</string>
     <string name="mark_handler">mark_handler</string>
