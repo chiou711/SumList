@@ -666,8 +666,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     }
 
     // get footer message of list view
-    static String getFooterMessage(AppCompatActivity mAct)
-    {
+    static String getFooterMessage(AppCompatActivity mAct){
         int pageTableId = Pref.getPref_focusView_page_tableId(mAct);
         DB_page mDb_page = new DB_page(mAct, pageTableId);
 
@@ -703,8 +702,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
     // get sum of folder
     public static long getFolderSum(AppCompatActivity act){
-        int folderTableId = Pref.getPref_focusView_folder_tableId(act);
-        return Utils.getFolderSum(act,folderTableId) ;
+        return MainAct.folder_sum;
     }
 
     // total

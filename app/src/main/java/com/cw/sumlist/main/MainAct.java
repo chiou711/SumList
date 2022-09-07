@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cw.sumlist.R;
+import com.cw.sumlist.Utils;
 import com.cw.sumlist.config.About;
 import com.cw.sumlist.config.Config;
 import com.cw.sumlist.db.DB_folder;
@@ -96,6 +97,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public boolean bEULA_accepted;
     public static boolean isEdited_link;
     public static int edit_position;
+    public static long folder_sum;
 
 	// Main Act onCreate
     @Override
@@ -421,6 +423,9 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
             if (mAct.getSupportActionBar() != null)
                 mAct.getSupportActionBar().setTitle(mFolderTitle);
         }
+
+        int folderTableId = Pref.getPref_focusView_folder_tableId(mAct);
+        folder_sum = Utils.getFolderSum(mAct,folderTableId) ;
     }
 
 

@@ -41,7 +41,6 @@ public class Folder
     private DragSortController controller;
     private AppCompatActivity act;
     DB_drawer dB_drawer;
-    private SimpleDragSortCursorAdapter folderAdapter;
 
     public Folder(AppCompatActivity act)
     {
@@ -104,7 +103,6 @@ public class Folder
 
         listView.setDragListener(onDrag);
         listView.setDropListener(onDrop);
-
     }
 
     public SimpleDragSortCursorAdapter getAdapter()
