@@ -229,7 +229,7 @@ public class FolderSum_list_grid {
 
             // Show current page
             // workaround: set single line to true and add one space in front of the text
-            if (dB_folder.getPageTableId(position, true) == Integer.valueOf(DB_page.getFocusPage_tableId())) {
+            if (dB_folder.getPageTableId(position, true) == Pref.getPref_focusView_page_tableId(act)) {
                 chkTV.setTypeface(chkTV.getTypeface(), Typeface.BOLD_ITALIC);
                 chkTV.setText(" " + gridStrList.get(position) + "*");
             } else
