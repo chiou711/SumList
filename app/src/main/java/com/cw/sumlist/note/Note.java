@@ -85,19 +85,17 @@ public class Note extends AppCompatActivity
 
 	// callback of granted permission
 	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
-	{
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		System.out.println("grantResults.length =" + grantResults.length);
-		switch (requestCode)
-		{
-			case Util.PERMISSIONS_REQUEST_STORAGE:
-			{
+		switch (requestCode) {
+			case Util.PERMISSIONS_REQUEST_STORAGE: {
 				View_note_option option = new View_note_option();
-				option.note_option(act,mNoteId);
+				option.note_option(act, mNoteId);
 				// If request is cancelled, the result arrays are empty.
-				if ( (grantResults.length > 0) &&
-						( (grantResults[0] == PackageManager.PERMISSION_GRANTED) &&
-					      (grantResults[1] == PackageManager.PERMISSION_GRANTED)       )) {
+				if ((grantResults.length > 0) &&
+						((grantResults[0] == PackageManager.PERMISSION_GRANTED) &&
+								(grantResults[1] == PackageManager.PERMISSION_GRANTED))) {
 				}
 				option.dlgAddNew.dismiss();
 			}//case
@@ -295,7 +293,6 @@ public class Note extends AppCompatActivity
 	protected void onDestroy() {
 		super.onDestroy();
 		System.out.println("Note / _onDestroy");
-
 	}
 
 	// avoid exception: has leaked window android.widget.ZoomButtonsController
@@ -322,8 +319,7 @@ public class Note extends AppCompatActivity
 	Menu mMenu;
 	// On Create Options Menu
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) 
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 //		System.out.println("Note / _onCreateOptionsMenu");
 

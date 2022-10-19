@@ -16,93 +16,230 @@
 
 package com.cw.sumlist.operation.folder_sum;
 
-import android.os.Bundle;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import com.cw.sumlist.R;
-import com.cw.sumlist.main.MainAct;
-import com.cw.sumlist.util.BaseBackPressedListener;
+import com.cw.sumlist.Utils;
+import com.cw.sumlist.db.DB_folder;
+import com.cw.sumlist.db.DB_page;
+import com.cw.sumlist.note.Note;
+import com.cw.sumlist.util.ColorSet;
+import com.cw.sumlist.util.preferences.Pref;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-public class FolderSum_grid extends Fragment{
-	AppCompatActivity act;
-	public View rootView;
-    TextView title;
-	CheckedTextView mCheckTvSelAll;
-	FolderSum_list_grid folderSumList;
-    TextView textFolderSum;
+/**
+ * Created by cw on 2022/9/5
+ */
+public class FolderSum_grid {
+    Activity act;
+    View rootView;
+    CheckBox checkTvSelAll;
+    GridView gridView;
 
-	public FolderSum_grid(){}
-	GridView gridview_sumlist;
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-    }
+    DB_folder dB_folder;
+    public List<String> gridStrArr; // grid view string array
+    public List<Boolean> checkedTabs; // checked grid items array
+    public boolean isCheckAll;
+    public int pageCount;
+    long folderSum;
+    GridSumlistAdapter listAdapter;
+    static int style;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.folder_sum_list_grid, container, false);
-        act = MainAct.mAct;
-
-		gridview_sumlist = rootView.findViewById(R.id.grid_view_sumlist);
-		List<String> gridViewList = new ArrayList<>();
-
-		for(int i=1;i<=31;i++){
-			gridViewList.add(String.valueOf(i));
-		}
-
-        // title
-        title = (TextView) rootView.findViewById(R.id.select_list_title);
-        title.setText(R.string.folder_sum_title);
-
-        // folder sum
-        textFolderSum = (TextView) rootView.findViewById(R.id.textFolderSum);
+    public FolderSum_grid(Activity act, View _rootView, GridView gridView) {
+        this.act = act;
+        rootView = _rootView;
+        dB_folder = new DB_folder(this.act, Pref.getPref_focusView_folder_tableId(this.act));
 
         // checked Text View: select all
-        mCheckTvSelAll = (CheckedTextView) rootView.findViewById(R.id.chkSelectAllPages);
-        mCheckTvSelAll.setOnClickListener(new OnClickListener()
-        {	@Override
-            public void onClick(View checkSelAll)
-            {
-                boolean currentCheck = ((CheckedTextView)checkSelAll).isChecked();
-                ((CheckedTextView)checkSelAll).setChecked(!currentCheck);
+        checkTvSelAll = rootView.findViewById(R.id.check_box_select_all_pages_folder_sum);
 
-                if(((CheckedTextView)checkSelAll).isChecked())
-                    folderSumList.selectAllPages(true);
-                else
-                    folderSumList.selectAllPages(false);
+        // grid view: selecting which pages to send
+        this.gridView = gridView;
+        showPagesOfFolder(_rootView);
+
+        folderSum = 0;
+    }
+
+    // select all pages
+    public void selectAllPages(boolean enAll) {
+        System.out.println("FolderSum_list_grid / _selectAllPages /  enAll = " + enAll);
+
+        mChkNum = 0;
+        folderSum = 0;
+
+        dB_folder.open();
+        pageCount = dB_folder.getPagesCount(false);
+        for (int i = 0; i < pageCount; i++) {
+            checkedTabs.set(i, enAll);
+
+            long pageSum = Utils.getPageSum(act, dB_folder.getPageTableId(i,false));
+            String gridItemStr = dB_folder.getPageTitle(i, false) +
+                    " : " + pageSum;
+
+            gridStrArr.set(i, gridItemStr);
+
+            if (enAll) {
+                // get sum of each page
+                int pageTableId = dB_folder.getPageTableId(i, false);
+                folderSum += Utils.getPageSum(act, pageTableId);
             }
-        });
+        }
+        dB_folder.close();
 
-		((MainAct)act).setOnBackPressedListener(new BaseBackPressedListener(act));
+        // show folder sum
+        showFolderSum(rootView);
 
-		return rootView;
-	}
+        mChkNum = (enAll == true) ? pageCount : 0;
 
+        listAdapter.notifyDataSetChanged();
+    }
 
-	@Override
-	public void onPause() {
-		super.onPause();
-	}
+    // show pages in folder for Selection
+    public static int mChkNum;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //show list for selection
-        folderSumList = new FolderSum_list_grid(act,rootView , gridview_sumlist);
-        mCheckTvSelAll.callOnClick();
+    void showPagesOfFolder(View root) {
+        System.out.println("FolderSum_list_grid / _showPagesOfFolder");
+        mChkNum = 0;
+
+        // set grid view
+        gridView = (GridView) root.findViewById(R.id.folder_sum_grid_view);
+
+        // set grid string array
+        checkedTabs = new ArrayList<Boolean>();
+        gridStrArr = new ArrayList<String>();
+
+        // DB
+        int pageTableId = Pref.getPref_focusView_page_tableId(act);
+        DB_page.setFocusPage_tableId(pageTableId);
+
+        dB_folder.open();
+        pageCount = dB_folder.getPagesCount(false);
+        for (int i = 0; i < pageCount; i++) {
+            // list string array: init
+            gridStrArr.add(dB_folder.getPageTitle(i, false));
+
+            // checked mark array: init
+            checkedTabs.add(true); // set ture for the first time grid view
+        }
+        dB_folder.close();
+
+        // set list adapter
+        listAdapter = new GridSumlistAdapter(act, gridStrArr,rootView);
+
+        // grid view: set adapter
+        gridView.setAdapter(listAdapter);
+    }
+
+    // show folder sum
+    void showFolderSum(View rootView) {
+        TextView textFolderSum = (TextView) rootView.findViewById(R.id.textFolderSum);
+        String sum = String.valueOf(folderSum);
+        textFolderSum.setText(sum);
+    }
+
+    public class GridSumlistAdapter extends ArrayAdapter<String> {
+        Activity act;
+        View rootView;
+        private LayoutInflater inflater;
+        DB_folder dB_folder;
+        View gridItemView;
+        private List<String> gridStrList;
+
+        public GridSumlistAdapter(@NonNull Activity context, List<String> arrayList,View root_view) {
+            super(context, 0, arrayList);
+
+            act = context;
+            inflater = (LayoutInflater) act.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            dB_folder = new DB_folder(act, Pref.getPref_focusView_folder_tableId(act));
+            gridStrList = arrayList;
+            rootView = root_view;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            gridItemView = inflater.inflate(R.layout.folder_sum_grid_item, null);
+
+            // check box
+            CheckBox chkBox = gridItemView.findViewById(R.id.checkBox);
+            chkBox.setChecked(checkedTabs.get(position));
+
+            chkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    System.out.println("FolderSum_grid_list / _getView / position = " + position);
+
+                    checkedTabs.set(position, chkBox.isChecked());
+                    if (checkedTabs.get(position) == true)
+                        mChkNum++;
+                    else
+                        mChkNum--;
+
+                    if (!chkBox.isChecked()) {
+                        checkTvSelAll.setChecked(false);
+                    }
+
+                    int pageTableId = dB_folder.getPageTableId(position, true);
+
+                    // set for contrast
+                    if (chkBox.isChecked()) {
+                        folderSum += Utils.getPageSum(act, pageTableId);
+                    } else {
+                        isCheckAll = false;
+                        folderSum -= Utils.getPageSum(act, pageTableId);
+                    }
+
+                    showFolderSum(rootView);
+                }
+            });
+
+            // set text view long click listener
+            TextView chkTV = gridItemView.findViewById(R.id.itemText);
+            chkTV.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    //todo Show page detail
+                    // wrong page now
+                    Intent intent;
+                    intent = new Intent(act, Note.class);
+                    intent.putExtra("POSITION", 0);// always starts from 0
+                    act.startActivity(intent);
+                    return false;
+                }
+            });
+
+            // show style
+            style = dB_folder.getPageStyle(position, true);
+            chkTV.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
+            chkTV.setTextColor(ColorSet.mText_ColorArray[style]);
+
+            // Show current page
+            // workaround: set single line to true and add one space in front of the text
+            if (dB_folder.getPageTableId(position, true) == Pref.getPref_focusView_page_tableId(act)) {
+                chkTV.setTypeface(chkTV.getTypeface(), Typeface.BOLD_ITALIC);
+                chkTV.setText(" " + gridStrList.get(position) + "*");
+            } else
+                chkTV.setText(" " + gridStrList.get(position));
+
+            return gridItemView;
+        }
+
     }
 
 }
