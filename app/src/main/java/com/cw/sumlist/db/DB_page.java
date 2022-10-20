@@ -16,6 +16,7 @@
 
 package com.cw.sumlist.db;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -30,7 +31,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class DB_page
 {
 
-    private Context mContext = null;
+    private Context mContext;
     private static DatabaseHelper mDbHelper ;
     private SQLiteDatabase mSqlDb;
 
@@ -44,9 +45,6 @@ public class DB_page
 	public static final String KEY_NOTE_BODY = "note_body";
 	public static final String KEY_NOTE_QUANTITY = "note_quantity";
     public static final String KEY_NOTE_MARKING = "note_marking";
-
-	// DB
-    public DB_page mDb_page;
 
 	// Cursor
 	public Cursor mCursor_note;
@@ -112,9 +110,9 @@ public class DB_page
 
         // table number initialization: name = prefix + id
         DB_PAGE_TABLE_NAME = DB_PAGE_TABLE_PREFIX.concat(
-                                                    String.valueOf(DB_folder.getFocusFolder_tableId())+
+                                                    DB_folder.getFocusFolder_tableId()+
                                                     "_"+
-                                                    String.valueOf(pageTableId) );
+                                                    pageTableId);
 
         return mSqlDb.query(DB_PAGE_TABLE_NAME,
              strNoteColumns,
@@ -292,6 +290,7 @@ public class DB_page
 	}
 
 	// get note by position
+	@SuppressLint("Range")
 	public Long getNoteId(int position,boolean enDbOpenClose)
 	{
 		if(enDbOpenClose)
@@ -306,7 +305,8 @@ public class DB_page
 		return id;
 	}	
 	
-	public String getNoteTitle(int position,boolean enDbOpenClose)
+	@SuppressLint("Range")
+	public String getNoteTitle(int position, boolean enDbOpenClose)
 	{
 		String title = null;
 
@@ -322,9 +322,10 @@ public class DB_page
 		return title;
 	}
 
+	@SuppressLint("Range")
 	public Integer getNoteBody(int position,boolean enDbOpenClose)
 	{
-		Integer body = 0;
+		int body = 0;
 
 		if(enDbOpenClose)
 			this.open();
@@ -338,6 +339,7 @@ public class DB_page
 		return body;
 	}
 
+	@SuppressLint("Range")
 	public Integer getNoteQuantity(int position,boolean enDbOpenClose)
 	{
 		if(enDbOpenClose) 
@@ -350,8 +352,9 @@ public class DB_page
         	this.close();
 
 		return quantity;
-	}	
-	
+	}
+
+	@SuppressLint("Range")
 	public int getNoteMarking(int position,boolean enDbOpenClose)
 	{
 		if(enDbOpenClose)

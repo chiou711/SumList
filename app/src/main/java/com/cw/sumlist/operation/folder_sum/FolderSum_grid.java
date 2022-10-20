@@ -17,8 +17,9 @@
 package com.cw.sumlist.operation.folder_sum;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,6 @@ import com.cw.sumlist.R;
 import com.cw.sumlist.Utils;
 import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_page;
-import com.cw.sumlist.note.Note;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.preferences.Pref;
 
@@ -214,12 +214,19 @@ public class FolderSum_grid {
             chkTV.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    //todo Show page detail
-                    // wrong page now
-                    Intent intent;
-                    intent = new Intent(act, Note.class);
-                    intent.putExtra("POSITION", 0);// always starts from 0
-                    act.startActivity(intent);
+                    //Show page detail
+                    String message = getMessageByPagePosition(position);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(act);
+                    builder.setTitle(R.string.dlg_day_list)
+                            .setMessage(message)
+                            .setNeutralButton(R.string.btn_OK, new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {   // do nothing
+                                }})
+                            .show();
+
                     return false;
                 }
             });
@@ -240,6 +247,34 @@ public class FolderSum_grid {
             return gridItemView;
         }
 
+    }
+
+    // show message of a given page position
+    String getMessageByPagePosition(int position) {
+        System.out.println("FolderSum_grid / _showMessageByPagePosition / position = " + position);
+
+        String message="- - - - - - - - - -\n";
+        DB_folder mDb_folder = new DB_folder(act, Pref.getPref_focusView_folder_tableId(act));
+        mDb_folder.open();
+        int pageTableId = mDb_folder.getPageTableId(position,true);
+        DB_page db_page = new DB_page(act,pageTableId);
+        int count = db_page.getNotesCount(true);
+        String title;
+        int price;
+        db_page.open();
+        for(int i=0;i<count;i++) {
+            title = db_page.getNoteTitle(i,false);
+            price = db_page.getNoteBody(i,false);
+            message = message.concat(title).concat(" : ")
+                             .concat(String.valueOf(price));
+
+            if(i==count-1)
+                message = message.concat("\n- - - - - - - - - -");
+            else
+                message = message.concat("\n");
+        }
+        db_page.close();
+        return message;
     }
 
 }

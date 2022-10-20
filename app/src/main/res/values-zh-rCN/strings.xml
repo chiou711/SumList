@@ -13,6 +13,7 @@
     <string name="footer_text_total">总计</string>
     <string name="footer_text_reference_total">参考总数</string>
     <string name="footer_text_day">日</string>
+    <string name="dlg_day_list">日清单</string>
     <string name="footer_text_month">月</string>
     <string name="mark_handler">mark_handler</string>
     <string name="drag_handler">drag_handler</string>

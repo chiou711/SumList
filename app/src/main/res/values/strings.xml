@@ -13,6 +13,7 @@
     <string name="footer_text_total">total</string>
     <string name="footer_text_reference_total">Reference total</string>
     <string name="footer_text_day">day</string>
+    <string name="dlg_day_list">day list</string>
     <string name="footer_text_month">month</string>
     <string name="mark_handler">mark_handler</string>
     <string name="drag_handler">drag_handler</string>
