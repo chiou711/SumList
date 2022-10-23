@@ -841,10 +841,9 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 mMenu.setGroupVisible(R.id.group_pages_and_more, false);
                 setTitle(R.string.folder_sum);
 
-//                mFolderSum = new FolderSum();
                 mFolderSum = new FolderSum();
                 mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
-                mFragmentTransaction.replace(R.id.content_frame, mFolderSum).addToBackStack("config").commit();
+                mFragmentTransaction.replace(R.id.content_frame, mFolderSum).addToBackStack("folder sum").commit();
                 return true;
 
             case MenuId.CONFIG:

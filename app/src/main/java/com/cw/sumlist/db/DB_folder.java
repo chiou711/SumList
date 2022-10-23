@@ -16,6 +16,7 @@
 
 package com.cw.sumlist.db;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -264,6 +265,7 @@ public class DB_folder
 		return count;
 	}
 
+	@SuppressLint("Range")
 	public int getPageId(int position, boolean enDbOpenClose)
 	{
         if(enDbOpenClose)
@@ -307,6 +309,7 @@ public class DB_folder
         return title;
     }
 
+	@SuppressLint("Range")
 	public int getPageTableId(int position, boolean enDbOpenClose)
 	{
 		if(enDbOpenClose)
@@ -321,6 +324,7 @@ public class DB_folder
         return id;
 	}
 
+	@SuppressLint("Range")
 	public String getPageTitle(int position, boolean enDbOpenClose)
 	{
 		if(enDbOpenClose)
@@ -335,6 +339,7 @@ public class DB_folder
         return title;
 	}
 
+	@SuppressLint("Range")
 	public int getPageStyle(int position, boolean enDbOpenClose)
 	{
 		int style = 0;

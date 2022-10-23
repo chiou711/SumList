@@ -57,11 +57,6 @@ public class FolderSum extends Fragment{
         act = MainAct.mAct;
 
 		gridview_sumlist = rootView.findViewById(R.id.folder_sum_grid_view);
-		List<String> gridViewList = new ArrayList<>();
-
-		for(int i=1;i<=31;i++){
-			gridViewList.add(String.valueOf(i));
-		}
 
         // title
         title = (TextView) rootView.findViewById(R.id.select_list_title);

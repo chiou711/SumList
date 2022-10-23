@@ -82,16 +82,17 @@ public class FolderSum_grid {
         mChkNum = 0;
         folderSum = 0;
 
+        pageCount = dB_folder.getPagesCount(true);
         dB_folder.open();
-        pageCount = dB_folder.getPagesCount(false);
         for (int i = 0; i < pageCount; i++) {
-            checkedTabs.set(i, enAll);
+            checkedTabs.add(i, enAll);
 
+            // todo Move to?
             long pageSum = Utils.getPageSum(act, dB_folder.getPageTableId(i,false));
             String gridItemStr = dB_folder.getPageTitle(i, false) +
                     " : " + pageSum;
 
-            gridStrArr.set(i, gridItemStr);
+            gridStrArr.add(i, gridItemStr);
 
             if (enAll) {
                 // get sum of each page
@@ -126,17 +127,6 @@ public class FolderSum_grid {
         // DB
         int pageTableId = Pref.getPref_focusView_page_tableId(act);
         DB_page.setFocusPage_tableId(pageTableId);
-
-        dB_folder.open();
-        pageCount = dB_folder.getPagesCount(false);
-        for (int i = 0; i < pageCount; i++) {
-            // list string array: init
-            gridStrArr.add(dB_folder.getPageTitle(i, false));
-
-            // checked mark array: init
-            checkedTabs.add(true); // set ture for the first time grid view
-        }
-        dB_folder.close();
 
         // set list adapter
         listAdapter = new GridSumlistAdapter(act, gridStrArr,rootView);
@@ -260,16 +250,20 @@ public class FolderSum_grid {
         DB_page db_page = new DB_page(act,pageTableId);
         int count = db_page.getNotesCount(true);
         String title;
-        int price;
+        int price,total = 0;
         db_page.open();
         for(int i=0;i<count;i++) {
             title = db_page.getNoteTitle(i,false);
             price = db_page.getNoteBody(i,false);
+            total += price;
             message = message.concat(title).concat(" : ")
                              .concat(String.valueOf(price));
 
-            if(i==count-1)
-                message = message.concat("\n- - - - - - - - - -");
+            if(i==count-1) {
+                message = message.concat("\n- - - - - - - - - -\n");
+                message = message.concat(act.getString(R.string.footer_total)).concat(" : ");
+                message = message.concat(String.valueOf(total));
+            }
             else
                 message = message.concat("\n");
         }
