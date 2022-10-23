@@ -29,7 +29,6 @@ import com.cw.sumlist.R;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.util.BaseBackPressedListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,8 +41,12 @@ public class FolderSum extends Fragment{
 	CheckBox mCheckTvSelAll;
 	FolderSum_grid folderSum_grid;
     TextView textFolderSum;
+	List<Long> pageSumArr;
 
-	public FolderSum(){}
+	public FolderSum(List<Long> _pageSumArr){
+		pageSumArr = _pageSumArr;
+	}
+
 	GridView gridview_sumlist;
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -91,7 +94,7 @@ public class FolderSum extends Fragment{
     public void onResume() {
         super.onResume();
         //show list for selection
-        folderSum_grid = new FolderSum_grid(act,rootView , gridview_sumlist);
+        folderSum_grid = new FolderSum_grid(act,rootView , gridview_sumlist, pageSumArr);
         mCheckTvSelAll.callOnClick();
     }
 

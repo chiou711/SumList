@@ -59,10 +59,12 @@ public class FolderSum_grid {
     long folderSum;
     GridSumlistAdapter listAdapter;
     static int style;
+    List<Long> pageSumArr;
 
-    public FolderSum_grid(Activity act, View _rootView, GridView gridView) {
+    public FolderSum_grid(Activity act, View _rootView, GridView gridView,List<Long> _pageSumArr) {
         this.act = act;
         rootView = _rootView;
+        pageSumArr = _pageSumArr;
         dB_folder = new DB_folder(this.act, Pref.getPref_focusView_folder_tableId(this.act));
 
         // checked Text View: select all
@@ -87,10 +89,8 @@ public class FolderSum_grid {
         for (int i = 0; i < pageCount; i++) {
             checkedTabs.add(i, enAll);
 
-            // todo Move to?
-            long pageSum = Utils.getPageSum(act, dB_folder.getPageTableId(i,false));
             String gridItemStr = dB_folder.getPageTitle(i, false) +
-                    " : " + pageSum;
+                    " : " + pageSumArr.get(i);
 
             gridStrArr.add(i, gridItemStr);
 
@@ -159,6 +159,11 @@ public class FolderSum_grid {
             dB_folder = new DB_folder(act, Pref.getPref_focusView_folder_tableId(act));
             gridStrList = arrayList;
             rootView = root_view;
+        }
+
+        @Override
+        public int getCount() {
+            return dB_folder.getPagesCount(true);
         }
 
         @NonNull

@@ -398,6 +398,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     }
 
     // open folder
+    static List<Long> pageSumArr;
     public static void openFolder()
     {
         System.out.println("MainAct / _openFolder");
@@ -425,6 +426,16 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
         int folderTableId = Pref.getPref_focusView_folder_tableId(mAct);
         folder_sum = Utils.getFolderSum(mAct,folderTableId) ;
+
+        pageSumArr = new ArrayList<>();
+        DB_folder dB_folder = new DB_folder(mAct, Pref.getPref_focusView_folder_tableId(mAct));
+        int  pageCount = dB_folder.getPagesCount(true);
+        dB_folder.open();
+        for (int i = 0; i < pageCount; i++) {
+            long pageSum = Utils.getPageSum(mAct, dB_folder.getPageTableId(i,false));
+            pageSumArr.add(pageSum);
+        }
+        dB_folder.close();
     }
 
 
@@ -841,7 +852,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 mMenu.setGroupVisible(R.id.group_pages_and_more, false);
                 setTitle(R.string.folder_sum);
 
-                mFolderSum = new FolderSum();
+                mFolderSum = new FolderSum(pageSumArr);
                 mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
                 mFragmentTransaction.replace(R.id.content_frame, mFolderSum).addToBackStack("folder sum").commit();
                 return true;
