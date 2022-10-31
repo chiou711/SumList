@@ -683,7 +683,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     public static String getFooterSumString(AppCompatActivity mAct)
     {
         long listSum = getListSum(mAct);
-        long folderSum = getFolderSum(mAct);
+        long folderSum = getFolderSum();
         setListTotal(listSum);
         return mAct.getResources().getString(R.string.footer_text_day)+
                mAct.getResources().getString(R.string.footer_text_total)+
@@ -701,8 +701,13 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     }
 
     // get sum of folder
-    public static long getFolderSum(AppCompatActivity act){
+    public static long getFolderSum(){
         return MainAct.folder_sum;
+    }
+
+    // set folder sum
+    public static void setFolderSum(int change){
+        MainAct.folder_sum += change;
     }
 
     // total

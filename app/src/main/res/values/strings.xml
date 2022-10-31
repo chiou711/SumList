@@ -52,4 +52,5 @@
     <string name="content_updated">Successfully exported.</string>
     <string name="content_update_failed">Error while editing contents.</string>
     <string name="expand_card_view">Expand card view</string>
+    <string name="update_view">Update view</string>
 </resources>

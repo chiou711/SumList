@@ -117,6 +117,8 @@ public class Note_addText extends AppCompatActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		System.out.println("Note_addText / _onDestroy");
+		//todo Just change current item
+		MainAct.pageSumArr = null;
 	}
 
 	// for Rotate screen

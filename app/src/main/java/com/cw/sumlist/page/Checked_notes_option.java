@@ -87,8 +87,7 @@ public class Checked_notes_option {
 
     private final static int BACK = 7;
 
-    public void open_option_grid(final AppCompatActivity act)
-    {
+    public void open_option_grid(final AppCompatActivity act){
         AbsListView gridView;
 
         // get layout inflater
@@ -285,6 +284,9 @@ public class Checked_notes_option {
         }
         mDb_page.close();
 
+        MainAct.pageSumArr = null;
+        MainAct.updatePageSumArr();
+
         TabsHost.reloadCurrentPage();
 
         TabsHost.showFooter(MainAct.mAct);
@@ -307,6 +309,9 @@ public class Checked_notes_option {
             mDb_page.updateNote(rowId, noteTitle, noteBody, quantity, marking, false);// action 1:check all, 0:uncheck all
         }
         mDb_page.close();
+
+        MainAct.pageSumArr = null;
+        MainAct.updatePageSumArr();
 
         TabsHost.reloadCurrentPage();
         TabsHost.showFooter(MainAct.mAct);
@@ -373,12 +378,19 @@ public class Checked_notes_option {
                     }
                     mDb_page.close();
 
+                    MainAct.pageSumArr = null;
+                    MainAct.updatePageSumArr();
+
                     TabsHost.reloadCurrentPage();
                     TabsHost.showFooter(MainAct.mAct);
                 }
                 else if(action == COPY_TO)
                 {
                     DB_page.setFocusPage_tableId(srcPageTableId);
+
+                    MainAct.pageSumArr = null;
+                    MainAct.updatePageSumArr();
+
                     TabsHost.reloadCurrentPage();
                     TabsHost.showFooter(MainAct.mAct);
                 }
@@ -441,6 +453,9 @@ public class Checked_notes_option {
                                         mDb_page.deleteNote(mDb_page.getNoteId(i,false),false);
                                 }
                                 mDb_page.close();
+
+                                MainAct.pageSumArr = null;
+                                MainAct.updatePageSumArr();
 
                                 TabsHost.reloadCurrentPage();
                                 TabsHost.showFooter(MainAct.mAct);

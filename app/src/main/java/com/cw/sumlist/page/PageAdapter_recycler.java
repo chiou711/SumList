@@ -308,7 +308,18 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 				System.out.println("PageAdapter / _getView / btnMarking / _onClick");
 
 				// toggle marking and get new setting
-				toggleNoteMarking(mAct, position);
+				int marking = toggleNoteMarking(mAct, position);
+
+				DB_page db_page = new DB_page(mAct, TabsHost.getCurrentPageTableId());
+				db_page.open();
+				int strBody = db_page.getNoteBody(position, false);
+				int quantity = db_page.getNoteQuantity(position, false);
+				db_page.close();
+
+				if(marking == 1)
+					TabsHost.setFolderSum(strBody*quantity);
+				else
+					TabsHost.setFolderSum(-(strBody*quantity));
 
 				updateDbCache();
 
