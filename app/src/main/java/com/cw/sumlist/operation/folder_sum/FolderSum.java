@@ -70,9 +70,9 @@ public class FolderSum extends Fragment{
 
         // checked Text View: select all
         mCheckTvSelAll = rootView.findViewById(R.id.check_box_select_all_pages_folder_sum);
-		mCheckTvSelAll.setChecked(true);
-        mCheckTvSelAll.setOnClickListener(new OnClickListener()
-        {	@Override
+		mCheckTvSelAll.setChecked(true); // will call selectAllPages(true)
+        mCheckTvSelAll.setOnClickListener(new OnClickListener(){
+			@Override
             public void onClick(View checkSelAll){
                 if(((CheckBox)checkSelAll).isChecked())
                     folderSum_grid.selectAllPages(true);
