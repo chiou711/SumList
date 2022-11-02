@@ -427,21 +427,20 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
         updatePageSumArr();
     }
 
+    // update page sum array
     public static void updatePageSumArr(){
-        if(pageSumArr == null){
-            Toast.makeText(mAct,R.string.update_view,Toast.LENGTH_SHORT).show();
-            folder_sum = 0;
-            pageSumArr = new ArrayList<>();
-            DB_folder dB_folder = new DB_folder(mAct, Pref.getPref_focusView_folder_tableId(mAct));
-            int pageCount = dB_folder.getPagesCount(true);
-            dB_folder.open();
-            for (int i = 0; i < pageCount; i++) {
-                long pageSum = Utils.getPageSum(mAct, dB_folder.getPageTableId(i, false));
-                pageSumArr.add(pageSum);
-                folder_sum += pageSum;
-            }
-            dB_folder.close();
+        Toast.makeText(mAct,R.string.update_view,Toast.LENGTH_SHORT).show();
+        folder_sum = 0;
+        pageSumArr = new ArrayList<>();
+        DB_folder dB_folder = new DB_folder(mAct, Pref.getPref_focusView_folder_tableId(mAct));
+        int pageCount = dB_folder.getPagesCount(true);
+        dB_folder.open();
+        for (int i = 0; i < pageCount; i++) {
+            long pageSum = Utils.getPageSum(mAct, dB_folder.getPageTableId(i, false));
+            pageSumArr.add(pageSum);
+            folder_sum += pageSum;
         }
+        dB_folder.close();
     }
 
 
