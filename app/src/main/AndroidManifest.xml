@@ -26,6 +26,7 @@
             android:theme="@style/MyTheme"
             android:launchMode="singleTop"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,6 +45,7 @@
         <activity android:name="com.cw.sumlist.note_add.Note_addText"
                   android:theme="@style/MyTheme"
                   android:windowSoftInputMode="adjustPan"
+                  android:screenOrientation="portrait"
                   android:parentActivityName="com.cw.sumlist.main.MainAct">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -51,9 +53,11 @@
         </activity>
         <activity android:name="com.cw.sumlist.note_edit.Note_edit"
                  android:theme="@style/MyTheme"
+                 android:screenOrientation="portrait"
                  android:windowSoftInputMode="adjustPan"/>
         <activity android:name="com.cw.sumlist.note.Note"
                   android:theme="@style/MyTheme"
+                  android:screenOrientation="portrait"
                   android:exported="true">
             <intent-filter android:priority="0">
                 <action android:name="android.intent.action.MEDIA_BUTTON" />

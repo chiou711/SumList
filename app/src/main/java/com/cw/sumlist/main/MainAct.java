@@ -21,6 +21,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.cw.sumlist.R;
 import com.cw.sumlist.Utils;
@@ -49,6 +50,7 @@ import com.mobeta.android.dslv.DragSortListView;
 
 import android.content.DialogInterface;
 import android.os.Build;
+import android.os.PowerManager;
 import android.os.StrictMode;
 import android.content.Context;
 import android.content.Intent;
@@ -56,6 +58,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.OnBackStackChangedListener;
 import androidx.fragment.app.FragmentTransaction;
@@ -71,6 +74,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import static com.cw.sumlist.define.Define.PREFERENCE_ENABLE_EXPAND_CARD_VIEW;
+import static com.cw.sumlist.folder.FolderUi.startTabsHostRun;
 
 public class MainAct extends AppCompatActivity implements OnBackStackChangedListener
 {
@@ -78,7 +82,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public static CharSequence mAppTitle;
     public Context mContext;
     public Config mConfigFragment;
-//    public FolderSum mFolderSum;
     public FolderSum mFolderSum;
     public About mAboutFragment;
     public static Menu mMenu;
@@ -100,8 +103,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
 	// Main Act onCreate
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         /**
@@ -162,8 +164,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
         bEULA_accepted = dialog_EULA.isEulaAlreadyAccepted();
 
         // Show dialog of EULA
-        if (!bEULA_accepted)
-        {
+        if (!bEULA_accepted) {
             // Ok button listener
             dialog_EULA.clickListener_Ok = (DialogInterface dialog, int i) -> {
                 dialog_EULA.applyPreference();
@@ -218,8 +219,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     }
 
     // Do major create operation
-    void doCreate()
-    {
+    void doCreate() {
         System.out.println("MainAct / _doCreate");
 
         mFolderTitles = new ArrayList<>();
@@ -244,6 +244,34 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
         if (bEULA_accepted)
             configLayoutView(); //createAssetsFile inside
+
+        mAct = this;
+
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        if(bEULA_accepted) {
+            if(drawer != null)
+                drawer.drawerToggle.syncState();
+
+            //   get folder table id by preference
+            DB_drawer dbDrawer = new DB_drawer(mAct);
+            int foldersCnt = dbDrawer.getFoldersCount(true);
+            int focus_folder_tableId =  Pref.getPref_focusView_folder_tableId(mAct);
+
+            // select focus folder view by preference
+            for (int pos=0;pos< foldersCnt;pos++)
+            {
+                if(focus_folder_tableId == dbDrawer.getFolderTableId(pos,true))
+                    FolderUi.setFocus_folderPos(pos);
+            }
+        }
+
+        if (bEULA_accepted) {
+            if (!mAct.isDestroyed()) {
+                System.out.println("MainAct / _onResumeFragments / mAct is not Destroyed()");
+                openFolder();
+            } else
+                System.out.println("MainAct / _onResumeFragments / mAct is Destroyed()");
+        }
     }
 
     // key event: 1 from bluetooth device 2 when notification bar dose not shown
@@ -357,27 +385,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     protected void onResume() {
         super.onResume();
     	System.out.println("MainAct / _onResume");
-
-    	mAct = this;
-
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        if(bEULA_accepted) {
-        	if(drawer != null)
-                drawer.drawerToggle.syncState();
-
-            //   get folder table id by preference
-            DB_drawer dbDrawer = new DB_drawer(mAct);
-            int foldersCnt = dbDrawer.getFoldersCount(true);
-            int focus_folder_tableId =  Pref.getPref_focusView_folder_tableId(mAct);
-
-            // select focus folder view by preference
-            for (int pos=0;pos< foldersCnt;pos++)
-            {
-                if(focus_folder_tableId == dbDrawer.getFolderTableId(pos,true))
-                    FolderUi.setFocus_folderPos(pos);
-            }
-        }
-
     }
 
 
@@ -388,16 +395,25 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
         if (bEULA_accepted) {
             if(mFragmentManager != null)
                 mFragmentManager.popBackStack();
+        }
 
-            if (!mAct.isDestroyed()) {
-                System.out.println("MainAct / _onResumeFragments / mAct is not Destroyed()");
-                openFolder();
+        // will call Drawer / _onDrawerClosed
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        if(drawerLayout != null) {
+            // use Runnable to make sure only one folder background is seen
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            boolean isScreenOn = Objects.requireNonNull(pm).isScreenOn();
+            if( isScreenOn) {
+                System.out.println("FolderUi / _selectFolder / screen ON");
+                startTabsHostRun();
             } else
-                System.out.println("MainAct / _onResumeFragments / mAct is Destroyed()");
+                System.out.println("FolderUi / _selectFolder / screen OFF");
         }
     }
 
     // open folder
+    static int current_folder_position;
     public static List<Long> pageSumArr;
     public static void openFolder()
     {
@@ -412,7 +428,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 if(dB_drawer.getFolderTableId(folder_pos,true) == pref_focus_table_id) {
                     // select folder
                     FolderUi.selectFolder(mAct, folder_pos);
-
+                    current_folder_position = folder_pos;
                     // set focus folder position
                     FolderUi.setFocus_folderPos(folder_pos);
                 }
@@ -429,7 +445,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
     // update page sum array
     public static void updatePageSumArr(){
-        Toast.makeText(mAct,R.string.update_view,Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mAct,R.string.update_view,Toast.LENGTH_SHORT).show();
         folder_sum = 0;
         pageSumArr = new ArrayList<>();
         DB_folder dB_folder = new DB_folder(mAct, Pref.getPref_focusView_folder_tableId(mAct));
@@ -467,7 +483,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
 		drawer.drawerToggle.syncState();
 
-        FolderUi.startTabsHostRun();
+        startTabsHostRun();
     }
 
 
