@@ -2,16 +2,18 @@
      	android:id="@+id/selectPageDlg"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-  		android:orientation="vertical" >
+		android:background="@drawable/background_fill"
+		android:orientation="vertical" >
 	        
    	<TextView
-		 android:id="@+id/select_list_title"
-		 android:layout_width="match_parent" 
-		 android:layout_height="35dp"
-		 android:textSize="22sp" android:textStyle="bold"
-		 android:gravity="center_vertical" 
-		 android:text="@string/config_select_pages_title"
-		 android:textAppearance="?android:attr/textAppearanceLarge"
+		android:id="@+id/select_list_title"
+		android:layout_width="match_parent"
+		android:layout_height="35dp"
+		android:textSize="22sp" android:textStyle="bold"
+		android:gravity="center_vertical"
+		android:text="@string/config_select_pages_title"
+		android:textColor="@color/colorWhite"
+		android:textAppearance="?android:attr/textAppearanceLarge"
 		 android:paddingLeft="5dp"
 		 />
 	<LinearLayout
@@ -29,6 +31,7 @@
 		android:layout_weight="1"
         android:text="@string/checked_notes_check_all"
         android:textSize="20sp"
+		android:textColor="@color/colorWhite"
 		android:paddingStart="5dp"
 		android:paddingEnd="5dp"
         android:gravity="center_vertical"

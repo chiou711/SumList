@@ -9,10 +9,15 @@
         <item name="windowActionBar">false</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:itemBackground">@color/bar_color</item>
+        <item name="android:itemTextAppearance">@style/customMenuTextAppearance</item>
         <!-- Change Overflow Menu ListView Item Height & Property -->
         <!--<item name="android:listPreferredItemHeightSmall">50dp</item>-->
     </style>
 
+    <style name="customMenuTextAppearance" >
+        <item name="android:textColor">@android:color/white</item>
+    </style>
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
