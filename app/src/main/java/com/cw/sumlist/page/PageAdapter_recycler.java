@@ -527,7 +527,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 		i.putExtra(DB_page.KEY_NOTE_TITLE, db_page.getNoteTitle_byId(rowId));
 		i.putExtra(DB_page.KEY_NOTE_BODY, db_page.getNoteBody_byId(rowId));
 		i.putExtra(DB_page.KEY_NOTE_QUANTITY, db_page.getNoteQuantity_byId(rowId));
-		mAct.startActivity(i);
+		MainAct.dataActivityResultLauncher.launch(i);
 	}
 
 	// set strike through

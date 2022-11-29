@@ -207,13 +207,6 @@ public class Note_edit extends AppCompatActivity
         noteId = note_edit_ui.saveStateInDB(noteId, enSaveDb);
     }
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		//todo Just change current item
-		MainAct.pageSumArr = null;
-	}
-
 	// for Rotate screen
     @Override
     protected void onSaveInstanceState(Bundle outState) {

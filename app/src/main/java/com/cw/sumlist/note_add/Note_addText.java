@@ -113,14 +113,6 @@ public class Note_addText extends AppCompatActivity {
 		imm.hideSoftInputFromWindow(titleEditText.getWindowToken(), 0);
 	}
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		System.out.println("Note_addText / _onDestroy");
-		//todo Just change current item
-		MainAct.pageSumArr = null;
-	}
-
 	// for Rotate screen
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -130,8 +122,7 @@ public class Note_addText extends AppCompatActivity {
 	}
 
 	@Override
-	public void onBackPressed()
-	{
+	public void onBackPressed(){
 		stopEdit();
 	}
 
@@ -348,8 +339,7 @@ public class Note_addText extends AppCompatActivity {
     void stopEdit(){
 	    if(isTextAdded())
 		    confirmUpdateChangeDlg();
-	    else
-	    {
+	    else {
 		    deleteNote(rowId);
 		    enSaveDb = false;
 		    NavUtils.navigateUpFromSameTask(this);

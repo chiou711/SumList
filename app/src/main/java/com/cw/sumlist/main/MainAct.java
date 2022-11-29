@@ -58,6 +58,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.OnBackStackChangedListener;
@@ -100,6 +102,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public static boolean isEdited_link;
     public static int edit_position;
     public static long folder_sum;
+    public static ActivityResultLauncher<Intent> dataActivityResultLauncher;
 
 	// Main Act onCreate
     @Override
@@ -217,6 +220,14 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
         isEdited_link = false;
         edit_position = 0;
+
+        // register ForActivityResult
+        dataActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    System.out.println("MainAct / _onActivityResult / ADD_NEW_ACTIVITY");
+                    updatePageSumArr();
+                });
     }
 
     // Do major create operation
@@ -817,7 +828,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 else
                     intent.putExtra("extra_ADD_NEW_TO_TOP", "false");
 
-                startActivity(intent);
+                dataActivityResultLauncher.launch(intent);
                 return true;
 
             case MenuId.CHECKED_OPERATION:
