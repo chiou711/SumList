@@ -227,6 +227,10 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 result -> {
                     System.out.println("MainAct / _onActivityResult / ADD_NEW_ACTIVITY");
                     updatePageSumArr();
+
+                    // update new folder sum
+                    int folder_table_id = Pref.getPref_focusView_folder_tableId(this);
+                    Pref.setPref_folder_sum(this,folder_table_id,folder_sum);
                 });
     }
 
@@ -452,7 +456,15 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 mAct.getSupportActionBar().setTitle(mFolderTitle);
         }
 
-        updatePageSumArr();
+        int folder_table_id = Pref.getPref_focusView_folder_tableId(mAct);
+
+        // set folder_sum
+        if(Pref.getPref_folder_sum(mAct,folder_table_id) >= 0)
+            folder_sum = Pref.getPref_folder_sum(mAct,folder_table_id);
+        else {
+            updatePageSumArr();// first time
+            Pref.setPref_folder_sum(mAct,folder_table_id,folder_sum);
+        }
     }
 
     // update page sum array
@@ -884,6 +896,9 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 mMenu.setGroupVisible(R.id.group_notes, false); //hide the menu
                 mMenu.setGroupVisible(R.id.group_pages_and_more, false);
                 setTitle(R.string.folder_sum);
+
+
+                updatePageSumArr();
 
                 mFolderSum = new FolderSum(pageSumArr);
                 mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);

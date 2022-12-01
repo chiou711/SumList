@@ -138,4 +138,19 @@ public class Pref
         return strLocation;
     }
 
+    // Set folder sum by folder table id
+    public static void setPref_folder_sum(Activity act, int folder_table_id, long sum ) {
+		System.out.println("Pref / _setPref_folder_sum / sum = " + sum);
+        SharedPreferences pref = act.getSharedPreferences("sum", 0);
+        String keyName = "KEY_FOLDER_SUM".concat(String.valueOf(folder_table_id));
+        pref.edit().putLong(keyName, sum).apply();
+    }
+
+    // Get folder sum by folder table id
+    public static Long getPref_folder_sum(Activity act,int folder_table_id) {
+        SharedPreferences pref = act.getSharedPreferences("sum", 0);
+        String keyName = "KEY_FOLDER_SUM".concat(String.valueOf(folder_table_id));
+        return pref.getLong(keyName, -1); // default sum is -1
+    }
+
 }
