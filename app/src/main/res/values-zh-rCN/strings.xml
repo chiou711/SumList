@@ -40,6 +40,7 @@
     <string name="page_operation">清单操作</string>
     <string name="settings_operation">设置</string>
     <string name="folder_sum">清单夾總和</string>
+    <string name="month_summary">月总结</string>
     <string name="folder_sum_title">选择清单：</string>
     <string name="set_enable">启用</string>
     <string name="set_disable">停用</string>

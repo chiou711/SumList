@@ -46,6 +46,9 @@ public class MenuId {
         // folder sum
         static final int FOLDER_SUM = R.id.FOLDER_SUM;
 
+        // month summary
+        static final int MONTH_SUMMARY = R.id.MONTH_SUMMARY;
+
         // config
         static final int CONFIG = R.id.CONFIG;
 

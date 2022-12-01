@@ -90,10 +90,18 @@
             android:title="@string/folder_sum"
             />
 
+        <!-- month summary -->
+        <item
+            android:id="@+id/MONTH_SUMMARY"
+            android:orderInCategory="5"
+            app:showAsAction="never"
+            android:title="@string/month_summary"
+            />
+
         <!-- Config -->
         <item
             android:id="@+id/CONFIG"
-            android:orderInCategory="5"
+            android:orderInCategory="6"
             app:showAsAction="never"
             android:title="@string/settings_operation"
             />
@@ -101,7 +109,7 @@
         <!-- About -->
         <item
             android:id="@+id/ABOUT"
-            android:orderInCategory="6"
+            android:orderInCategory="7"
             app:showAsAction="never"
             android:title="@string/about_menu"
         />

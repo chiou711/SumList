@@ -40,6 +40,7 @@
     <string name="page_operation">List operation</string>
     <string name="settings_operation">Settings</string>
     <string name="folder_sum">Folder Sum</string>
+    <string name="month_summary">Month Summary</string>
     <string name="folder_sum_title">Select lists:</string>
     <string name="set_enable">Enable</string>
     <string name="set_disable">Disable</string>

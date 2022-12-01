@@ -34,6 +34,7 @@
 		android:gravity="center_vertical"
 		android:text="@string/about_open_source_licenses"
 		android:textStyle="normal"
+		android:textColor="@color/colorWhite"
 		android:paddingLeft="5dp"
 		android:textSize="18sp"/>
 	</LinearLayout>
@@ -62,6 +63,7 @@
 		android:layout_weight="1"
 		android:text="@string/about_version"
 		android:textStyle="normal"
+		android:textColor="@color/colorWhite"
 		android:paddingLeft="5dp"
 		android:textSize="18sp"/>
 	</LinearLayout>

@@ -41,10 +41,8 @@ public class FolderSum extends Fragment{
 	CheckBox mCheckTvSelAll;
 	FolderSum_grid folderSum_grid;
     TextView textFolderSum;
-	List<Long> pageSumArr;
 
-	public FolderSum(List<Long> _pageSumArr){
-		pageSumArr = _pageSumArr;
+	public FolderSum(){
 	}
 
 	GridView gridview_sumlist;
@@ -93,8 +91,10 @@ public class FolderSum extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+	    MainAct.updatePageSumArr();
+
         //show list for selection
-        folderSum_grid = new FolderSum_grid(act,rootView , gridview_sumlist, pageSumArr);
+        folderSum_grid = new FolderSum_grid(act,rootView , gridview_sumlist, MainAct.pageSumArr);
         mCheckTvSelAll.callOnClick();
     }
 

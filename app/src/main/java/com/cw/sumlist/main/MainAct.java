@@ -27,6 +27,7 @@ import com.cw.sumlist.R;
 import com.cw.sumlist.Utils;
 import com.cw.sumlist.config.About;
 import com.cw.sumlist.config.Config;
+import com.cw.sumlist.config.MonthSummary;
 import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.drawer.Drawer;
@@ -86,6 +87,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public Config mConfigFragment;
     public FolderSum mFolderSum;
     public About mAboutFragment;
+    public MonthSummary mMonthSummay;
     public static Menu mMenu;
     public static List<String> mFolderTitles;
     public static AppCompatActivity mAct;//TODO static issue
@@ -898,11 +900,19 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 setTitle(R.string.folder_sum);
 
 
-                updatePageSumArr();
-
-                mFolderSum = new FolderSum(pageSumArr);
+                mFolderSum = new FolderSum();
                 mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
                 mFragmentTransaction.replace(R.id.content_frame, mFolderSum).addToBackStack("folder sum").commit();
+                return true;
+
+            case MenuId.MONTH_SUMMARY:
+                mMenu.setGroupVisible(R.id.group_notes, false); //hide the menu
+                mMenu.setGroupVisible(R.id.group_pages_and_more, false);
+                setTitle(R.string.month_summary);
+
+                mMonthSummay = new MonthSummary();
+                mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+                mFragmentTransaction.replace(R.id.content_frame, mMonthSummay).addToBackStack("config").commit();
                 return true;
 
             case MenuId.CONFIG:
