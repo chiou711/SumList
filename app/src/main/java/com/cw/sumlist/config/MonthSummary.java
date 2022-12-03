@@ -17,75 +17,105 @@
 package com.cw.sumlist.config;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.cw.sumlist.R;
+import com.cw.sumlist.db.DB_folder;
+import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.util.BaseBackPressedListener;
+import com.cw.sumlist.util.preferences.Pref;
 
 import androidx.fragment.app.Fragment;
-import de.psdev.licensesdialog.LicensesDialogFragment;
 
 public class MonthSummary extends Fragment
 {
 
-	public MonthSummary(){}
 	static View mRootView;
+	Activity act;
+	public MonthSummary(){}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		System.out.println("================ About / onCreateView ==================");
+		act = getActivity();
 
 		mRootView = inflater.inflate(R.layout.month_summary, container, false);
-
-		aboutDialog();
+		showSummaryDialog();
 
 		// set Back pressed listener
-		((MainAct)getActivity()).setOnBackPressedListener(new BaseBackPressedListener(MainAct.mAct));
+		((MainAct)act).setOnBackPressedListener(new BaseBackPressedListener(MainAct.mAct));
 
 		return mRootView;
 	}
 
-    // About dialog
-	void aboutDialog()
+	// Show summary dialog
+	void showSummaryDialog()
 	{
-		   AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		   PackageInfo pInfo = null;
-		   String version_name = "NA";
-		   int version_code = 0;
-           try 
-           {
-        	   Context context = getActivity();
-        	   pInfo = context.getPackageManager()
-        			   		  .getPackageInfo(context.getPackageName(),PackageManager.GET_META_DATA);
-           } catch (NameNotFoundException e) {
-        	   e.printStackTrace();
-           }
+		AlertDialog.Builder builder = new AlertDialog.Builder(act);
+		String title = (String) MainAct.mFolderTitle;
+		title = title.concat(" ( ").concat(String.valueOf(MainAct.folder_sum)).concat(" ) ");
+        String msgStr = act.getResources().getString(R.string.month_summary) +
+                        " : " + title + "\n" ;
 
-           if(pInfo != null)
-           {
-        	   version_name = pInfo.versionName;
-        	   version_code = pInfo.versionCode;
-           }
-           String msgStr = getActivity().getResources().getString(R.string.about_version_name) +
-        		   			" : " + version_name + "\n" + 
-        		   		   getActivity().getResources().getString(R.string.about_version_code) +
-           					" : " + version_code + "\n\n" + 
-   		   				   getActivity().getResources().getString(R.string.EULA_string);
-           
-		   builder.setTitle(R.string.about_version)
-		   		  .setMessage(msgStr)
-				  .setNegativeButton(R.string.notices_close, (dialog1, which1) ->
-						  getActivity().getSupportFragmentManager().popBackStack())
-				  .show();
+	    builder.setTitle(msgStr)
+	          .setMessage(getSummaryString())
+			  .setNegativeButton(R.string.notices_close, (dialog1, which1) ->
+					  getActivity().getSupportFragmentManager().popBackStack())
+			  .show();
 	}
+
+	// get summary string
+	public String getSummaryString(){
+		DB_folder dB_folder = new DB_folder(act , Pref.getPref_focusView_folder_tableId(act));
+		int pages_count = dB_folder.getPagesCount(true);
+		String summaryStr = "";
+
+		for (int i = 0; i < pages_count; i++) {
+			// page title
+			String pageTitle = dB_folder.getPageTitle(i,true);
+
+			DB_page db_page = new DB_page(act,dB_folder.getPageTableId(i,true));
+			int notes_count = db_page.getNotesCount(true);
+
+			// notes
+			if(notes_count > 0) {
+				// page title
+				summaryStr = summaryStr.concat(pageTitle);
+				summaryStr = summaryStr.concat("\n");
+
+				db_page.open();
+				for(int j=0; j< notes_count;j++) {
+					// note mark
+					if(db_page.getNoteMarking(j,false) == 0)
+						summaryStr = summaryStr.concat("\t").concat("? ");
+					else
+						summaryStr = summaryStr.concat("\t");
+
+					// note title
+					summaryStr = summaryStr.concat(db_page.getNoteTitle(j,false));
+
+					// note quantity
+					summaryStr = summaryStr.concat(" x ");
+					summaryStr = summaryStr.concat(String
+							.valueOf(db_page.getNoteQuantity(j,false)));
+
+					// note price
+					summaryStr = summaryStr.concat(" = ");
+					summaryStr = summaryStr.concat(String.valueOf(db_page.getNoteBody(j,false)));
+					summaryStr = summaryStr.concat("\n");
+				}
+				db_page.close();
+
+				summaryStr = summaryStr.concat("\n");
+			}
+		}
+		return summaryStr;
+	}
+
 }
