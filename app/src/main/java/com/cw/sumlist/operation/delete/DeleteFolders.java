@@ -116,10 +116,10 @@ public class DeleteFolders extends Fragment{
                             })
                             .setPositiveButton(R.string.confirm_dialog_button_yes, new DialogInterface.OnClickListener()
                             {   @Override
-                            public void onClick(DialogInterface dialog1, int which1)
-                            {
-                                doDeleteFolders();
-                            }
+                                public void onClick(DialogInterface dialog1, int which1)
+                                {
+                                    doDeleteFolders();
+                                }
                             })
                             .show();//warning:end
                 }

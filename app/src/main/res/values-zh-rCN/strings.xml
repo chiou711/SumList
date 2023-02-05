@@ -54,4 +54,7 @@
     <string name="content_update_failed">Error while editing contents.</string>
     <string name="expand_card_view">展开卡片视图</string>
     <string name="update_view">更新视图</string>
+    <string name="mail">邮寄</string>
+    <string name="mail_notes_dlg_title">发送笔记</string>
+    <string name="mail_notes_dlg_message">收件人的电子邮件地址:</string>
 </resources>

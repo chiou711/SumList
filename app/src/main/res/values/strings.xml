@@ -54,4 +54,7 @@
     <string name="content_update_failed">Error while editing contents.</string>
     <string name="expand_card_view">Expand card view</string>
     <string name="update_view">Update view</string>
+    <string name="mail">Mail</string>
+    <string name="mail_notes_dlg_title">Mail notes</string>
+    <string name="mail_notes_dlg_message">Receiver e-Mail address:</string>
 </resources>

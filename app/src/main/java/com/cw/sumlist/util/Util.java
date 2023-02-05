@@ -16,6 +16,13 @@
 
 package com.cw.sumlist.util;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -37,10 +44,9 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import androidx.appcompat.app.AppCompatActivity;
@@ -386,23 +392,7 @@ public class Util
 		return empty;
 	}
 	
-    public static int mResponseCode;
-	public static int oneSecond = 1000;
-    
-	// check network connection
-    public static boolean isNetworkConnected(Activity act)
-    {
-    	final ConnectivityManager conMgr = (ConnectivityManager) act.getSystemService(Context.CONNECTIVITY_SERVICE);
-    	final NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
-    	if (activeNetwork != null && activeNetwork.isConnected()) {
-    		System.out.println("network is connected");
-    		return true;
-    	} else {
-    		System.out.println("network is NOT connected");
-    		return false;
-    	} 
-    }
-    
+
 	static public boolean isLandscapeOrientation(Activity act)
 	{
 		int currentOrientation = act.getResources().getConfiguration().orientation;
@@ -520,6 +510,62 @@ public class Util
 			View decorView = act.getWindow().getDecorView();
 			int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;//full screen
 			decorView.setSystemUiVisibility(uiOptions);
+		}
+	}
+
+	// Export data to be SD Card file
+	public void exportToSdCardFile(String filename,String data)
+	{
+		String dirString = mContext.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+				.toString();
+
+		File dir = new File(dirString);
+
+		// create directory
+		if(!dir.isDirectory())
+			dir.mkdir();
+
+		// create file
+		File file = new File(dir, filename);
+
+		if(!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+//		file.setReadOnly();
+
+		BufferedWriter bw = null;
+		OutputStreamWriter osw = null;
+
+		int BUFFER_SIZE = 8192;
+
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(file.getPath());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			osw = new OutputStreamWriter(fos, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		bw = new BufferedWriter(osw,BUFFER_SIZE);
+
+		try {
+			bw.write(data);
+			bw.flush();
+			osw.close();
+			bw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -54,4 +54,7 @@
     <string name="content_update_failed">Error while editing contents.</string>
     <string name="expand_card_view">展開卡片視圖</string>
     <string name="update_view">更新視圖</string>
+    <string name="mail">郵寄</string>
+    <string name="mail_notes_dlg_title">寄送記事</string>
+    <string name="mail_notes_dlg_message">收件人的電子郵件地址:</string>
 </resources>
