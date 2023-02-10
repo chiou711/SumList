@@ -14,4 +14,5 @@
     <string name="config_select_pages_title">选择清单:</string>
     <string name="config_select_pages_delete_title">选择要删除的清单:</string>
     <string name="config_select_folders_title">选择要删除的清单夹:</string>
+    <string name="config_select_sum_folders_title">选择文件夹以获取总和:</string>
 </resources>

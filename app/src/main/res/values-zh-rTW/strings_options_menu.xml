@@ -14,7 +14,8 @@
     <string name="rearrange_page_right">向右</string>
     <string name="edit_page_color_title">設定顏色:</string>
     <string name="settings">設定</string>
-    <string name="add_new_folder">新增清單夾</string>
-    <string name="drag_folder">拖放清單夾</string>
-    <string name="delete_folders">刪除清單夾</string>
+    <string name="add_new_folder">新增月清單夾</string>
+    <string name="drag_folder">拖放月清單夾</string>
+    <string name="delete_folders">刪除月清單夾</string>
+    <string name="sum_folders">總結月文件夾</string>
 </resources>

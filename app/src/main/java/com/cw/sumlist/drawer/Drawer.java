@@ -16,6 +16,7 @@
 
 package com.cw.sumlist.drawer;
 
+import com.cw.sumlist.operation.sum_folders.SumFolders;
 import com.google.android.material.navigation.NavigationView;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.view.GravityCompat;
@@ -67,6 +68,7 @@ public class Drawer {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
 
                 menuItem.setChecked(true);
+                DB_drawer dB_drawer = new DB_drawer(act);
                 switch (menuItem.getItemId()) {
                     case R.id.ADD_NEW_FOLDER:
                         FolderUi.renewFirstAndLast_folderId();
@@ -104,10 +106,7 @@ public class Drawer {
                         return true;
 
                     case R.id.DELETE_FOLDERS:
-
-                        DB_drawer dB_drawer = new DB_drawer(act);
-                        if(dB_drawer.getFoldersCount(true)>0)
-                        {
+                        if(dB_drawer.getFoldersCount(true)>0){
                             closeDrawer();
                             MainAct.mMenu.setGroupVisible(R.id.group_notes, false); //hide the menu
                             DeleteFolders delFoldersFragment = new DeleteFolders();
@@ -118,6 +117,17 @@ public class Drawer {
                         else
                         {
 //                            Toast.makeText(act, R.string.config_export_none_toast, Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+
+                    case R.id.SUM_FOLDERS:
+                        if(dB_drawer.getFoldersCount(true)>0){
+                            closeDrawer();
+                            MainAct.mMenu.setGroupVisible(R.id.group_notes, false); //hide the menu
+                            SumFolders sumFoldersFragment = new SumFolders();
+                            MainAct.mFragmentTransaction = MainAct.mAct.getSupportFragmentManager().beginTransaction();
+                            MainAct.mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+                            MainAct.mFragmentTransaction.replace(R.id.content_frame, sumFoldersFragment).addToBackStack("delete_folders").commit();
                         }
                         return true;
 

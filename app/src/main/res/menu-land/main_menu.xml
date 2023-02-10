@@ -149,6 +149,12 @@
             app:showAsAction="never"
             android:title="@string/delete_folders"
             android:icon="@drawable/ic_delete"/>
+        <item
+            android:id="@+id/SUM_FOLDERS"
+            android:orderInCategory="4"
+            app:showAsAction="ifRoom"
+            android:title="@string/sum_folders"
+            android:icon="@drawable/ic_menu_add"/>
     </menu>
     </item>
     </group>

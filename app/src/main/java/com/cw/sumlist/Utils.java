@@ -90,8 +90,11 @@ public class Utils {
             // get sum of each page
             int pageTableId = mDb_folder.getPageTableId(i,false);
             folderSum += Utils.getPageSum(act,pageTableId);
+            System.out.println("Utils / _getFolderSum / pageTableId = " + pageTableId +
+                    " , folderSum = " + folderSum);
         }
         mDb_folder.close();
+        System.out.println("Utils / _getFolderSum / ");
         return folderSum;
     }
 

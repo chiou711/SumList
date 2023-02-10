@@ -37,6 +37,7 @@ import com.cw.sumlist.note_add.Note_addText;
 import com.cw.sumlist.operation.delete.DeleteFolders;
 import com.cw.sumlist.operation.delete.DeletePages;
 import com.cw.sumlist.operation.folder_sum.FolderSum;
+import com.cw.sumlist.operation.sum_folders.SumFolders;
 import com.cw.sumlist.page.Checked_notes_option;
 import com.cw.sumlist.page.PageUi;
 import com.cw.sumlist.tabs.TabsHost;
@@ -829,6 +830,18 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                     DeleteFolders delFoldersFragment = new DeleteFolders();
                     mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
                     mFragmentTransaction.replace(R.id.content_frame, delFoldersFragment).addToBackStack("delete_folders").commit();
+                }
+                return true;
+
+            // for landscape layout
+            case MenuId.SUM_FOLDERS:
+                if(dB_drawer.getFoldersCount(true)>0){
+                    drawer.closeDrawer();
+                    mMenu.setGroupVisible(R.id.group_notes, false); //hide the menu
+                    SumFolders sumFoldersFragment = new SumFolders();
+                    mFragmentTransaction = mAct.getSupportFragmentManager().beginTransaction();
+                    mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+                    mFragmentTransaction.replace(R.id.content_frame, sumFoldersFragment).addToBackStack("delete_folders").commit();
                 }
                 return true;
 
