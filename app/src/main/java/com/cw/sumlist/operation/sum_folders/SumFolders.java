@@ -66,28 +66,12 @@ public class SumFolders extends Fragment{
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.select_page_list, container, false);
+		rootView = inflater.inflate(R.layout.sum_folders_list, container, false);
         act = MainAct.mAct;
 
 		// title
 		title = (TextView) rootView.findViewById(R.id.select_list_title);
         title.setText(R.string.config_select_sum_folders_title);
-
-        // checked Text View: select all
-//        mCheckTvSelAll = (CheckedTextView) rootView.findViewById(R.id.chkSelectAllPages);
-//        mCheckTvSelAll.setOnClickListener(new OnClickListener()
-//        {	@Override
-//            public void onClick(View checkSelAll)
-//            {
-//                boolean currentCheck = ((CheckedTextView)checkSelAll).isChecked();
-//                ((CheckedTextView)checkSelAll).setChecked(!currentCheck);
-//
-//                if(((CheckedTextView)checkSelAll).isChecked())
-//                    list_sumFolders.selectAllPages(true);
-//                else
-//                    list_sumFolders.selectAllPages(false);
-//            }
-//        });
 
         // list view: selecting which pages to send
         mListView = (ListView)rootView.findViewById(R.id.listView1);
@@ -95,16 +79,13 @@ public class SumFolders extends Fragment{
         //show list for selection
         list_sumFolders = new List_sumFolders(act,rootView , mListView);
 
-        long sumFolders;
-        sumFolders = list_sumFolders.getSumFolders();
-
         // OK button: click to do next
         btnSelPageOK = (Button) rootView.findViewById(R.id.btnSelPageOK);
 
         // replace with Sum icon
         btnSelPageOK.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_menu_add, 0, 0, 0);
 //        btnSelPageOK.setText(R.string.config_delete_DB_btn);
-        btnSelPageOK.setText(String.valueOf(sumFolders));
+        btnSelPageOK.setText(String.valueOf(list_sumFolders.sumFolders));
 
         btnSelPageOK.setOnClickListener(new OnClickListener() {
             @Override
@@ -254,10 +235,6 @@ public class SumFolders extends Fragment{
         else if(foldersCnt ==0)
             Pref.setPref_focusView_folder_tableId(act, 1);
         dbDrawer.close();
-
-        // set scroll X
-//        int scrollX = 0; //over the last scroll X
-//        Pref.setPref_focusView_scrollX_byFolderTableId(act, scrollX );
 
         list_sumFolders = new List_sumFolders(act,rootView , mListView);
     }
