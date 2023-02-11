@@ -89,25 +89,12 @@ public class List_sumFolders {
 
         dB_drawer.open();
         count = dB_drawer.getFoldersCount(false);
-        for(int i = 0; i< count; i++)
-        {
-            CheckedTextView chkTV = (CheckedTextView) mListView.findViewById(R.id.checkTV);
+        for(int i = 0; i< count; i++){
             mCheckedArr.set(i, enAll);
             mListStrArr.set(i, dB_drawer.getFolderTitle(i,false)
                                         .concat(" : ")
                                         .concat(String.valueOf(mListLongArr.get(i)))
                             );
-
-            int style = 1;
-
-            if( enAll)
-                chkTV.setCompoundDrawablesWithIntrinsicBounds(style%2 == 1 ?
-                R.drawable.btn_check_on_holo_light:
-                R.drawable.btn_check_on_holo_dark,0,0,0);
-            else
-                chkTV.setCompoundDrawablesWithIntrinsicBounds(style%2 == 1 ?
-                R.drawable.btn_check_off_holo_light:
-                R.drawable.btn_check_off_holo_dark,0,0,0);
         }
         dB_drawer.close();
 
@@ -220,6 +207,7 @@ public class List_sumFolders {
 
             // set checked text view
             CheckedTextView chkTV = (CheckedTextView) mView.findViewById(R.id.checkTV);
+
             // show style
             int style = 1;
             chkTV.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
@@ -237,17 +225,19 @@ public class List_sumFolders {
             chkTV.setChecked(mCheckedArr.get(position));
 
             // set for contrast
-            if( chkTV.isChecked())
-            // note: have to remove the following in XML file
-            // android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
-            // otherwise, setCompoundDrawablesWithIntrinsicBounds will not work on ICS
-                chkTV.setCompoundDrawablesWithIntrinsicBounds(style%2 == 1 ?
-                R.drawable.btn_check_on_holo_light:
-                R.drawable.btn_check_on_holo_dark,0,0,0);
-            else
-                chkTV.setCompoundDrawablesWithIntrinsicBounds(style%2 == 1 ?
-                R.drawable.btn_check_off_holo_light:
-                R.drawable.btn_check_off_holo_dark,0,0,0);
+            if( chkTV.isChecked()) {
+                // note: have to remove the following in XML file
+                // android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
+                // otherwise, setCompoundDrawablesWithIntrinsicBounds will not work on ICS
+                chkTV.setCompoundDrawablesWithIntrinsicBounds(style % 2 == 1 ?
+                        R.drawable.btn_check_on_holo_light :
+                        R.drawable.btn_check_on_holo_dark, 0, 0, 0);
+            }
+            else {
+                chkTV.setCompoundDrawablesWithIntrinsicBounds(style % 2 == 1 ?
+                        R.drawable.btn_check_off_holo_light :
+                        R.drawable.btn_check_off_holo_dark, 0, 0, 0);
+            }
 
             return mView;
         }
@@ -319,6 +309,9 @@ public class List_sumFolders {
 
             rootView.findViewById(R.id.show_progress).setVisibility(View.GONE);
             ((Button) rootView.findViewById(R.id.btnSelPageOK)).setText(String.valueOf(sumFolders));
+
+            // init: set All checked
+            mCheckTvSelAll.callOnClick();
         } // onPostExecute
     }
 }
