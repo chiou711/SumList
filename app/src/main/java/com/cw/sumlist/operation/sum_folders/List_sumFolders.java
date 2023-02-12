@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by cw on 2023/02/11
+ * Created by cw on 2023/02/12
  */
 
 public class List_sumFolders {
@@ -55,16 +55,19 @@ public class List_sumFolders {
     DB_drawer dB_drawer;
     public int count;
     Activity mAct;
+    long sumFolders;
+    Button btnSelPageOK;
 
     public List_sumFolders(Activity act, View rootView, View view){
         mAct = act;
 
         dB_drawer = new DB_drawer(mAct);
+        btnSelPageOK = (Button) rootView.findViewById(R.id.btnSelPageOK);
 
         // checked Text View: select all
         mCheckTvSelAll = (CheckedTextView) rootView.findViewById(R.id.chkSelectAllPages);
-        mCheckTvSelAll.setOnClickListener(new View.OnClickListener()
-        {	@Override
+        mCheckTvSelAll.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View checkSelAll)
             {
                 boolean currentCheck = ((CheckedTextView)checkSelAll).isChecked();
@@ -105,6 +108,8 @@ public class List_sumFolders {
 
         // list view: set adapter
         mListView.setAdapter(listAdapter);
+
+        updateSumFoldersUI();
     }
 
     // show list for Select
@@ -113,10 +118,8 @@ public class List_sumFolders {
         mChkNum = 0;
         // set list view
         mListView = (ListView) root.findViewById(R.id.listView1);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            public void onItemClick(AdapterView<?> parent, View vw, int position, long id)
-            {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parent, View vw, int position, long id){
                 System.out.println("List_selectFolder / _showFolderList / _onItemClick / position = " + position);
                 CheckedTextView chkTV = (CheckedTextView) vw.findViewById(R.id.checkTV);
                 chkTV.setChecked(!chkTV.isChecked());
@@ -126,21 +129,24 @@ public class List_sumFolders {
                 else
                     mChkNum--;
 
-                if(!chkTV.isChecked()){
+                if(!chkTV.isChecked())
                     mCheckTvSelAll.setChecked(false);
-                }
 
                 // set for contrast
                 int mStyle = 1;
-                if( chkTV.isChecked())
-                    chkTV.setCompoundDrawablesWithIntrinsicBounds(mStyle%2 == 1 ?
-                    R.drawable.btn_check_on_holo_light:
-                    R.drawable.btn_check_on_holo_dark,0,0,0);
-                else
-                    chkTV.setCompoundDrawablesWithIntrinsicBounds(mStyle%2 == 1 ?
-                    R.drawable.btn_check_off_holo_light:
-                    R.drawable.btn_check_off_holo_dark,0,0,0);
+                if( chkTV.isChecked()) {
+                    chkTV.setCompoundDrawablesWithIntrinsicBounds(mStyle % 2 == 1 ?
+                            R.drawable.btn_check_on_holo_light :
+                            R.drawable.btn_check_on_holo_dark, 0, 0, 0);
+                    mCheckedArr.set(position,true);
+                } else {
+                    chkTV.setCompoundDrawablesWithIntrinsicBounds(mStyle % 2 == 1 ?
+                            R.drawable.btn_check_off_holo_light :
+                            R.drawable.btn_check_off_holo_dark, 0, 0, 0);
+                    mCheckedArr.set(position,false);
+                }
 
+                updateSumFoldersUI();
             }
         });
 
@@ -149,6 +155,7 @@ public class List_sumFolders {
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    // fill array
     void fillArray(){
         // set list string array
         mListStrArr = new ArrayList<>();
@@ -176,6 +183,21 @@ public class List_sumFolders {
             mCheckedArr.add(false);
         }
         dB_drawer.close();
+    }
+
+    // update sum of folders
+    void updateSumFoldersUI(){
+        sumFolders = 0;
+        for(int i=0;i<mCheckedArr.size();i++){
+            long currentLong = mListLongArr.get(i);
+
+            if(mCheckedArr.get(i))
+                sumFolders += currentLong;
+        }
+
+        // replace with Sum icon
+        btnSelPageOK.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_menu_add, 0, 0, 0);
+        btnSelPageOK.setText(String.valueOf(sumFolders));
     }
 
     // list adapter
@@ -243,17 +265,6 @@ public class List_sumFolders {
         }
     }
 
-    // get sum of folders
-    long getSumFolders(){
-        int size = mListLongArr.size();
-        long sum = 0;
-        for(int i=0;i<size;i++){
-            sum += mListLongArr.get(i);
-        }
-        return sum;
-    }
-
-    long sumFolders;
     /**
      *  Async: show progress bar and do Add all
      */
@@ -297,9 +308,6 @@ public class List_sumFolders {
             super.onPostExecute(result);
             // lock orientation
             Util.unlockOrientation(act);
-            sumFolders = getSumFolders();
-//            progressBar.setVisibility(View.GONE);
-//            messageText.setVisibility(View.GONE);
 
             // set list adapter
             ListAdapter listAdapter = new ListAdapter(mAct, mListStrArr);
@@ -308,10 +316,11 @@ public class List_sumFolders {
             mListView.setAdapter(listAdapter);
 
             rootView.findViewById(R.id.show_progress).setVisibility(View.GONE);
-            ((Button) rootView.findViewById(R.id.btnSelPageOK)).setText(String.valueOf(sumFolders));
 
             // init: set All checked
             mCheckTvSelAll.callOnClick();
+
+            updateSumFoldersUI();
         } // onPostExecute
     }
 }
