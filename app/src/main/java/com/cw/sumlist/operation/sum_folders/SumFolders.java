@@ -48,7 +48,6 @@ import androidx.fragment.app.Fragment;
 public class SumFolders extends Fragment{
 	Context mContext;
 	TextView title;
-	CheckedTextView mCheckTvSelAll;
 	Button btnSelPageOK;
     ListView mListView;
     List_sumFolders list_sumFolders;

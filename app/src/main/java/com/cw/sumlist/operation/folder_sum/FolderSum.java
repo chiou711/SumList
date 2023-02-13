@@ -38,7 +38,6 @@ public class FolderSum extends Fragment{
 	AppCompatActivity act;
 	public View rootView;
     TextView title;
-	CheckBox mCheckTvSelAll;
 	FolderSum_grid folderSum_grid;
     TextView textFolderSum;
 
@@ -66,18 +65,6 @@ public class FolderSum extends Fragment{
         // folder sum
         textFolderSum = (TextView) rootView.findViewById(R.id.textFolderSum);
 
-        // checked Text View: select all
-        mCheckTvSelAll = rootView.findViewById(R.id.check_box_select_all_pages_folder_sum);
-		mCheckTvSelAll.setChecked(true); // will call selectAllPages(true)
-        mCheckTvSelAll.setOnClickListener(new OnClickListener(){
-			@Override
-            public void onClick(View checkSelAll){
-                if(((CheckBox)checkSelAll).isChecked())
-                    folderSum_grid.selectAllPages(true);
-                else
-                    folderSum_grid.selectAllPages(false);
-            }
-        });
 		((MainAct)act).setOnBackPressedListener(new BaseBackPressedListener(act));
 
 		return rootView;
@@ -95,7 +82,6 @@ public class FolderSum extends Fragment{
 
         //show list for selection
         folderSum_grid = new FolderSum_grid(act,rootView , gridview_sumlist, MainAct.pageSumArr);
-        mCheckTvSelAll.callOnClick();
     }
 
 }

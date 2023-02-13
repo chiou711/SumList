@@ -74,9 +74,9 @@ public class List_sumFolders {
                 ((CheckedTextView)checkSelAll).setChecked(!currentCheck);
 
                 if(((CheckedTextView)checkSelAll).isChecked())
-                    selectAllPages(true);
+                    selectAllFolders(true);
                 else
-                    selectAllPages(false);
+                    selectAllFolders(false);
             }
         });
 
@@ -86,8 +86,8 @@ public class List_sumFolders {
         showFolderList(rootView);
     }
 
-    // select all pages
-    public void selectAllPages(boolean enAll){
+    // select all folders
+    public void selectAllFolders(boolean enAll){
         mChkNum = 0;
 
         dB_drawer.open();
@@ -168,7 +168,7 @@ public class List_sumFolders {
         for(int i = 0; i< count; i++){
             int folder_table_id = dB_drawer.getFolderTableId(i,false);
 
-            //todo Wait too ling?
+            // process time depends on folder content
             long folderSum = Utils.getFolderSum(mAct,folder_table_id);
 
             // init mListLongArr
