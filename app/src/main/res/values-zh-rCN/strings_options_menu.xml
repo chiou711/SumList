@@ -17,5 +17,5 @@
     <string name="add_new_folder">新增月清单</string>
     <string name="drag_folder">拖放月清单</string>
     <string name="delete_folders">删除月清单</string>
-    <string name="sum_folders">年开销</string>
+    <string name="sum_folders">年消费</string>
 </resources>

@@ -8,7 +8,7 @@
     <string name="btn_Finish">完成</string>
     <string name="btn_Select">选择</string>
     <string name="btn_None">无</string>
-    <string name="app_name">开销日记</string>
+    <string name="app_name">消费日记</string>
     <string name="app_name_dir">SumList</string>
     <string name="footer_text_total">总计</string>
     <string name="footer_text_reference_total">参考总数</string>
@@ -39,8 +39,8 @@
     <string name="folder_operation">月清单操作</string>
     <string name="page_operation">日清单操作</string>
     <string name="settings_operation">设置</string>
-    <string name="folder_sum">月开销</string>
-    <string name="month_summary">邮寄月开销</string>
+    <string name="folder_sum">月消费</string>
+    <string name="month_summary">邮寄月消费</string>
     <string name="folder_sum_title">选择月清单：</string>
     <string name="set_enable">启用</string>
     <string name="set_disable">停用</string>

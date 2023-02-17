@@ -41,7 +41,7 @@ import androidx.fragment.app.Fragment;
 public class SumFoldersFragment extends Fragment{
 	Context mContext;
 	TextView title;
-	Button btnSelPageOK;
+	TextView sumText;
     ListView mListView;
     SumFolders sumFolders;
 	View rootView;
@@ -71,13 +71,9 @@ public class SumFoldersFragment extends Fragment{
         //show list for selection
         sumFolders = new SumFolders(act,rootView , mListView);
 
-		// OK button: click to do next
-        btnSelPageOK = (Button) rootView.findViewById(R.id.btnSelPageOK);
-
-        // replace with Sum icon
-        btnSelPageOK.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_menu_add, 0, 0, 0);
-//        btnSelPageOK.setText(R.string.config_delete_DB_btn);
-        btnSelPageOK.setText(String.valueOf(sumFolders.sumFolders));
+		// sum folder textview
+		sumText = rootView.findViewById(R.id.textSumFolders);
+		sumText.setText(String.valueOf(sumFolders.sumFolders));
 
         // cancel button
         Button btnSelPageCancel = (Button) rootView.findViewById(R.id.btnSelPageCancel);

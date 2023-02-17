@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="add_new_note">新增日清單</string>
-    <string name="add_new_note_position">清單新日清單位置：</string>
+    <string name="add_new_note">新增消費項目</string>
+    <string name="add_new_note_position">新消費項目位置：</string>
     <string name="add_new_note_top">到頂部</string>
     <string name="add_new_note_bottom">到底部</string>
     <string name="add_new_link_title_also">新增連結時,也包括連結的標題</string>
-    <string name="add_new_note_option_title">新增日清單：</string>
-    <string name="add_new_note_title">新增日清單</string>
-    <string name="add_new_note_message">日清單內容:</string>
+    <string name="add_new_note_option_title">新增消費項目：</string>
+    <string name="add_new_note_title">新增消費項目</string>
+    <string name="add_new_note_message">消費項目內容:</string>
     <string name="add_new_note_button_add">新增</string>
-    <string name="add_new_note_confirm_save">已經有內容在新日清單中，您想要保存它嗎?</string>
-    <string name="dialog_add_new_option_title">設定新增日清單的操作：</string>
-    <string name="dialog_add_new_multiple">新增現成日清單時：包括目錄中的所有同類文件</string>
+    <string name="add_new_note_confirm_save">已經有內容在新消費項目中，您想要保存它嗎?</string>
+    <string name="dialog_add_new_option_title">設定新增消費項目的操作：</string>
+    <string name="dialog_add_new_multiple">新增現成消費項目時：包括目錄中的所有同類文件</string>
     <string name="note_text">文字</string>
     <string name="note_cancel_add_new">取消</string>
-    <string name="add_new_start">開始新增日清單</string>
-    <string name="add_new_stop">停止新增日清單</string>
+    <string name="add_new_start">開始新增消費項目</string>
+    <string name="add_new_stop">停止新增消費項目</string>
     <string name="add_new_file_error">新增多個文件時，請確認您的選擇是本地文件。</string>
 </resources>

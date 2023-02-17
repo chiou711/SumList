@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="add_new_note">Add new day list</string>
-    <string name="add_new_note_position">New day list position at list:</string>
+    <string name="add_new_note">Add new spending item</string>
+    <string name="add_new_note_position">New spending item position at list:</string>
     <string name="add_new_note_top">To the top</string>
     <string name="add_new_note_bottom">To the bottom</string>
     <string name="add_new_link_title_also">Adding new link, also involve the title of link</string>
-    <string name="add_new_note_option_title">Add new day list:</string>
-    <string name="add_new_note_title">Add new day list</string>
-    <string name="add_new_note_message">day list content:</string>
+    <string name="add_new_note_option_title">Add new spending item:</string>
+    <string name="add_new_note_title">Add new spending item</string>
+    <string name="add_new_note_message">spending item content:</string>
     <string name="add_new_note_button_add">Add</string>
-    <string name="add_new_note_confirm_save">The new day list has contained content, do you want to save it?</string>
-    <string name="dialog_add_new_option_title">Set the operation for new day list:</string>
-    <string name="dialog_add_new_multiple">Adding ready day list: involve all same kind files in the directory</string>
+    <string name="add_new_note_confirm_save">The new spending item has contained content, do you want to save it?</string>
+    <string name="dialog_add_new_option_title">Set the operation for new spending item:</string>
+    <string name="dialog_add_new_multiple">Adding ready spending item: involve all same kind files in the directory</string>
     <string name="note_text">text</string>
     <string name="note_cancel_add_new">Cancel</string>
-    <string name="add_new_start">Start adding day list</string>
-    <string name="add_new_stop">Stop adding day list</string>
+    <string name="add_new_start">Start adding spending item</string>
+    <string name="add_new_stop">Stop adding spending item</string>
     <string name="add_new_file_error">Adding multiple files, please confirm your selection is a local file.</string>
 </resources>

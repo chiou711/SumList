@@ -56,13 +56,16 @@ public class SumFolders {
     public int count;
     Activity mAct;
     long sumFolders;
-    Button btnSelPageOK;
+    TextView sumText;
 
     public SumFolders(Activity act, View rootView, View view){
         mAct = act;
 
         dB_drawer = new DB_drawer(mAct);
-        btnSelPageOK = (Button) rootView.findViewById(R.id.btnSelPageOK);
+
+        // sum folder textview
+        sumText = rootView.findViewById(R.id.textSumFolders);
+        sumText.setText(String.valueOf(sumFolders));
 
         // checked Text View: select all
         mCheckTvSelAll = (CheckedTextView) rootView.findViewById(R.id.chkSelectAllPages);
@@ -195,9 +198,7 @@ public class SumFolders {
                 sumFolders += currentLong;
         }
 
-        // replace with Sum icon
-        btnSelPageOK.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_menu_add, 0, 0, 0);
-        btnSelPageOK.setText(String.valueOf(sumFolders));
+        sumText.setText(String.valueOf(sumFolders));
     }
 
     // list adapter

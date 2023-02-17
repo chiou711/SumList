@@ -8,7 +8,7 @@
     <string name="btn_Finish">Finish</string>
     <string name="btn_Select">Select</string>
     <string name="btn_None">None</string>
-    <string name="app_name">Expense diary</string>
+    <string name="app_name">Spending diary</string>
     <string name="app_name_dir">SumList</string>
     <string name="footer_text_total">total</string>
     <string name="footer_text_reference_total">Reference total</string>
@@ -39,8 +39,8 @@
     <string name="folder_operation">Month list operation</string>
     <string name="page_operation">Day list operation</string>
     <string name="settings_operation">Settings</string>
-    <string name="folder_sum">Month expense</string>
-    <string name="month_summary">Mail month expense</string>
+    <string name="folder_sum">Month spending</string>
+    <string name="month_summary">Mail month spending</string>
     <string name="folder_sum_title">Select month lists:</string>
     <string name="set_enable">Enable</string>
     <string name="set_disable">Disable</string>
