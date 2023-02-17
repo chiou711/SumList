@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.operation.folder_sum;
+package com.cw.sumlist.operation.sum_pages;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -29,19 +27,17 @@ import com.cw.sumlist.R;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.util.BaseBackPressedListener;
 
-import java.util.List;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-public class FolderSum extends Fragment{
+public class SumPagesFragment extends Fragment{
 	AppCompatActivity act;
 	public View rootView;
     TextView title;
-	FolderSum_grid folderSum_grid;
+	SumPages sum_pages;
     TextView textFolderSum;
 
-	public FolderSum(){
+	public SumPagesFragment(){
 	}
 
 	GridView gridview_sumlist;
@@ -78,10 +74,9 @@ public class FolderSum extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-	    MainAct.updatePageSumArr();
 
         //show list for selection
-        folderSum_grid = new FolderSum_grid(act,rootView , gridview_sumlist, MainAct.pageSumArr);
+        sum_pages = new SumPages(act,rootView , gridview_sumlist, MainAct.pageSumArr);
     }
 
 }

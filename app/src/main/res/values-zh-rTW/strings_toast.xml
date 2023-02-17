@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="toast_keep_one_page">請至少保留一清單</string>
-    <string name="toast_keep_one_drawer">請至少保留一清單夾</string>
+    <string name="toast_keep_one_page">請至少保留一日清單</string>
+    <string name="toast_keep_one_drawer">請至少保留一月清單</string>
     <string name="toast_leftmost">最左邊</string>
     <string name="toast_rightmost">最右邊</string>
     <string name="toast_saved">儲存</string>

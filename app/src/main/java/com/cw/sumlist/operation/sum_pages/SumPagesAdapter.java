@@ -1,4 +1,4 @@
-package com.cw.sumlist.operation.folder_sum;
+package com.cw.sumlist.operation.sum_pages;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,14 +24,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-public class FolderSum_gridAdapter extends ArrayAdapter<String> {
+public class SumPagesAdapter extends ArrayAdapter<String> {
 	Activity act;
 	View rootView;
 	DB_folder dB_folder;
 	private final List<String> gridStrList;
 	List<Boolean> checkedTabs;
 
-	public FolderSum_gridAdapter(@NonNull Activity context, List<String> arrayList, View root_view, List<Boolean> _checkedTabs) {
+	public SumPagesAdapter(@NonNull Activity context, List<String> arrayList, View root_view, List<Boolean> _checkedTabs) {
 		super(context, 0, arrayList);
 		act = context;
 		dB_folder = new DB_folder(act, Pref.getPref_focusView_folder_tableId(act));
@@ -64,9 +64,9 @@ public class FolderSum_gridAdapter extends ArrayAdapter<String> {
 
 				checkedTabs.set(position, chkBox.isChecked());
 				if (checkedTabs.get(position))
-					FolderSum_grid.mChkNum++;
+					SumPages.mChkNum++;
 				else
-					FolderSum_grid.mChkNum--;
+					SumPages.mChkNum--;
 
 				if (!chkBox.isChecked()) {
 					CheckBox checkTvSelAll = rootView.findViewById(R.id.check_box_select_all_pages_folder_sum);
@@ -77,9 +77,9 @@ public class FolderSum_gridAdapter extends ArrayAdapter<String> {
 
 				// set for contrast
 				if (chkBox.isChecked())
-					FolderSum_grid.folderSum += Utils.getPageSum(act, pageTableId);
+					SumPages.folderSum += Utils.getPageSum(act, pageTableId);
 				else
-					FolderSum_grid.folderSum -= Utils.getPageSum(act, pageTableId);
+					SumPages.folderSum -= Utils.getPageSum(act, pageTableId);
 
 				updateFolderSum(rootView);
 			}
@@ -126,7 +126,7 @@ public class FolderSum_gridAdapter extends ArrayAdapter<String> {
 	// update folder sum
 	void updateFolderSum(View rootView){
 		TextView textFolderSum = (TextView) rootView.findViewById(R.id.textFolderSum);
-		String sum = String.valueOf(FolderSum_grid.folderSum);
+		String sum = String.valueOf(SumPages.folderSum);
 		textFolderSum.setText(sum);
 	}
 

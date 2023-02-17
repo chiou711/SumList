@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="toast_keep_one_page">Please keep one list at least</string>
-    <string name="toast_keep_one_drawer">Please keep one folder at least</string>
+    <string name="toast_keep_one_page">Please keep one day list at least</string>
+    <string name="toast_keep_one_drawer">Please keep one month list at least</string>
     <string name="toast_leftmost">Leftmost</string>
     <string name="toast_rightmost">Rightmost</string>
     <string name="toast_saved">Saved</string>

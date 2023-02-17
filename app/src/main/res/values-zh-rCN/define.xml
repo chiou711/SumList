@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_folder_name">清单夹</string>
+    <string name="default_folder_name">月清单</string>
     <string name="prefer_folder_name_local">本地</string>
-    <string name="default_page_name">清单</string>
-    <string name="prefer_page_name">新清单</string>
+    <string name="default_page_name">日清单</string>
+    <string name="prefer_page_name">新日清单</string>
 </resources>

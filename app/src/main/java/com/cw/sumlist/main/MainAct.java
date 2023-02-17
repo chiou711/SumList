@@ -36,8 +36,8 @@ import com.cw.sumlist.folder.FolderUi;
 import com.cw.sumlist.note_add.Note_addText;
 import com.cw.sumlist.operation.delete.DeleteFolders;
 import com.cw.sumlist.operation.delete.DeletePages;
-import com.cw.sumlist.operation.folder_sum.FolderSum;
-import com.cw.sumlist.operation.sum_folders.SumFolders;
+import com.cw.sumlist.operation.sum_pages.SumPagesFragment;
+import com.cw.sumlist.operation.sum_folders.SumFoldersFragment;
 import com.cw.sumlist.page.Checked_notes_option;
 import com.cw.sumlist.page.PageUi;
 import com.cw.sumlist.tabs.TabsHost;
@@ -86,7 +86,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public static CharSequence mAppTitle;
     public Context mContext;
     public Config mConfigFragment;
-    public FolderSum mFolderSum;
+    public SumPagesFragment mSumPagesFragment;
     public About mAboutFragment;
     public MonthSummary mMonthSummay;
     public static Menu mMenu;
@@ -838,7 +838,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 if(dB_drawer.getFoldersCount(true)>0){
                     drawer.closeDrawer();
                     mMenu.setGroupVisible(R.id.group_notes, false); //hide the menu
-                    SumFolders sumFoldersFragment = new SumFolders();
+                    SumFoldersFragment sumFoldersFragment = new SumFoldersFragment();
                     mFragmentTransaction = mAct.getSupportFragmentManager().beginTransaction();
                     mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
                     mFragmentTransaction.replace(R.id.content_frame, sumFoldersFragment).addToBackStack("delete_folders").commit();
@@ -913,9 +913,9 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 setTitle(R.string.folder_sum);
 
 
-                mFolderSum = new FolderSum();
+                mSumPagesFragment = new SumPagesFragment();
                 mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
-                mFragmentTransaction.replace(R.id.content_frame, mFolderSum).addToBackStack("folder sum").commit();
+                mFragmentTransaction.replace(R.id.content_frame, mSumPagesFragment).addToBackStack("folder sum").commit();
                 return true;
 
             case MenuId.MONTH_SUMMARY:

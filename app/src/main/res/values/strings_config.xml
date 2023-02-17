@@ -13,6 +13,6 @@
     <string name="config_delete_DB_toast">All lists have been deleted.</string>
     <string name="config_select_pages_title">Select lists:</string>
     <string name="config_select_pages_delete_title">Select lists to delete:</string>
-    <string name="config_select_folders_title">Select folders to delete:</string>
-    <string name="config_select_sum_folders_title">Select folders to get the sum:</string>
+    <string name="config_select_folders_title">Select month lists to delete:</string>
+    <string name="config_select_sum_folders_title">Select month lists:</string>
 </resources>

@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.operation.folder_sum;
+package com.cw.sumlist.operation.sum_pages;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.GridView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cw.sumlist.R;
-import com.cw.sumlist.Utils;
 import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_page;
-import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.preferences.Pref;
 
 import java.util.ArrayList;
@@ -38,22 +35,21 @@ import java.util.List;
  * Created by cw on 2022/9/5
  * Modified on 2023/02/13
  */
-public class FolderSum_grid {
+public class SumPages {
     Activity act;
     View rootView;
     CheckBox checkTvSelAll;
     GridView gridView;
 
-    DB_folder dB_folder;
-    public List<String> gridStrArr; // grid view string array
-    List<Boolean> checkedTabs; // checked grid items array
-    public int pageCount;
+    public static List<String> gridStrArr; // grid view string array
+    static List<Boolean> checkedTabs; // checked grid items array
+    public static int pageCount;
     public static long folderSum;
-    FolderSum_gridAdapter listAdapter;
-    List<Long> pageSumArr;
+    SumPagesAdapter listAdapter;
+    static List<Long> pageSumArr;
     public static int mChkNum;
 
-    public FolderSum_grid(Activity act, View _rootView, GridView gridView,List<Long> _pageSumArr) {
+    public SumPages(Activity act, View _rootView, GridView gridView, List<Long> _pageSumArr) {
         this.act = act;
         rootView = _rootView;
         pageSumArr = _pageSumArr;
@@ -80,7 +76,7 @@ public class FolderSum_grid {
         folderSum = 0;
 
         // show progress bar
-        Folder_sum_asyncTask task = new Folder_sum_asyncTask(act,rootView);
+        SumPages_asyncTask task = new SumPages_asyncTask(act,rootView);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
@@ -88,19 +84,19 @@ public class FolderSum_grid {
     public void selectAllPages(boolean enAll) {
         System.out.println("FolderSum_list_grid / _selectAllPages /  enAll = " + enAll);
         mChkNum = 0;
-        fillArray(enAll);
+        fillArray(act,enAll);
         showPagesOfFolder(rootView);
     }
 
     // fill array
-    void fillArray(boolean enAll){
+    static void fillArray(Activity act,boolean enAll){
         mChkNum = 0;
         folderSum = 0;
 
         checkedTabs = new ArrayList<Boolean>();
         gridStrArr = new ArrayList<String>();
 
-        dB_folder = new DB_folder(this.act, Pref.getPref_focusView_folder_tableId(this.act));
+        DB_folder dB_folder = new DB_folder(act, Pref.getPref_focusView_folder_tableId(act));
 
         pageCount = dB_folder.getPagesCount(true);
         dB_folder.open();
@@ -114,8 +110,6 @@ public class FolderSum_grid {
 
             if (enAll) {
                 // get sum of each page
-//                int pageTableId = dB_folder.getPageTableId(i, false);
-//                folderSum += Utils.getPageSum(act, pageTableId);
                 folderSum += pageSumArr.get(i);
             }
         }
@@ -135,7 +129,7 @@ public class FolderSum_grid {
         DB_page.setFocusPage_tableId(pageTableId);
 
         // set list adapter
-        listAdapter = new FolderSum_gridAdapter(act, gridStrArr,rootView,checkedTabs);
+        listAdapter = new SumPagesAdapter(act, gridStrArr,rootView,checkedTabs);
 
         // grid view: set adapter
         gridView.setAdapter(listAdapter);
@@ -148,57 +142,6 @@ public class FolderSum_grid {
         TextView textFolderSum = (TextView) rootView.findViewById(R.id.textFolderSum);
         String sum = String.valueOf(folderSum);
         textFolderSum.setText(sum);
-    }
-
-    /**
-     *  Async: show progress bar and do Add all
-     */
-    class Folder_sum_asyncTask extends AsyncTask<Void, Integer, Void> {
-
-        private ProgressBar progressBar;
-        Activity act;
-        View rootView;
-        private TextView messageText;
-
-        Folder_sum_asyncTask(Activity _act, View _rootView) {
-            act = _act;
-            rootView = _rootView;
-
-            Util.lockOrientation(act);
-
-            messageText = (TextView) rootView.findViewById(R.id.folder_sum_message);
-            messageText.setText("Sum Pages ...");
-
-            progressBar = (ProgressBar) rootView.findViewById(R.id.folder_sum_progress);
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            if (this.progressBar != null) {
-                progressBar.setProgress(values[0]);
-            }
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // main function for adding audio links
-            fillArray(true);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            // lock orientation
-            Util.unlockOrientation(act);
-
-            rootView.findViewById(R.id.show_folder_sum_progress).setVisibility(View.GONE);
-
-            // init: set All checked
-            checkTvSelAll.callOnClick();
-        } // onPostExecute
     }
 
 }

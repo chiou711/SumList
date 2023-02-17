@@ -16,7 +16,7 @@
 
 package com.cw.sumlist.drawer;
 
-import com.cw.sumlist.operation.sum_folders.SumFolders;
+import com.cw.sumlist.operation.sum_folders.SumFoldersFragment;
 import com.google.android.material.navigation.NavigationView;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.view.GravityCompat;
@@ -124,7 +124,7 @@ public class Drawer {
                         if(dB_drawer.getFoldersCount(true)>0){
                             closeDrawer();
                             MainAct.mMenu.setGroupVisible(R.id.group_notes, false); //hide the menu
-                            SumFolders sumFoldersFragment = new SumFolders();
+                            SumFoldersFragment sumFoldersFragment = new SumFoldersFragment();
                             MainAct.mFragmentTransaction = MainAct.mAct.getSupportFragmentManager().beginTransaction();
                             MainAct.mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
                             MainAct.mFragmentTransaction.replace(R.id.content_frame, sumFoldersFragment).addToBackStack("delete_folders").commit();
