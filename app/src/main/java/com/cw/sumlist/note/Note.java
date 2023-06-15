@@ -19,7 +19,7 @@ package com.cw.sumlist.note;
 import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_page;
-import com.cw.sumlist.page.PageAdapter_recycler;
+import com.cw.sumlist.page.PageAdapter;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.preferences.Pref;
 import com.cw.sumlist.util.Util;
@@ -373,7 +373,7 @@ public class Note extends AppCompatActivity
                 return true;
 
 			case R.id.VIEW_NOTE_CHECK:
-				int markingNow = PageAdapter_recycler.toggleNoteMarking(this,NoteUi.getFocus_notePos());
+				int markingNow = PageAdapter.toggleNoteMarking(this,NoteUi.getFocus_notePos());
 
 				// update marking
 				if(markingNow == 1)

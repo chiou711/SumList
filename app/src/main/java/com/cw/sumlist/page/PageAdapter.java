@@ -55,10 +55,10 @@ import static com.cw.sumlist.db.DB_page.KEY_NOTE_QUANTITY;
 import static com.cw.sumlist.db.DB_page.KEY_NOTE_TITLE;
 import static com.cw.sumlist.db.DB_page.KEY_NOTE_BODY;
 import static com.cw.sumlist.define.Define.PREFERENCE_ENABLE_EXPAND_CARD_VIEW;
-import static com.cw.sumlist.page.Page_recycler.swapRows;
+import static com.cw.sumlist.page.Page.swapRows;
 
 // Pager adapter
-public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recycler.ViewHolder>
+public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
         implements ItemTouchHelperAdapter {
 	private AppCompatActivity mAct;
 	private String strTitle;
@@ -74,7 +74,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	List<Db_cache> listCache;
 	int QTY_ZERO_COLOR;
 
-	PageAdapter_recycler(int pagePos, int pageTableId, OnStartDragListener dragStartListener) {
+	PageAdapter(int pagePos, int pageTableId, OnStartDragListener dragStartListener) {
 		mAct = MainAct.mAct;
 		mDragStartListener = dragStartListener;
 
@@ -165,9 +165,9 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 	// Replace the contents of a view (invoked by the layout manager)
 	@Override
-	public void onBindViewHolder(ViewHolder holder, int _position) {
+	public void onBindViewHolder(ViewHolder holder, int row_pos) {
 
-        System.out.println("PageAdapter_recycler / _onBindViewHolder / position = " + _position);
+		System.out.println("PageAdapter / _onBindViewHolder / page_pos - row_pos = " + page_pos + " - " + row_pos);
 
 		int position = holder.getAdapterPosition();
 
@@ -296,7 +296,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 	 * @param position
 	 */
 	void setBindViewHolder_listeners(ViewHolder viewHolder, final int position) {
-//        System.out.println("PageAdapter_recycler / setBindViewHolder_listeners / position = " + position);
+//        System.out.println("PageAdapter / setBindViewHolder_listeners / position = " + position);
 		/**
 		 *  control block
 		 */
@@ -371,12 +371,12 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 
-				System.out.println("PageAdapter_recycler / onTouch / event.getActionMasked() = " + event.getActionMasked());
+				System.out.println("PageAdapter / onTouch / event.getActionMasked() = " + event.getActionMasked());
 
 				switch (event.getActionMasked()) {
 
 					case MotionEvent.ACTION_DOWN:
-						System.out.println("PageAdapter_recycler / onTouch / ACTION_DOWN");
+						System.out.println("PageAdapter / onTouch / ACTION_DOWN");
 						mDragStartListener.onStartDrag(viewHolder);
 						return true;
 					case MotionEvent.ACTION_UP:
@@ -424,13 +424,13 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 		}
 		db_page.close();
 
-		System.out.println("PageAdapter_recycler / _toggleNoteMarking / position = " + position + ", marking = " + db_page.getNoteMarking(position, true));
+		System.out.println("PageAdapter / _toggleNoteMarking / position = " + position + ", marking = " + db_page.getNoteMarking(position, true));
 		return marking;
 	}
 
 	@Override
 	public void onItemDismiss(int position) {
-		System.out.println("PageAdapter_recycler / _onItemDismiss");
+		System.out.println("PageAdapter / _onItemDismiss");
 		notifyItemRemoved(position);
 
 //		mDb_page.deleteNote(mDb_page.getNoteId(position,true),true);
@@ -438,7 +438,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 	@Override
 	public boolean onItemMove(int fromPos, int toPos) {
-//        System.out.println("PageAdapter_recycler / _onItemMove / fromPos = " +
+//        System.out.println("PageAdapter / _onItemMove / fromPos = " +
 //                        fromPos + ", toPos = " + toPos);
 
 		notifyItemMoved(fromPos, toPos);
@@ -467,7 +467,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 	@Override
 	public void onItemMoved(RecyclerView.ViewHolder sourceViewHolder, int fromPos, RecyclerView.ViewHolder targetViewHolder, int toPos) {
-		System.out.println("PageAdapter_recycler / _onItemMoved");
+		System.out.println("PageAdapter / _onItemMoved");
 		((TextView) sourceViewHolder.itemView.findViewById(R.id.row_id)).setText(String.valueOf(toPos + 1));
 		((TextView) targetViewHolder.itemView.findViewById(R.id.row_id)).setText(String.valueOf(fromPos + 1));
 
@@ -481,7 +481,7 @@ public class PageAdapter_recycler extends RecyclerView.Adapter<PageAdapter_recyc
 
 	// update list cache from DB
 	public void updateDbCache() {
-//        System.out.println("PageAdapter_recycler / _updateDbCache " );
+//        System.out.println("PageAdapter / _updateDbCache " );
 		listCache = new ArrayList<>();
 
 		int notesCount = getItemCount();

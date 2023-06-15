@@ -18,7 +18,7 @@ package com.cw.sumlist.page.item_touch_helper;
 
 import android.graphics.Canvas;
 import com.cw.sumlist.db.DB_page;
-import com.cw.sumlist.page.PageAdapter_recycler;
+import com.cw.sumlist.page.PageAdapter;
 import com.cw.sumlist.tabs.TabsHost;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -41,9 +41,9 @@ public class SwipeItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     public static final float ALPHA_FULL = 1.0f;
 
-    private final PageAdapter_recycler mAdapter;
+    private final PageAdapter mAdapter;
 
-    public SwipeItemTouchHelperCallback(PageAdapter_recycler adapter) {
+    public SwipeItemTouchHelperCallback(PageAdapter adapter) {
         mAdapter = adapter;
     }
 

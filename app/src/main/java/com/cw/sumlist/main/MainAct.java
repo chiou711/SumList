@@ -21,7 +21,6 @@ import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import com.cw.sumlist.R;
 import com.cw.sumlist.Utils;
@@ -52,7 +51,6 @@ import com.mobeta.android.dslv.DragSortListView;
 
 import android.content.DialogInterface;
 import android.os.Build;
-import android.os.PowerManager;
 import android.os.StrictMode;
 import android.content.Context;
 import android.content.Intent;
@@ -78,7 +76,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import static com.cw.sumlist.define.Define.PREFERENCE_ENABLE_EXPAND_CARD_VIEW;
-import static com.cw.sumlist.folder.FolderUi.startTabsHostRun;
 
 public class MainAct extends AppCompatActivity implements OnBackStackChangedListener
 {
@@ -261,36 +258,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
         mOnBackStackChangedListener = this;
         mFragmentManager.addOnBackStackChangedListener(mOnBackStackChangedListener);
 
-        if (bEULA_accepted)
-            configLayoutView(); //createAssetsFile inside
-
         mAct = this;
-
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        if(bEULA_accepted) {
-            if(drawer != null)
-                drawer.drawerToggle.syncState();
-
-            //   get folder table id by preference
-            DB_drawer dbDrawer = new DB_drawer(mAct);
-            int foldersCnt = dbDrawer.getFoldersCount(true);
-            int focus_folder_tableId =  Pref.getPref_focusView_folder_tableId(mAct);
-
-            // select focus folder view by preference
-            for (int pos=0;pos< foldersCnt;pos++)
-            {
-                if(focus_folder_tableId == dbDrawer.getFolderTableId(pos,true))
-                    FolderUi.setFocus_folderPos(pos);
-            }
-        }
-
-        if (bEULA_accepted) {
-            if (!mAct.isDestroyed()) {
-                System.out.println("MainAct / _onResumeFragments / mAct is not Destroyed()");
-                openFolder();
-            } else
-                System.out.println("MainAct / _onResumeFragments / mAct is Destroyed()");
-        }
     }
 
     // key event: 1 from bluetooth device 2 when notification bar dose not shown
@@ -416,19 +384,8 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 mFragmentManager.popBackStack();
         }
 
-        // will call Drawer / _onDrawerClosed
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        if(drawerLayout != null) {
-            // use Runnable to make sure only one folder background is seen
-            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            boolean isScreenOn = Objects.requireNonNull(pm).isScreenOn();
-            if( isScreenOn) {
-                System.out.println("FolderUi / _selectFolder / screen ON");
-                startTabsHostRun();
-            } else
-                System.out.println("FolderUi / _selectFolder / screen OFF");
-        }
+        if (bEULA_accepted)
+            configLayoutView(); //createAssetsFile inside
     }
 
     // open folder
@@ -495,26 +452,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     }
 
     /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        System.out.println("MainAct / _onConfigurationChanged");
-
-        configLayoutView();
-
-        // Pass any configuration change to the drawer toggles
-        drawer.drawerToggle.onConfigurationChanged(newConfig);
-
-		drawer.drawerToggle.syncState();
-
-        startTabsHostRun();
-    }
-
-
-    /**
      *  on Back button pressed
      */
     @Override
@@ -573,8 +510,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 mFolder.adapter.notifyDataSetChanged();
 
             configLayoutView();
-
-            drawer.drawerToggle.syncState(); // make sure toggle icon state is correct
         }
     }
 
@@ -954,8 +889,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     }
 
     // configure layout view
-    void configLayoutView()
-    {
+    void configLayoutView(){
         System.out.println("MainAct / _configLayoutView");
 
         setContentView(R.layout.drawer);
@@ -964,9 +898,11 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
         // new drawer
         drawer = new Drawer(this);
         drawer.initDrawer();
+        drawer.drawerToggle.syncState(); // make sure toggle icon state is correct
 
         // new folder
         mFolder = new Folder(this);
+
         openFolder();
     }
 

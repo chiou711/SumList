@@ -47,7 +47,7 @@ import com.cw.sumlist.define.Define;
 import com.cw.sumlist.drawer.Drawer;
 import com.cw.sumlist.folder.FolderUi;
 import com.cw.sumlist.main.MainAct;
-import com.cw.sumlist.page.Page_recycler;
+import com.cw.sumlist.page.Page;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.preferences.Pref;
@@ -242,7 +242,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
                 if (pageTableId > lastPageTableId)
                     lastPageTableId = pageTableId;
 
-                Page_recycler page = new Page_recycler();
+                Page page = new Page();
                 Bundle args = new Bundle();
                 args.putInt("page_pos",i);
                 args.putInt("page_table_id",pageTableId);
@@ -322,7 +322,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         setCurrentPageTableId(pageTableId);
 
         // refresh list view of selected page
-        Page_recycler page = mTabsPagerAdapter.fragmentList.get(getFocus_tabPos());
+        Page page = mTabsPagerAdapter.fragmentList.get(getFocus_tabPos());
 
         // add for update page item view
         if((page != null) && (page.itemAdapter != null)) {
@@ -383,8 +383,12 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         super.onPause();
         System.out.println("TabsHost / _onPause");
         //  Remove fragments
+
+        if(TabsHost.mTabsPagerAdapter == null)
+            return;
+
         if(!MainAct.mAct.isDestroyed())
-            removeTabs();//Put here will solve onBackStackChanged issue (no Page_recycler / _onCreate)
+            removeTabs();//Put here will solve onBackStackChanged issue (no Page / _onCreate)
     }
 
     // store scroll of recycler view
@@ -443,7 +447,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         mViewPager.setCurrentItem(pagePos);
     }
 
-    public static Page_recycler getCurrentPage()
+    public static Page getCurrentPage()
     {
         return mTabsPagerAdapter.fragmentList.get(getFocus_tabPos());
     }
@@ -741,13 +745,10 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     }
 
 
-    public static void removeTabs()
-    {
+    public static void removeTabs() {
 //        System.out.println("TabsHost / _removeTabs");
-    	if(TabsHost.mTabsPagerAdapter == null)
-    		return;
 
-        ArrayList<Page_recycler> fragmentList = TabsHost.mTabsPagerAdapter.fragmentList;
+        ArrayList<Page> fragmentList = TabsHost.mTabsPagerAdapter.fragmentList;
         if( (fragmentList != null) &&
             (fragmentList.size() >0)  )
         {

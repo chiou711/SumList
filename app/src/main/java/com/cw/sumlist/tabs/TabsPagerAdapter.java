@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.ViewGroup;
 
 import com.cw.sumlist.db.DB_folder;
-import com.cw.sumlist.page.Page_recycler;
+import com.cw.sumlist.page.Page;
 import com.cw.sumlist.util.preferences.Pref;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
  *
  */
 public class TabsPagerAdapter extends FragmentPagerAdapter {
-    public ArrayList<Page_recycler> fragmentList = new ArrayList<>();
+    public ArrayList<Page> fragmentList = new ArrayList<>();
     DB_folder dbFolder;
 
     TabsPagerAdapter(AppCompatActivity act, FragmentManager fm)
@@ -45,13 +45,12 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Page_recycler getItem(int position)
-    {
+    public Page getItem(int position) {
         return fragmentList.get(position);
     }
 
     // add fragment
-    public void addFragment(Page_recycler fragment) {
+    public void addFragment(Page fragment) {
         fragmentList.add(fragment);
     }
 

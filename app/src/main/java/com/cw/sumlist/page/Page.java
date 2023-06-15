@@ -43,7 +43,7 @@ import static com.cw.sumlist.define.Define.ENABLE_ITEM_TOUCH_SWIPE;
  * Demonstrates the use of {@link RecyclerView} with a {@link LinearLayoutManager} and a
  * {@link GridLayoutManager}.
  */
-public class Page_recycler extends Fragment implements OnStartDragListener {
+public class Page extends Fragment implements OnStartDragListener {
 
     public static int page_tableId;
     public RecyclerView recyclerView;
@@ -52,10 +52,10 @@ public class Page_recycler extends Fragment implements OnStartDragListener {
     public static int mCurrPlayPosition;
     public AppCompatActivity act;
 
-    public PageAdapter_recycler itemAdapter;
+    public PageAdapter itemAdapter;
     private ItemTouchHelper itemTouchHelper;
 
-    public Page_recycler(){
+    public Page(){
     }
 
     @Override
@@ -64,12 +64,11 @@ public class Page_recycler extends Fragment implements OnStartDragListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
         page_pos = args.getInt("page_pos");
         page_tableId = args.getInt("page_table_id");
-        System.out.println("Page_recycler / _onCreateView / page_tableId = " + page_tableId);
+        System.out.println("Page / _onCreateView / page_tableId = " + page_tableId);
 
         View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
         act = MainAct.mAct;
@@ -120,21 +119,21 @@ public class Page_recycler extends Fragment implements OnStartDragListener {
 
     @Override
     public void onResume() {
-//        System.out.println("Page_recycler / _onResume / page_tableId = " + page_tableId);
+//        System.out.println("Page / _onResume / page_tableId = " + page_tableId);
         super.onResume();
         if(Pref.getPref_focusView_page_tableId(MainAct.mAct) == page_tableId) {
-//            System.out.println("Page_recycler / _onResume / resume_listView_vScroll");
+//            System.out.println("Page / _onResume / resume_listView_vScroll");
             TabsHost.resume_listView_vScroll(recyclerView);
         }
     }
 
     private void fillData()
     {
-//        System.out.println("Page_recycler / _fillData / page_tableId = " + page_tableId);
+        System.out.println("Page / _fillData / page_tableId = " + page_tableId);
         int focusTableId = Pref.getPref_focusView_page_tableId(act);
         int diff = Math.abs(focusTableId - page_tableId);
         if(diff <= 1) {
-            itemAdapter = new PageAdapter_recycler(page_pos, page_tableId, this);
+            itemAdapter = new PageAdapter(page_pos, page_tableId, this);
             // Set PageAdapter_recycler as the adapter for RecyclerView.
             recyclerView.setAdapter(itemAdapter);
         }
