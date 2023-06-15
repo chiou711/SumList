@@ -98,7 +98,6 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public static Folder mFolder;
     public static Toolbar mToolbar;
 
-    public boolean bEULA_accepted;
     public static boolean isEdited_link;
     public static int edit_position;
     public static long folder_sum;
@@ -163,60 +162,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
 
         UtilImage.getDefaultScaleInPercent(MainAct.this);
 
-        // EULA
-        Dialog_EULA dialog_EULA = new Dialog_EULA(this);
-        bEULA_accepted = dialog_EULA.isEulaAlreadyAccepted();
-
-        // Show dialog of EULA
-        if (!bEULA_accepted) {
-            // Ok button listener
-            dialog_EULA.clickListener_Ok = (DialogInterface dialog, int i) -> {
-                dialog_EULA.applyPreference();
-
-                // default add new: 1 folder
-                DB_drawer db_drawer = new DB_drawer(this);
-                int newTableId = 1;
-                String folderTitle;
-                folderTitle = getResources().getString(R.string.default_folder_name).concat(String.valueOf(newTableId));
-
-                // insert new folder Id and Title
-                db_drawer.insertFolder(newTableId, folderTitle,true );
-
-                // insert folder table
-                db_drawer.insertFolderTable(newTableId, true);
-
-                // default add new: 1 page
-                String pageName;
-                pageName = Define.getTabTitle(this, newTableId);
-                DB_folder dbFolder = new DB_folder(this,Pref.getPref_focusView_folder_tableId(this));
-
-                // insert page name
-                int style = Util.getNewPageStyle(this);
-                dbFolder.insertPage(DB_folder.getFocusFolder_tableName(),pageName,newTableId,style,true );
-
-                // insert table for new page
-                dbFolder.insertPageTable(dbFolder,DB_folder.getFocusFolder_tableId(),newTableId, true);
-
-                // commit: final page viewed
-                Pref.setPref_focusView_page_tableId(this, newTableId);
-
-                recreate();
-
-            };
-
-            // No button listener
-            dialog_EULA.clickListener_No = (DialogInterface dialog, int which) -> {
-                // Close the activity as they have declined
-                // the EULA
-                dialog.dismiss();
-                mAct.finish();
-            };
-
-            dialog_EULA.show();
-        }
-        else {
-                doCreate();
-        }
+        doCreate();
 
         isEdited_link = false;
         edit_position = 0;
@@ -379,13 +325,10 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     protected void onResumeFragments() {
         System.out.println("MainAct / _onResumeFragments ");
         super.onResumeFragments();
-        if (bEULA_accepted) {
-            if(mFragmentManager != null)
-                mFragmentManager.popBackStack();
-        }
+        if(mFragmentManager != null)
+            mFragmentManager.popBackStack();
 
-        if (bEULA_accepted)
-            configLayoutView(); //createAssetsFile inside
+        configLayoutView(); //createAssetsFile inside
     }
 
     // open folder
@@ -531,7 +474,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public boolean onPrepareOptionsMenu(android.view.Menu menu) {
         System.out.println("MainAct / _onPrepareOptionsMenu");
 
-        if((drawer == null) || (drawer.drawerLayout == null) || (!bEULA_accepted))
+        if((drawer == null) || (drawer.drawerLayout == null))
             return false;
 
         DB_drawer db_drawer = new DB_drawer(this);
