@@ -59,7 +59,7 @@ public class MonthSummary extends Fragment
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		System.out.println("================ About / onCreateView ==================");
+		System.out.println("================ MonthSummary / onCreateView ==================");
 		act = getActivity();
 
 		mRootView = inflater.inflate(R.layout.month_summary, container, false);
@@ -95,6 +95,8 @@ public class MonthSummary extends Fragment
 					  }
 			  })
 			  .show();
+
+		//??? dialog onDismiss
 	}
 
 	// get summary string

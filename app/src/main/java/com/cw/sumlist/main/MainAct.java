@@ -41,7 +41,6 @@ import com.cw.sumlist.page.Checked_notes_option;
 import com.cw.sumlist.page.PageUi;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.db.DB_drawer;
-import com.cw.sumlist.util.Dialog_EULA;
 import com.cw.sumlist.util.image.UtilImage;
 import com.cw.sumlist.define.Define;
 import com.cw.sumlist.util.OnBackPressedListener;
@@ -49,20 +48,16 @@ import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.preferences.Pref;
 import com.mobeta.android.dslv.DragSortListView;
 
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.StrictMode;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentManager.OnBackStackChangedListener;
 import androidx.fragment.app.FragmentTransaction;
 
 import androidx.core.view.GravityCompat;
@@ -77,7 +72,7 @@ import android.widget.Toast;
 
 import static com.cw.sumlist.define.Define.PREFERENCE_ENABLE_EXPAND_CARD_VIEW;
 
-public class MainAct extends AppCompatActivity implements OnBackStackChangedListener
+public class MainAct extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener
 {
     public static CharSequence mFolderTitle;
     public static CharSequence mAppTitle;
@@ -85,7 +80,7 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
     public Config mConfigFragment;
     public SumPagesFragment mSumPagesFragment;
     public About mAboutFragment;
-    public MonthSummary mMonthSummay;
+    public MonthSummary mMonthSummary;
     public static Menu mMenu;
     public static List<String> mFolderTitles;
     public static AppCompatActivity mAct;//TODO static issue
@@ -801,9 +796,9 @@ public class MainAct extends AppCompatActivity implements OnBackStackChangedList
                 mMenu.setGroupVisible(R.id.group_pages_and_more, false);
                 setTitle(R.string.month_summary);
 
-                mMonthSummay = new MonthSummary();
+                mMonthSummary = new MonthSummary();
                 mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
-                mFragmentTransaction.replace(R.id.content_frame, mMonthSummay).addToBackStack("config").commit();
+                mFragmentTransaction.replace(R.id.content_frame, mMonthSummary).addToBackStack("month summary").commit();
                 return true;
 
             case MenuId.CONFIG:

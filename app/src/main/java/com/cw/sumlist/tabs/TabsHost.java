@@ -32,6 +32,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +53,7 @@ import com.cw.sumlist.page.Page;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.preferences.Pref;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 // if ENABLE_ADMOB = true, enable the following
 //import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -67,7 +70,7 @@ import static com.cw.sumlist.define.Define.ENABLE_ITEM_TOUCH_SWIPE;
 public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTabSelectedListener
 {
     public static TabLayout mTabLayout;
-    public static CustomViewPager mViewPager;
+    public static ViewPager2 mViewPager;
     public static TabsPagerAdapter mTabsPagerAdapter;
     public static int mFocusPageTableId;
     public static int mFocusTabPos;
@@ -120,16 +123,21 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         }
 
         // apply custom view pager:
-        mViewPager = (CustomViewPager) rootView.findViewById(R.id.tabs_pager);
+        mViewPager = (ViewPager2) rootView.findViewById(R.id.tabs_pager);
+
+        ///cw workaround of exception
+        //java.lang.IllegalStateException: Fragment no longer exists for key f#0: unique id
+        // ref https://stackoverflow.com/questions/59486504/fragment-no-longer-exists-for-key-fragmentstateadapter-with-viewpager2
+        mViewPager.setSaveEnabled(false);
 
         // Disable touch event in order to Enable card view swipe
-        if(ENABLE_ITEM_TOUCH_SWIPE)
-            mViewPager.setPagingEnabled(false);
-        else
-            mViewPager.setPagingEnabled(true);
+//        if(ENABLE_ITEM_TOUCH_SWIPE)
+//            mViewPager.setPagingEnabled(false);
+//        else
+//            mViewPager.setPagingEnabled(true);
 
         // mTabsPagerAdapter
-        mTabsPagerAdapter = new TabsPagerAdapter(MainAct.mAct,MainAct.mAct.getSupportFragmentManager());
+        mTabsPagerAdapter = new TabsPagerAdapter(MainAct.mAct);
 //        mTabsPagerAdapter = new TabsPagerAdapter(MainAct.mAct,getChildFragmentManager());
 
         // add pages to mTabsPagerAdapter
@@ -153,8 +161,18 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
         // set tab layout
         mTabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setOnTabSelectedListener(this);
+//        mTabLayout.setupWithViewPager(mViewPager);
+
+        new TabLayoutMediator(mTabLayout, mViewPager,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        tab.setText(mTabsPagerAdapter.getPageTitle(position) );
+                    }
+                }).attach();
+
+//        mTabLayout.setOnTabSelectedListener(this);
+        mTabLayout.addOnTabSelectedListener(this);
+
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 //        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -277,12 +295,28 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
         setFocus_tabPos(tab.getPosition());
 
+        //improve Pause_Resume UI
+        if(mTabsPagerAdapter == null)
+            return;
+
         // keep focus view page table Id
         int pageTableId = mTabsPagerAdapter.dbFolder.getPageTableId(getFocus_tabPos(), true);
         Pref.setPref_focusView_page_tableId(MainAct.mAct, pageTableId);
 
         // current page table Id
         mFocusPageTableId = pageTableId;
+
+        // refresh list view of selected page
+        Page page = mTabsPagerAdapter.fragmentList.get(getFocus_tabPos());
+
+        // add for update page item view
+        if((page != null) && (page.itemAdapter != null)){
+            page.itemAdapter.notifyDataSetChanged();
+            System.out.println("TabsHost / _onTabSelected / notifyDataSetChanged ");
+        } else {
+            System.out.println("TabsHost / _onTabSelected / not notifyDataSetChanged / reloadCurrentPage");
+            reloadCurrentPage();
+        }
 
         // call onCreateOptionsMenu
         MainAct.mAct.invalidateOptionsMenu();
@@ -296,7 +330,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         // set long click listener
         setLongClickListener();
 
-        TabsHost.showFooter(MainAct.mAct);
+        showFooter(MainAct.mAct);
     }
 
     @Override
@@ -305,40 +339,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-//        doOnTabReselected(tab); //todo Need this?
     }
-
-    public void doOnTabReselected(TabLayout.Tab tab) {
-        System.out.println("TabsHost / _doOnTabReselected / tab position: " + tab.getPosition());
-        // TODO
-        //  note: tab position is kept after importing new XML, how to change it?
-        setFocus_tabPos(tab.getPosition());
-
-        // keep focus view page table Id
-        int pageTableId = mTabsPagerAdapter.dbFolder.getPageTableId(getFocus_tabPos(), true);
-        Pref.setPref_focusView_page_tableId(MainAct.mAct, pageTableId);
-
-        // current page table Id
-        setCurrentPageTableId(pageTableId);
-
-        // refresh list view of selected page
-        Page page = mTabsPagerAdapter.fragmentList.get(getFocus_tabPos());
-
-        // add for update page item view
-        if((page != null) && (page.itemAdapter != null)) {
-            page.itemAdapter.updateDbCache();
-            page.itemAdapter.notifyDataSetChanged();
-        }
-
-        // call onCreateOptionsMenu
-        MainAct.mAct.invalidateOptionsMenu();
-
-        // set long click listener
-        setLongClickListener();
-
-        TabsHost.showFooter(MainAct.mAct);
-    }
-
 
     @Override
     public void onResume() {
@@ -348,6 +349,9 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
         if(Drawer.getFolderCount() == 0)
             return;//todo Check again
+
+        if(mTabsPagerAdapter == null)
+            return;
 
         // restore focus view page
         int pageCount = mTabsPagerAdapter.dbFolder.getPagesCount(true);
@@ -650,7 +654,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     // set footer
     public static void showFooter(AppCompatActivity mAct)
     {
-//		System.out.println("TabsHost / _showFooter ");
+		System.out.println("TabsHost / _showFooter ");
 
         // show footer
         mFooterMessage.setTextColor(ColorSet.color_white);
@@ -759,8 +763,10 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
             for (int i = 0; i < fragmentList.size(); i++) {
 //                System.out.println("TabsHost / _removeTabs / i = " + i);
+                TabsHost.mTabsPagerAdapter.fragmentList.get(i).itemAdapter = null;
                 MainAct.mAct.getSupportFragmentManager().beginTransaction().remove(fragmentList.get(i)).commit();
             }
+            mTabsPagerAdapter = null;
         }
     }
 

@@ -95,8 +95,6 @@ public class Page extends Fragment implements OnStartDragListener {
 
         fillData();
 
-        TabsHost.showFooter(MainAct.mAct);
-
         // swipe callback
         if(ENABLE_ITEM_TOUCH_SWIPE) {
             ItemTouchHelper.Callback callback = new SwipeItemTouchHelperCallback(itemAdapter);
