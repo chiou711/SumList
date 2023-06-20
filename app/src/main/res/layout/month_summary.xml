@@ -1,11 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-</ScrollView>
-</FrameLayout>
+	android:layout_height="match_parent"
+	android:orientation="vertical" >
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:orientation="vertical" >
+	<TextView
+		android:id="@+id/month_summary_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textStyle="normal"
+		android:textColor="@color/colorWhite"
+		android:padding="5dp"
+		android:textSize="18sp"
+		android:text="month_summary_text"/>
+	</ScrollView>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="50dp"
+		android:orientation="horizontal" >
+		<Button
+			android:id="@+id/month_summary_back"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="match_parent"
+			style="?android:attr/buttonBarButtonStyle"
+			android:text="@string/notices_close"
+			android:textColor="@color/colorWhite"
+			android:background="@drawable/button"
+			android:padding="5dp"
+			/>
+		<Button
+			android:id="@+id/month_summary_mail"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="match_parent"
+			style="?android:attr/buttonBarButtonStyle"
+			android:textColor="@color/colorWhite"
+			android:text="@string/mail"
+			android:background="@drawable/button"
+			android:padding="5dp"
+			/>
+	</LinearLayout>
+</LinearLayout>
 

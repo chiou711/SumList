@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 CW Chiu
+ * Copyright (C) 2023 CW Chiu
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 
 package com.cw.sumlist.config;
-
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cw.sumlist.R;
@@ -50,11 +50,16 @@ import java.util.List;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-public class MonthSummary extends Fragment
-{
+public class MonthSummary extends Fragment {
 
 	static View mRootView;
 	Activity act;
+	TextView summary_text_view;
+	Button backBtn,mailBtn;
+	String summary_content;
+	String summary_title;
+	String text;
+
 	public MonthSummary(){}
 
 	@Override
@@ -63,40 +68,45 @@ public class MonthSummary extends Fragment
 		act = getActivity();
 
 		mRootView = inflater.inflate(R.layout.month_summary, container, false);
-		showSummaryDialog();
+
+		String folder_title = (String) MainAct.mFolderTitle;
+		String title = folder_title.concat(" ( ").concat(String.valueOf(MainAct.folder_sum)).concat(" ) ");
+
+		// summary title
+		summary_title = act.getResources().getString(R.string.month_summary) +
+				" : " + title + "\n" ;
+
+		// summary content
+		summary_content = getSummaryString();
+
+		// summary text view
+		text = summary_title.concat("\n").concat(summary_content);
+		summary_text_view = mRootView.findViewById(R.id.month_summary_text);
+		summary_text_view.setText(text);
+
+		// back button
+		backBtn = mRootView.findViewById(R.id.month_summary_back);
+		backBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				getActivity().getSupportFragmentManager().popBackStack();
+			}
+		});
+
+		// mail button
+		mailBtn = mRootView.findViewById(R.id.month_summary_mail);
+		mailBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// mail
+				inputEMailDialog();
+			}
+		});
 
 		// set Back pressed listener
 		((MainAct)act).setOnBackPressedListener(new BaseBackPressedListener(MainAct.mAct));
 
 		return mRootView;
-	}
-
-	String summaryString;
-	String msgStr;
-	// Show summary dialog
-	void showSummaryDialog()
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(act);
-		String title = (String) MainAct.mFolderTitle;
-		title = title.concat(" ( ").concat(String.valueOf(MainAct.folder_sum)).concat(" ) ");
-        msgStr = act.getResources().getString(R.string.month_summary) +
-                        " : " + title + "\n" ;
-		summaryString = getSummaryString();
-
-	    builder.setTitle(msgStr)
-	          .setMessage(summaryString)
-			  .setNegativeButton(R.string.notices_close, (dialog1, which1) ->
-					  getActivity().getSupportFragmentManager().popBackStack())
-			  .setPositiveButton(R.string.mail, new DialogInterface.OnClickListener() {
-					  @Override
-					  public void onClick(DialogInterface dialog2, int which2) {
-						  // mail
-						  inputEMailDialog();
-					  }
-			  })
-			  .show();
-
-		//??? dialog onDismiss
 	}
 
 	// get summary string
@@ -148,8 +158,7 @@ public class MonthSummary extends Fragment
 	}
 
 
-	void inputEMailDialog()
-	{
+	void inputEMailDialog()	{
 		AlertDialog.Builder builder1;
 
 		mPref_email = getActivity().getSharedPreferences("email_addr", 0);
@@ -182,10 +191,8 @@ public class MonthSummary extends Fragment
 		Button enterButton = mDialog.getButton(DialogInterface.BUTTON_POSITIVE);
 		enterButton.setOnClickListener(new CustomListener(mDialog));
 
-
 		// back
 		mDialog.setOnKeyListener(new Dialog.OnKeyListener() {
-
 			@Override
 			public boolean onKey(DialogInterface arg0, int keyCode,
 			                     KeyEvent event) {
@@ -229,7 +236,7 @@ public class MonthSummary extends Fragment
 				if(extras == null){
 					// TXT file
 					util.exportToSdCardFile(attachmentFileName[0], // attachment name
-							summaryString); // sent string
+							summary_content); // sent string
 				}
 
 				mPref_email.edit().putString("KEY_DEFAULT_EMAIL_ADDR", strEMailAddr).apply();
@@ -262,7 +269,7 @@ public class MonthSummary extends Fragment
 		mEMailIntent.setType("text/plain");//can select which APP will be used to send mail
 
 		// open issue: cause warning for Key android.intent.extra.TEXT expected ArrayList
-		String text_body = msgStr.concat("-------------\n").concat(summaryString);
+		String text_body = summary_title.concat("-------------\n").concat(summary_content);
 
 		// attachment: message
 		List<String> filePaths = new ArrayList<String>();
