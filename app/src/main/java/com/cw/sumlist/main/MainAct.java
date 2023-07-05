@@ -166,7 +166,7 @@ public class MainAct extends AppCompatActivity implements FragmentManager.OnBack
         dataActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    System.out.println("MainAct / _onActivityResult / ADD_NEW_ACTIVITY");
+                    System.out.println("MainAct / _StartActivityForResult / Note_addText");
                     updatePageSumArr();
 
                     // update new folder sum

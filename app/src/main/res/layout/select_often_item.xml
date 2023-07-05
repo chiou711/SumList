@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+ <LinearLayout
+     	android:id="@+id/selectPageDlg"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	 	android:background="@color/bar_color"
+  		android:orientation="vertical" >
+	        
+   	<TextView
+		 android:id="@+id/select_list_title"
+		 android:layout_width="match_parent" 
+		 android:layout_height="50dp"
+		 android:textSize="22sp"
+		 android:textStyle="bold"
+		 android:gravity="center_vertical" 
+		 android:text="@string/config_select_pages_title"
+		 android:textColor="@color/colorWhite"
+		 android:textAppearance="?android:attr/textAppearanceLarge"
+		 android:paddingLeft="5dp"
+		 />
+   	
+   	<View android:layout_width="match_parent" android:layout_height="1dp" android:background="#4f4f4f" />
+   	
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1" >
+    </ListView>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#4f4f4f" />	
+    
+
+</LinearLayout> 	
+
+
+</LinearLayout>

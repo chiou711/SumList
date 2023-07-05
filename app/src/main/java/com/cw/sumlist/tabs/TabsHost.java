@@ -70,7 +70,7 @@ import static com.cw.sumlist.define.Define.ENABLE_ITEM_TOUCH_SWIPE;
 public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTabSelectedListener
 {
     public static TabLayout mTabLayout;
-    public static ViewPager2 mViewPager;
+    public static CustomViewPager mViewPager;
     public static TabsPagerAdapter mTabsPagerAdapter;
     public static int mFocusPageTableId;
     public static int mFocusTabPos;
@@ -123,21 +123,16 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         }
 
         // apply custom view pager:
-        mViewPager = (ViewPager2) rootView.findViewById(R.id.tabs_pager);
-
-        ///cw workaround of exception
-        //java.lang.IllegalStateException: Fragment no longer exists for key f#0: unique id
-        // ref https://stackoverflow.com/questions/59486504/fragment-no-longer-exists-for-key-fragmentstateadapter-with-viewpager2
-        mViewPager.setSaveEnabled(false);
+        mViewPager = (CustomViewPager) rootView.findViewById(R.id.tabs_pager);
 
         // Disable touch event in order to Enable card view swipe
-//        if(ENABLE_ITEM_TOUCH_SWIPE)
-//            mViewPager.setPagingEnabled(false);
-//        else
-//            mViewPager.setPagingEnabled(true);
+        if(ENABLE_ITEM_TOUCH_SWIPE)
+            mViewPager.setPagingEnabled(false);
+        else
+            mViewPager.setPagingEnabled(true);
 
         // mTabsPagerAdapter
-        mTabsPagerAdapter = new TabsPagerAdapter(MainAct.mAct);
+        mTabsPagerAdapter = new TabsPagerAdapter(MainAct.mAct,MainAct.mAct.getSupportFragmentManager());
 //        mTabsPagerAdapter = new TabsPagerAdapter(MainAct.mAct,getChildFragmentManager());
 
         // add pages to mTabsPagerAdapter
@@ -161,16 +156,9 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
         // set tab layout
         mTabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
-//        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setupWithViewPager(mViewPager);
 
-        new TabLayoutMediator(mTabLayout, mViewPager,
-                new TabLayoutMediator.TabConfigurationStrategy() {
-                    @Override public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        tab.setText(mTabsPagerAdapter.getPageTitle(position) );
-                    }
-                }).attach();
-
-//        mTabLayout.setOnTabSelectedListener(this);
+        mTabLayout.setOnTabSelectedListener(this);
         mTabLayout.addOnTabSelectedListener(this);
 
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -306,18 +294,6 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         // current page table Id
         mFocusPageTableId = pageTableId;
 
-        // refresh list view of selected page
-        Page page = mTabsPagerAdapter.fragmentList.get(getFocus_tabPos());
-
-        // add for update page item view
-        if((page != null) && (page.itemAdapter != null)){
-            page.itemAdapter.notifyDataSetChanged();
-            System.out.println("TabsHost / _onTabSelected / notifyDataSetChanged ");
-        } else {
-            System.out.println("TabsHost / _onTabSelected / not notifyDataSetChanged / reloadCurrentPage");
-            reloadCurrentPage();
-        }
-
         // call onCreateOptionsMenu
         MainAct.mAct.invalidateOptionsMenu();
 
@@ -386,8 +362,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     public void onPause() {
         super.onPause();
         System.out.println("TabsHost / _onPause");
-        //  Remove fragments
-
+        // Remove fragments
         if(TabsHost.mTabsPagerAdapter == null)
             return;
 

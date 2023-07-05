@@ -31,10 +31,17 @@
 			android:text="@string/edit_note_dlg_title"
             android:textColor="@android:color/white"/>
 	</LinearLayout>
-	
+
+	<!-- item	-->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/bar_color"
+		android:orientation="horizontal" >
 	<EditText android:id="@+id/edit_title"
-		  	android:layout_width="match_parent"
+		  	android:layout_width="0dp"
 			android:layout_height="wrap_content"
+			android:layout_weight="4"
 		    android:textCursorDrawable="@drawable/cursor_edit"
 		    android:inputType="textPhonetic|textAutoComplete"
 		    android:textSize="18sp"
@@ -42,8 +49,19 @@
 		    android:maxLines="3"
 			android:cursorVisible="true"
 			/>
+	<Button
+		android:id="@+id/btn_select_often_item"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:layout_gravity="center"
+		android:layout_margin="3dp"
+		android:textColor="@color/colorWhite"
+		android:text="@string/add_often_list"
+		android:background="@drawable/button"/>
+	</LinearLayout>
 
-	<!-- body -->
+	<!-- Price -->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

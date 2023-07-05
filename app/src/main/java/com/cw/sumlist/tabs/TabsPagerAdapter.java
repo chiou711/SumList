@@ -16,10 +16,11 @@
 
 package com.cw.sumlist.tabs;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import android.view.ViewGroup;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.page.Page;
@@ -33,16 +34,17 @@ import java.util.ArrayList;
  *  View Pager Adapter Class
  *
  */
-public class TabsPagerAdapter extends FragmentStateAdapter {
+public class TabsPagerAdapter extends FragmentPagerAdapter {
     public ArrayList<Page> fragmentList = new ArrayList<>();
     DB_folder dbFolder;
 
-    TabsPagerAdapter(AppCompatActivity act){
-        super(act);
+    TabsPagerAdapter(AppCompatActivity act, FragmentManager fm){
+        super(fm);
         int folderTableId = Pref.getPref_focusView_folder_tableId(act);
         dbFolder = new DB_folder(act, folderTableId);
     }
 
+    @Override
     public Page getItem(int position) {
         return fragmentList.get(position);
     }
@@ -52,24 +54,21 @@ public class TabsPagerAdapter extends FragmentStateAdapter {
         fragmentList.add(fragment);
     }
 
+    @Override
     public int getCount(){
         return fragmentList.size();
     }
 
+    @Override
     public CharSequence getPageTitle(int position){
 //        System.out.println("TabsPagerAdapter / _getPageTitle / position = " + position);
         return dbFolder.getPageTitle(position,true);
     }
 
-    @NonNull
     @Override
-    public Fragment createFragment(int position) {
-        return fragmentList.get(position);
-    }
-
-    @Override
-    public int getItemCount() {
-        return fragmentList.size();
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        super.setPrimaryItem(container, position, object);
+//        System.out.println("TabsPagerAdapter / _setPrimaryItem / position = " + position);
     }
 }
 

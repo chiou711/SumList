@@ -285,9 +285,7 @@ public class Checked_notes_option {
         mDb_page.close();
 
         MainAct.updatePageSumArr();
-
         TabsHost.reloadCurrentPage();
-
         TabsHost.showFooter(MainAct.mAct);
     }
 
@@ -310,7 +308,6 @@ public class Checked_notes_option {
         mDb_page.close();
 
         MainAct.updatePageSumArr();
-
         TabsHost.reloadCurrentPage();
         TabsHost.showFooter(MainAct.mAct);
     }
@@ -377,7 +374,6 @@ public class Checked_notes_option {
                     mDb_page.close();
 
                     MainAct.updatePageSumArr();
-
                     TabsHost.reloadCurrentPage();
                     TabsHost.showFooter(MainAct.mAct);
                 }
@@ -386,7 +382,6 @@ public class Checked_notes_option {
                     DB_page.setFocusPage_tableId(srcPageTableId);
 
                     MainAct.updatePageSumArr();
-
                     TabsHost.reloadCurrentPage();
                     TabsHost.showFooter(MainAct.mAct);
                 }
@@ -451,7 +446,6 @@ public class Checked_notes_option {
                                 mDb_page.close();
 
                                 MainAct.updatePageSumArr();
-
                                 TabsHost.reloadCurrentPage();
                                 TabsHost.showFooter(MainAct.mAct);
                             }

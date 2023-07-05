@@ -29,9 +29,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.NavUtils;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentResultListener;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -65,6 +70,15 @@ public class Note_addText extends AppCompatActivity {
         // get row Id from saved instance
         rowId = (savedInstanceState == null) ? null :
             (Long) savedInstanceState.getSerializable(DB_page.KEY_NOTE_ID);
+
+	    getSupportFragmentManager().setFragmentResultListener("requestOftenItem", this, new FragmentResultListener() {
+		    @Override
+		    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+			    // We use a String here, but any type that can be put in a Bundle is supported.
+			    String result = bundle.getString("oftenItem");
+			    titleEditText.setText(result);
+		    }
+	    });
     }
     
     @Override
@@ -96,6 +110,19 @@ public class Note_addText extends AppCompatActivity {
 				addNewNote();
 			}
 		});
+
+	    // often item button
+	    Button selOftenItemBtn = findViewById(R.id.btn_select_often_item);
+	    selOftenItemBtn.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View view) {
+				/// ???
+				// turn off IME first
+//			    titleEditText.setInputType(EditorInfo.TYPE_NULL);
+//			    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+			    selectOftenItem();
+		    }
+	    });
     }
 
 	// for Add new note
@@ -400,4 +427,11 @@ public class Note_addText extends AppCompatActivity {
 		return rowId;
 	}
 
+	void selectOftenItem(){
+		SelectOftenItem selOftenItem = new SelectOftenItem();
+		FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+		mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+//		mFragmentTransaction.replace(R.id.container, selOftenItem).addToBackStack("select often item").commit();
+		mFragmentTransaction.add(R.id.container, selOftenItem, "select often item").addToBackStack("select often item").commit();
+	}
 }
