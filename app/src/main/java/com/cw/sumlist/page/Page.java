@@ -131,6 +131,7 @@ public class Page extends Fragment implements OnStartDragListener {
         int focusTableId = Pref.getPref_focusView_page_tableId(act);
         int diff = Math.abs(focusTableId - page_tableId);
         if(diff <= 1) {
+            System.out.println("Page / _fillData / page_pos = " + page_pos);
             itemAdapter = new PageAdapter(page_pos, page_tableId, this);
             // Set PageAdapter_recycler as the adapter for RecyclerView.
             recyclerView.setAdapter(itemAdapter);

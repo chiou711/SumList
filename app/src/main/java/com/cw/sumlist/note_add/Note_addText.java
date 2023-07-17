@@ -17,6 +17,7 @@
 package com.cw.sumlist.note_add;
 
 import com.cw.sumlist.db.DB_folder;
+import com.cw.sumlist.db.DB_often;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_page;
@@ -120,6 +121,14 @@ public class Note_addText extends AppCompatActivity {
 				// turn off IME first
 //			    titleEditText.setInputType(EditorInfo.TYPE_NULL);
 //			    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+			    ///
+			    // Often table
+			    DB_often db_often = new DB_often(Note_addText.this);
+			    db_often.open();
+				db_often.close();
+			    ///
+
 			    selectOftenItem();
 		    }
 	    });
