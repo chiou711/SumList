@@ -122,13 +122,6 @@ public class Note_addText extends AppCompatActivity {
 //			    titleEditText.setInputType(EditorInfo.TYPE_NULL);
 //			    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-			    ///
-			    // Often table
-			    DB_often db_often = new DB_often(Note_addText.this);
-			    db_often.open();
-				db_often.close();
-			    ///
-
 			    selectOftenItem();
 		    }
 	    });

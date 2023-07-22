@@ -29,6 +29,7 @@ import android.widget.ListView;
 
 import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_folder;
+import com.cw.sumlist.db.DB_often;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.preferences.Pref;
 
@@ -91,8 +92,11 @@ public class List_selectOftenItem
         mCheckedTabs = new ArrayList<Boolean>();
         mListStrArr = new ArrayList<String>();
 
-        for(int i=0;i<oftenItems.length;i++)
-            mListStrArr.add(oftenItems[i]);
+        DB_often db_often = new DB_often(mAct);
+        int oftenCount =db_often.getOftenCount(true);
+
+        for(int i=0;i<oftenCount;i++)
+            mListStrArr.add(db_often.getOftenTitle(i,true));
 
         // set list adapter
         ListAdapter listAdapter = new ListAdapter(mAct, mListStrArr);

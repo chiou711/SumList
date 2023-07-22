@@ -16,6 +16,8 @@
 
 package com.cw.sumlist.db;
 
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -39,6 +41,18 @@ public class DB_often
 	public DB_often(Context context)
     {
         mContext = context;
+
+	    // initial titles
+	    if(getOftenCount(true) == 0){
+		    String[] oftenItems = {
+				    "麵包","飲料",
+				    "早餐","午餐","晚餐",
+				    "Costco","全聯","大潤發","億客來"
+		    };
+
+		    for(int i=0;i<oftenItems.length;i++)
+			    insertOften(this,oftenItems[i] ,true);
+	    }
     }
 
     /**
@@ -95,6 +109,51 @@ public class DB_often
 				null,
 				null
 		);
+	}
+
+	public int getOftenCount(boolean enDbOpenClose)
+	{
+		if(enDbOpenClose)
+			this.open();
+
+		int count = 0;
+		if((mCursor_often != null) && !mCursor_often.isClosed())
+			count = mCursor_often.getCount();
+
+		if(enDbOpenClose)
+			this.close();
+
+		return count;
+	}
+
+	public long insertOften(DB_often db,String title, boolean enDbOpenClose)
+	{
+		if(enDbOpenClose)
+			db.open();
+
+		ContentValues args = new ContentValues();
+		args.put(KEY_OFTEN_TITLE, title);
+		long rowId = mSqlDb.insert(DB_often.DB_OFTEN_TABLE_NAME, null, args);
+
+		if(enDbOpenClose)
+			db.close();
+
+		return rowId;
+	}
+
+	@SuppressLint("Range")
+	public String getOftenTitle(int position, boolean enDbOpenClose)
+	{
+		if(enDbOpenClose)
+			this.open();
+
+		mCursor_often.moveToPosition(position);
+		String title = mCursor_often.getString(mCursor_often.getColumnIndex(KEY_OFTEN_TITLE));
+
+		if(enDbOpenClose)
+			this.close();
+
+		return title;
 	}
 
 }
