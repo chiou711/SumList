@@ -347,12 +347,12 @@ public class Note_addText extends AppCompatActivity {
 
 			// body
 			int strBodyEdit = dB_page.getNoteBody_byId(rowId);
-			bodyEditText.setText(strBodyEdit);
+			bodyEditText.setText(String.valueOf(strBodyEdit));
 			bodyEditText.setSelection(String.valueOf(strBodyEdit).length());
 
 			// quantity
 			int strQuantityEdit = dB_page.getNoteQuantity_byId(rowId);
-			quantityEditText.setText(strQuantityEdit);
+			quantityEditText.setText(String.valueOf(strQuantityEdit));
 			quantityEditText.setSelection(String.valueOf(strQuantityEdit).length());
 
 		} else {
