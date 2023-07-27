@@ -37,6 +37,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -75,19 +77,23 @@ public class Config extends Fragment
 
 		mRootView = inflater.inflate(R.layout.config, container, false);
 
-	    //Set text style
+		// Set listeners
+	    // set text style
 		setNewPageTextStyle();
 
 		// add new option
 		setAddNewOption();
 
-		//Set vibration time length
+		// set vibration time length
 		setVibrationTimeLength();
 
-		//delete DB
+		// set often items
+		setOftenItems();
+
+		// delete DB
 		deleteDB_button();
 
-		//recover all settings to default
+		// recover all settings to default
 		recover_all_settings_button();
 
 		// set Back pressed listener
@@ -105,7 +111,7 @@ public class Config extends Fragment
 		// Get current style
 		mNewPageTVStyle = (TextView)mRootView.findViewById(R.id.TextViewStyleSetting);
 		View mViewStyle = mRootView.findViewById(R.id.setStyle);
-		int iBtnId = Util.getNewPageStyle(Objects.requireNonNull(getActivity()));
+		int iBtnId = Util.getNewPageStyle(requireActivity());
 		
 		// set background color with current style 
 		mNewPageTVStyle.setBackgroundColor(ColorSet.mBG_ColorArray[iBtnId]);
@@ -290,6 +296,22 @@ public class Config extends Fragment
 				  .setSingleChoiceItems(items, -1, listener)
 				  .setNegativeButton(R.string.btn_Cancel, null)
 				  .show();
+	}
+
+	// Set often items
+	void setOftenItems(){
+		View setOftenItems = mRootView.findViewById(R.id.setOftenItems);
+
+		// add new option
+		setOftenItems.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				SetOftenItems selOftenItem = new SetOftenItems();
+				FragmentTransaction mFragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+				mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+				mFragmentTransaction.replace(R.id.container_config, selOftenItem).addToBackStack("set often items").commit();
+			}
+		});
 	}
 
    

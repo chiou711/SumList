@@ -15,4 +15,6 @@
     <string name="config_select_pages_delete_title">選擇要刪除的清單:</string>
     <string name="config_select_folders_title">選擇要刪除的月清單:</string>
     <string name="config_select_sum_folders_title">選擇月清單:</string>
+    <string name="config_often_items">經常使用的項目:</string>
+    <string name="config_set_often_items">設定經常使用的項目</string>
 </resources>

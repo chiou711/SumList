@@ -15,4 +15,6 @@
     <string name="config_select_pages_delete_title">Select lists to delete:</string>
     <string name="config_select_folders_title">Select month lists to delete:</string>
     <string name="config_select_sum_folders_title">Select month lists:</string>
+    <string name="config_often_items">Often use items:</string>
+    <string name="config_set_often_items">Set up often use items</string>
 </resources>
