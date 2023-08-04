@@ -67,7 +67,6 @@ public class SetOftenItems_list
 
     // show list for Select
     public int mChkNum;
-    String[] oftenItems = {"麵包","全聯","大潤發","午餐","晚餐"};
     void showOftenItemsList(View root)
     {
         mChkNum = 0;

@@ -16,10 +16,15 @@
 
 package com.cw.sumlist.config;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,6 +42,9 @@ public class SetOftenItems extends Fragment{
     SetOftenItems_list list_selOftenIem;
 	public static View rootView;
     AppCompatActivity act;
+	Button btn_add_often_items;
+	AlertDialog mDialog;
+	EditText titleEditText;
 
 	public SetOftenItems(){}
 
@@ -61,8 +69,39 @@ public class SetOftenItems extends Fragment{
         //show list for selection
         list_selOftenIem = new SetOftenItems_list(act,rootView , mListView);
 
+		// add button
+		btn_add_often_items = rootView.findViewById(R.id.btn_add_often_items);
+
+		btn_add_often_items.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				System.out.println("------- btn_add_often_items on click");
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				LayoutInflater mInflater= (LayoutInflater) act.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+				View view = mInflater.inflate(R.layout.add_new_often_item, null);
+				builder.setTitle(R.string.config_set_often_items)
+					   .setPositiveButton(R.string.btn_OK, listener_ok)
+					   .setNegativeButton(R.string.btn_Cancel, null);
+				builder.setView(view);
+				titleEditText =  view.findViewById(R.id.edit_title);
+				mDialog = builder.create();
+				mDialog.show();
+			}
+		});
+
 		return rootView;
 	}
+
+	DialogInterface.OnClickListener listener_ok = new DialogInterface.OnClickListener()
+	{
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			String newOftenItem = titleEditText.getText().toString();
+			System.out.println("---- new often item = " + newOftenItem);
+			dialog.dismiss();
+		}
+	};
 
 	@Override
 	public void onPause() {
