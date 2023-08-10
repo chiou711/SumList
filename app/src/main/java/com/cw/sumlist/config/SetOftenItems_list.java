@@ -17,7 +17,9 @@
 package com.cw.sumlist.config;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.cw.sumlist.R;
@@ -51,18 +54,19 @@ public class SetOftenItems_list
     DB_folder mDb_folder;
     public int count;
     AppCompatActivity mAct;
-    public boolean isCheckAll;
+    EditText titleEditText;
+    int editPosition;
+    View rootView;
 
-    public SetOftenItems_list(AppCompatActivity act, View rootView, ListView listView)
+    public SetOftenItems_list(AppCompatActivity act, View _rootView, ListView listView)
     {
         mAct = act;
         mDb_folder = new DB_folder(mAct, Pref.getPref_focusView_folder_tableId(mAct));
+        rootView = _rootView;
 
         // list view: selecting which pages to send
         mListView = listView;
         showOftenItemsList(rootView);
-
-        isCheckAll = false;
     }
 
     // show list for Select
@@ -87,6 +91,30 @@ public class SetOftenItems_list
             }
         });
 
+        // edit
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                editPosition = position;
+                DB_often db_often = new DB_often(mAct);
+                String title = db_often.getOftenTitle(position,true);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(mAct);
+                LayoutInflater mInflater= (LayoutInflater) mAct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view2 = mInflater.inflate(R.layout.add_new_often_item, null);
+                builder.setTitle(R.string.config_set_often_items)
+                        .setPositiveButton(R.string.btn_OK, listener_update)
+                        .setNegativeButton(R.string.btn_Cancel, null);
+                builder.setView(view2);
+                titleEditText =  view2.findViewById(R.id.edit_title);
+                titleEditText.setText(title);
+                AlertDialog mDialog = builder.create();
+                mDialog.show();
+                return false;
+            }
+        });
+
         // set list string array
         mCheckedTabs = new ArrayList<Boolean>();
         mListStrArr = new ArrayList<String>();
@@ -103,6 +131,24 @@ public class SetOftenItems_list
         // list view: set adapter
         mListView.setAdapter(listAdapter);
     }
+
+    DialogInterface.OnClickListener listener_update = new DialogInterface.OnClickListener()
+    {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            String newOftenItem = titleEditText.getText().toString();
+
+            // update often item to DB
+            DB_often db_often = new DB_often(mAct);
+            long id = db_often.getOftenId(editPosition,true);
+            db_often.updateOften(id,newOftenItem,true);
+
+            // refresh list view
+            showOftenItemsList(rootView);
+
+            dialog.dismiss();
+        }
+    };
 
     // list adapter
     public class ListAdapter extends BaseAdapter

@@ -31,7 +31,7 @@ public class DB_often
     private static DatabaseHelper mDbHelper ;
     private SQLiteDatabase mSqlDb;
 
-    // Table name format: Drawer
+    // Table name format: Often
     public static String DB_OFTEN_TABLE_NAME = "Often";
 
 	// Cursor
@@ -59,8 +59,7 @@ public class DB_often
      * DB functions
      *
      */
-	public DB_often open() throws SQLException
-	{
+	public DB_often open() throws SQLException	{
 		mDbHelper = new DatabaseHelper(mContext);
 
 		// Will call DatabaseHelper.onCreate()first time when WritableDatabase is not created yet
@@ -69,27 +68,25 @@ public class DB_often
 		String tableCreated;
 		String DB_CREATE;
 
-
 		// Create Often table
-		tableCreated = DB_often.DB_OFTEN_TABLE_NAME;
+		tableCreated = DB_OFTEN_TABLE_NAME;
 		DB_CREATE = "CREATE TABLE IF NOT EXISTS " + tableCreated + "(" +
-				DB_often.KEY_OFTEN_ID + " INTEGER PRIMARY KEY," +
-				DB_often.KEY_OFTEN_TITLE + " TEXT);";
+				KEY_OFTEN_ID + " INTEGER PRIMARY KEY," +
+				KEY_OFTEN_TITLE + " TEXT);";
 		mSqlDb.execSQL(DB_CREATE);
 
         mCursor_often = this.getOftenCursor();
 		return DB_often.this;
 	}
 
-	public void close()
-	{
+	public void close()	{
         if((mCursor_often != null) && (!mCursor_often.isClosed()))
             mCursor_often.close();
 		mDbHelper.close();
 	}
 
 	// Often rows
-	public static final  String KEY_OFTEN_ID = "often_id"; //can rename _id for using BaseAdapter
+	public static final String KEY_OFTEN_ID = "often_id"; //can rename _id for using BaseAdapter
 	public static final String KEY_OFTEN_TITLE = "often_title";
 
 	/*
@@ -101,7 +98,7 @@ public class DB_often
 	};
 
 	public Cursor getOftenCursor() {
-		return mSqlDb.query("Often",
+		return mSqlDb.query(DB_OFTEN_TABLE_NAME,
 				strOftenColumns,
 				null,
 				null,
@@ -111,8 +108,7 @@ public class DB_often
 		);
 	}
 
-	public int getOftenCount(boolean enDbOpenClose)
-	{
+	public int getOftenCount(boolean enDbOpenClose){
 		if(enDbOpenClose)
 			this.open();
 
@@ -126,8 +122,7 @@ public class DB_often
 		return count;
 	}
 
-	public long insertOften(DB_often db,String title, boolean enDbOpenClose)
-	{
+	public long insertOften(DB_often db,String title, boolean enDbOpenClose){
 		if(enDbOpenClose)
 			db.open();
 
@@ -141,9 +136,45 @@ public class DB_often
 		return rowId;
 	}
 
+
+	public boolean updateOften(long rowId, String title, boolean enDbOpenClose){
+		if(enDbOpenClose)
+			this.open();
+
+		ContentValues args = new ContentValues();
+		args.put(KEY_OFTEN_TITLE, title);
+
+		int cUpdateItems = mSqlDb.update(DB_OFTEN_TABLE_NAME, args, KEY_OFTEN_ID + "=" + rowId, null);
+
+		if(enDbOpenClose)
+			this.close();
+
+		return cUpdateItems > 0;
+	}
+
 	@SuppressLint("Range")
-	public String getOftenTitle(int position, boolean enDbOpenClose)
-	{
+	public Long getOftenId(int position,boolean enDbOpenClose){
+		if(enDbOpenClose)
+			this.open();
+
+		mCursor_often.moveToPosition(position);
+		// note: KEY_OFTEN_ID + " AS " + BaseColumns._ID
+		long column = -1;
+		try {
+			column = mCursor_often.getLong(mCursor_often.getColumnIndex(BaseColumns._ID));
+		}
+		catch (Exception e) {
+			System.out.println("DB_often / _getOftenId / exception ");
+		}
+
+		if(enDbOpenClose)
+			this.close();
+
+		return column;
+	}
+
+	@SuppressLint("Range")
+	public String getOftenTitle(int position, boolean enDbOpenClose){
 		if(enDbOpenClose)
 			this.open();
 

@@ -29,6 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cw.sumlist.R;
+import com.cw.sumlist.db.DB_often;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -84,7 +85,9 @@ public class SetOftenItems extends Fragment{
 					   .setPositiveButton(R.string.btn_OK, listener_ok)
 					   .setNegativeButton(R.string.btn_Cancel, null);
 				builder.setView(view);
+
 				titleEditText =  view.findViewById(R.id.edit_title);
+
 				mDialog = builder.create();
 				mDialog.show();
 			}
@@ -99,6 +102,14 @@ public class SetOftenItems extends Fragment{
 		public void onClick(DialogInterface dialog, int which) {
 			String newOftenItem = titleEditText.getText().toString();
 			System.out.println("---- new often item = " + newOftenItem);
+
+			// add often item to DB
+			DB_often db_often = new DB_often(act);
+			db_often.insertOften(db_often,newOftenItem ,true);
+
+			// refresh listview
+			list_selOftenIem = new SetOftenItems_list(act,rootView , mListView);
+
 			dialog.dismiss();
 		}
 	};
