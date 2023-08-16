@@ -340,8 +340,12 @@ public class Note_addText extends AppCompatActivity {
 
 			// body
 			int strBodyEdit = dB_page.getNoteBody_byId(rowId);
-			bodyEditText.setText(String.valueOf(strBodyEdit));
-			bodyEditText.setSelection(String.valueOf(strBodyEdit).length());
+			if(strBodyEdit == 0)
+				bodyEditText.setText("");
+			else {
+				bodyEditText.setText(String.valueOf(strBodyEdit));
+				bodyEditText.setSelection(String.valueOf(strBodyEdit).length());
+			}
 
 			// quantity
 			int strQuantityEdit = dB_page.getNoteQuantity_byId(rowId);
@@ -396,14 +400,11 @@ public class Note_addText extends AppCompatActivity {
 
 		if(enSaveDb)
 		{
+			// insert
 			if (rowId == null) // for Add new
 			{
 				if( (!Util.isEmptyString(title)) ||
-					(!Util.isEmptyString(body))    )
-				{
-					// insert
-					System.out.println("Note_addText / _saveStateInDB / insert");
-
+					(!Util.isEmptyString(body))    ){
 					// value
 					int value = 0;
 					if(!Util.isEmptyString(body))
@@ -415,12 +416,29 @@ public class Note_addText extends AppCompatActivity {
 						qty = Integer.valueOf(quantity);
 
 					rowId = dB_page.insertNote(title, value,  qty,  1);// add new note, get return row Id
+					System.out.println("Note_addText / _saveStateInDB / insert value = " + value);
 				}
 			}
+			// update
+			else if ( !Util.isEmptyString(title) &&
+			          !Util.isEmptyString(body)    ) {
+				// value
+				int value = 0;
+				if(!Util.isEmptyString(body))
+					value = Integer.valueOf(body);
+
+				// quantity
+				int qty = 1; // default 1
+				if(!Util.isEmptyString(quantity))
+					qty = Integer.valueOf(quantity);
+
+				//rowId != null
+				dB_page.updateNote(rowId,title, value,  qty,  1,true);// add new note, get return row Id
+				System.out.println("Note_addText / _saveStateInDB / update value = " + value);
+			}
+			// delete
 			else if ( Util.isEmptyString(title) &&
-					Util.isEmptyString(body)         )
-			{
-				// delete
+					  Util.isEmptyString(body)    ){
 				System.out.println("Note_edit_ui / _saveStateInDB / delete");
 				deleteNote(rowId);
 				rowId = null;
