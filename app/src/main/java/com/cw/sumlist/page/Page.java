@@ -66,12 +66,20 @@ public class Page extends Fragment implements OnStartDragListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
+        assert args != null;
         page_pos = args.getInt("page_pos");
         page_tableId = args.getInt("page_table_id");
         System.out.println("Page / _onCreateView / page_tableId = " + page_tableId);
+        act = MainAct.mAct;
+        int focusTableId = Pref.getPref_focusView_page_tableId(act);
+        int diff = Math.abs(focusTableId - page_tableId);
+        if(diff > 1) {
+            System.out.println("Page / _onCreateView / return");
+            return null;
+        } else
+            System.out.println("Page / _onCreateView / go on");
 
         View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
-        act = MainAct.mAct;
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         TextView blankView = rootView.findViewById(R.id.blankPage);
@@ -117,7 +125,6 @@ public class Page extends Fragment implements OnStartDragListener {
 
     @Override
     public void onResume() {
-//        System.out.println("Page / _onResume / page_tableId = " + page_tableId);
         super.onResume();
         if(Pref.getPref_focusView_page_tableId(MainAct.mAct) == page_tableId) {
 //            System.out.println("Page / _onResume / resume_listView_vScroll");
@@ -128,14 +135,10 @@ public class Page extends Fragment implements OnStartDragListener {
     private void fillData()
     {
         System.out.println("Page / _fillData / page_tableId = " + page_tableId);
-        int focusTableId = Pref.getPref_focusView_page_tableId(act);
-        int diff = Math.abs(focusTableId - page_tableId);
-        if(diff <= 1) {
-            System.out.println("Page / _fillData / page_pos = " + page_pos);
-            itemAdapter = new PageAdapter(page_pos, page_tableId, this);
-            // Set PageAdapter_recycler as the adapter for RecyclerView.
-            recyclerView.setAdapter(itemAdapter);
-        }
+        System.out.println("Page / _fillData / page_pos = " + page_pos);
+        itemAdapter = new PageAdapter(page_pos, page_tableId, this);
+        // Set PageAdapter_recycler as the adapter for RecyclerView.
+        recyclerView.setAdapter(itemAdapter);
     }
 
     // swap rows
