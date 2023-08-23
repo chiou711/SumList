@@ -136,6 +136,17 @@ public class DB_often
 		return rowId;
 	}
 
+	public long deleteOften(DB_often db,long id, boolean enDbOpenClose){
+		if(enDbOpenClose)
+			db.open();
+		long rowsNumber = mSqlDb.delete(DB_often.DB_OFTEN_TABLE_NAME, KEY_OFTEN_ID + "='" + id +"'", null);
+
+		if(enDbOpenClose)
+			db.close();
+
+		return rowsNumber;
+	}
+
 
 	public boolean updateOften(long rowId, String title, boolean enDbOpenClose){
 		if(enDbOpenClose)

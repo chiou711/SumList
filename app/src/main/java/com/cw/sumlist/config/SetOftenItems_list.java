@@ -105,7 +105,8 @@ public class SetOftenItems_list
                 View view2 = mInflater.inflate(R.layout.add_new_often_item, null);
                 builder.setTitle(R.string.config_set_often_items)
                         .setPositiveButton(R.string.btn_OK, listener_update)
-                        .setNegativeButton(R.string.btn_Cancel, null);
+                        .setNegativeButton(R.string.edit_note_button_delete, listener_delete)
+                        .setNeutralButton(R.string.btn_Cancel, null);
                 builder.setView(view2);
                 titleEditText =  view2.findViewById(R.id.edit_title);
                 titleEditText.setText(title);
@@ -142,6 +143,24 @@ public class SetOftenItems_list
             DB_often db_often = new DB_often(mAct);
             long id = db_often.getOftenId(editPosition,true);
             db_often.updateOften(id,newOftenItem,true);
+
+            // refresh list view
+            showOftenItemsList(rootView);
+
+            dialog.dismiss();
+        }
+    };
+
+    // delete current often item
+    DialogInterface.OnClickListener listener_delete = new DialogInterface.OnClickListener()
+    {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+            // delete often item
+            DB_often db_often = new DB_often(mAct);
+            long id = db_often.getOftenId(editPosition,true);
+            db_often.deleteOften(db_often,id ,true);
 
             // refresh list view
             showOftenItemsList(rootView);
