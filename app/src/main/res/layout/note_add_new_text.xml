@@ -149,8 +149,9 @@
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
 		android:layout_margin="3dp"
+		android:padding="15dp"
 		android:textColor="@color/colorWhite"
-		android:text="@string/add_new_note_button_add"
+		android:text="@string/add_new_note"
 		android:background="@drawable/button"/>
 
 </LinearLayout>
