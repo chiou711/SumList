@@ -17,21 +17,17 @@
 package com.cw.sumlist.note_add;
 
 import android.app.Activity;
-import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.CheckedTextView;
-import android.widget.ListView;
 
 import com.cw.sumlist.R;
-import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_often;
-import com.cw.sumlist.util.ColorSet;
-import com.cw.sumlist.util.preferences.Pref;
+import com.cw.sumlist.main.MainAct;
+import com.mobeta.android.dslv.DragSortController;
+import com.mobeta.android.dslv.DragSortListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,19 +40,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class List_selectOftenItem
 {
-    View mView;
-    ListView mListView;
+    DragSortListView mListView;
     public List<String> mListStrArr; // list view string array
-    public List<Boolean> mCheckedTabs; // checked list view items array
-    DB_folder mDb_folder;
     public int count;
     AppCompatActivity mAct;
     public boolean isCheckAll;
+    private DragSortController controller;
 
-    public List_selectOftenItem(AppCompatActivity act, View rootView, ListView listView)
+    public List_selectOftenItem(AppCompatActivity act, View rootView, DragSortListView listView)
     {
         mAct = act;
-        mDb_folder = new DB_folder(mAct, Pref.getPref_focusView_folder_tableId(mAct));
 
         // list view: selecting which pages to send
         mListView = listView;
@@ -71,82 +64,138 @@ public class List_selectOftenItem
     {
         mChkNum = 0;
         // set list view
-        mListView = (ListView) root.findViewById(R.id.listView1);
+        mListView = root.findViewById(R.id.listView1);
+
+        initOftenItem();
+    }
+
+    OftenItem_adapter adapter;
+    private void initOftenItem()
+    {
+        // set often item title
+        DB_often db_often = new DB_often(mAct);
+
+        mListStrArr = new ArrayList<String>();
+
+        int oftenCount =db_often.getOftenCount(true);
+
+        for(int i=0;i<oftenCount;i++)
+            mListStrArr.add(db_often.getOftenTitle(i,true));
+
+
+        // set adapter
+        db_often.open();
+        Cursor cursor = db_often.mCursor_often;
+
+        String[] from = new String[] { DB_often.KEY_OFTEN_TITLE};
+        int[] to = new int[] { R.id.often_item_title};
+
+        adapter = new OftenItem_adapter(
+                mAct,
+                R.layout.often_item_row,
+                cursor,
+                from,
+                to,
+                0
+        );
+
+        db_often.close();
+
+        mListView.setAdapter(adapter);
+
+        // set up click listener
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> parent, View vw, int position, long id)
             {
                 System.out.println("List_selectOftenItem / _showOftenItemsList / _onItemClick / position = " + position);
                 mAct.getSupportFragmentManager().popBackStack();
+                String title = db_often.getOftenTitle(position,true);
 
                 Bundle result = new Bundle();
-                result.putString("oftenItem", mListStrArr.get(position));
+                result.putString("oftenItem", title);
                 // The child fragment needs to still set the result on its parent fragment manager.
                 mAct.getSupportFragmentManager().setFragmentResult("requestOftenItem", result);
 
             }
         });
 
-        // set list string array
-        mCheckedTabs = new ArrayList<Boolean>();
-        mListStrArr = new ArrayList<String>();
+        // set up long click listener
+//        mListView.setOnItemLongClickListener(new Folder.FolderListener_longClick(mAct,adapter));
 
-        DB_often db_often = new DB_often(mAct);
-        int oftenCount =db_often.getOftenCount(true);
+        controller = buildController(mListView);
+        mListView.setFloatViewManager(controller);
+        mListView.setOnTouchListener(controller);
 
-        for(int i=0;i<oftenCount;i++)
-            mListStrArr.add(db_often.getOftenTitle(i,true));
+        // init dragger
+        mListView.setDragEnabled(true);
 
-        // set list adapter
-        ListAdapter listAdapter = new ListAdapter(mAct, mListStrArr);
-
-        // list view: set adapter
-        mListView.setAdapter(listAdapter);
+        mListView.setDragListener(onDrag);
+        mListView.setDropListener(onDrop);
     }
 
-    // list adapter
-    public class ListAdapter extends BaseAdapter
+    private static DragSortController buildController(DragSortListView dslv) {
+        // defaults are
+        DragSortController controller = new DragSortController(dslv);
+        controller.setSortEnabled(true);
+        controller.setDragInitMode(DragSortController.ON_DOWN); // click
+        controller.setDragHandleId(R.id.often_item_drag);// handler
+        controller.setBackgroundColor(Color.argb(128,128,64,0));// background color when dragging
+
+        return controller;
+    }
+
+    // list view listener: on drag
+    private DragSortListView.DragListener onDrag = new DragSortListView.DragListener()
     {
-        private Activity activity;
-        private List<String> mList;
-        private LayoutInflater inflater = null;
-
-        public ListAdapter(Activity a, List<String> list)
-        {
-            activity = a;
-            mList = list;
-            inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @Override
+        public void drag(int startPosition, int endPosition) {
         }
+    };
 
-        public int getCount()
-        {
-            return mList.size();
+    // list view listener: on drop
+    private DragSortListView.DropListener onDrop = new DragSortListView.DropListener()
+    {
+        @Override
+        public void drop(int startPosition, int endPosition) {
+            //reorder data base storage
+            int loop = Math.abs(startPosition-endPosition);
+            for(int i=0;i< loop;i++)
+            {
+                swapOftenItemRows(startPosition,endPosition);
+                if((startPosition-endPosition) >0)
+                    endPosition++;
+                else
+                    endPosition--;
+            }
+
+            adapter.notifyDataSetChanged();
         }
+    };
 
-        public Object getItem(int position)
-        {
-            return mList.get(position);
-        }
+    // swap rows
+    private static Long mOftenId1 = (long) 1;
+    private static Long mOftenId2 = (long) 1;
+    private static String mOftenTitle1;
+    private static String mOftenTitle2;
+    static void swapOftenItemRows(int startPosition, int endPosition)
+    {
+        Activity act = MainAct.mAct;
+        DB_often db_often = new DB_often(act);
 
-        public long getItemId(int position)
-        {
-            return position;
-        }
+        db_often.open();
+        mOftenId1 = db_often.getOftenId(startPosition,false);
+        mOftenTitle1 = db_often.getOftenTitle(startPosition,false);
 
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
-            mView = inflater.inflate(R.layout.select_page_list_row, null);
+        mOftenId2 = db_often.getOftenId(endPosition,false);
+        mOftenTitle2 = db_often.getOftenTitle(endPosition,false);
 
-            // set checked text view
-            CheckedTextView chkTV = (CheckedTextView) mView.findViewById(R.id.checkTV);
-            // show style
-            int style = mDb_folder.getPageStyle(position, true);
-            chkTV.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
-            chkTV.setTextColor(ColorSet.mText_ColorArray[style]);
+        db_often.updateOften(mOftenId1,
+                mOftenTitle2
+                ,false);
 
-            chkTV.setText( " " + mList.get(position));
-
-            return mView;
-        }
+        db_often.updateOften(mOftenId2,
+                mOftenTitle1,false);
+        db_often.close();
     }
 }

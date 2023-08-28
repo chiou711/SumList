@@ -31,6 +31,7 @@ import android.widget.TextView;
 import com.cw.sumlist.R;
 import com.cw.sumlist.config.SetOftenItems_list;
 import com.cw.sumlist.db.DB_often;
+import com.mobeta.android.dslv.DragSortListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -40,7 +41,7 @@ import androidx.fragment.app.Fragment;
  */
 public class SelectOftenItem extends Fragment{
     TextView title;
-    ListView mListView;
+	DragSortListView mListView;
     List_selectOftenItem list_selOftenIem;
 	public static View rootView;
     AppCompatActivity act;
@@ -67,7 +68,8 @@ public class SelectOftenItem extends Fragment{
         title.setText(R.string.select_often_item);
 
         // list view: selecting which pages to send
-        mListView = (ListView)rootView.findViewById(R.id.listView1);
+        mListView = rootView.findViewById(R.id.listView1);
+		mListView.setDragEnabled(true);
 
         //show list for selection
         list_selOftenIem = new List_selectOftenItem(act,rootView , mListView);

@@ -23,12 +23,12 @@
 			android:paddingLeft="5dp"
 			/>
 
-		<ListView
+		<com.mobeta.android.dslv.DragSortListView
 			android:id="@+id/listView1"
 			android:layout_width="match_parent"
 			android:layout_height="0dip"
 			android:layout_weight="1" >
-		</ListView>
+		</com.mobeta.android.dslv.DragSortListView>
 
 		<Button
 			android:id="@+id/btn_add_often_items"

@@ -23,6 +23,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -69,6 +71,9 @@ public class Drawer {
 
                 menuItem.setChecked(true);
                 DB_drawer dB_drawer = new DB_drawer(act);
+
+                SharedPreferences mPref_show_note_attribute = activity.getSharedPreferences("show_note_attribute", 0);
+
                 switch (menuItem.getItemId()) {
                     case R.id.ADD_NEW_FOLDER:
                         FolderUi.renewFirstAndLast_folderId();
@@ -76,11 +81,11 @@ public class Drawer {
                         return true;
 
                     case R.id.ENABLE_FOLDER_DRAG_AND_DROP:
-                        if(MainAct.mPref_show_note_attribute.getString("KEY_ENABLE_FOLDER_DRAGGABLE", "no")
+                        if(mPref_show_note_attribute.getString("KEY_ENABLE_FOLDER_DRAGGABLE", "no")
                                 .equalsIgnoreCase("yes"))
                         {
                             menuItem.setIcon(R.drawable.btn_check_off_holo_light);
-                            MainAct.mPref_show_note_attribute.edit().putString("KEY_ENABLE_FOLDER_DRAGGABLE","no")
+                            mPref_show_note_attribute.edit().putString("KEY_ENABLE_FOLDER_DRAGGABLE","no")
                                     .apply();
                             DragSortListView listView = (DragSortListView) act.findViewById(R.id.drawer_listview);
                             listView.setDragEnabled(false);
@@ -92,7 +97,7 @@ public class Drawer {
                         else
                         {
                             menuItem.setIcon(R.drawable.btn_check_on_holo_light);
-                            MainAct.mPref_show_note_attribute.edit().putString("KEY_ENABLE_FOLDER_DRAGGABLE","yes")
+                            mPref_show_note_attribute.edit().putString("KEY_ENABLE_FOLDER_DRAGGABLE","yes")
                                     .apply();
                             DragSortListView listView = (DragSortListView) act.findViewById(R.id.drawer_listview);
                             listView.setDragEnabled(true);
