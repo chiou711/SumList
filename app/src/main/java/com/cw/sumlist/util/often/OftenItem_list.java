@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.note_add;
+package com.cw.sumlist.util.often;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 
 import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_often;
@@ -32,46 +36,34 @@ import com.mobeta.android.dslv.DragSortListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * Created by cw on 2023/06/29
+ * Created by cw on 2023/07/27
  */
 
-public class List_selectOftenItem
-{
+public class OftenItem_list {
     DragSortListView mListView;
     public List<String> mListStrArr; // list view string array
     public int count;
     AppCompatActivity mAct;
-    public boolean isCheckAll;
+    EditText titleEditText;
     private DragSortController controller;
-
-    public List_selectOftenItem(AppCompatActivity act, View rootView, DragSortListView listView)
-    {
-        mAct = act;
-
-        // list view: selecting which pages to send
-        mListView = listView;
-        showOftenItemsList(rootView);
-
-        isCheckAll = false;
-    }
-
-    // show list for Select
-    public int mChkNum;
-    void showOftenItemsList(View root)
-    {
-        mChkNum = 0;
-        // set list view
-        mListView = root.findViewById(R.id.listView1);
-
-        initOftenItem();
-    }
-
+    int editPosition;
     OftenItem_adapter adapter;
-    private void initOftenItem()
-    {
+    int option;
+
+    public OftenItem_list(AppCompatActivity act, View rootView, int function_option){
+        mAct = act;
+        // set list view
+        mListView = rootView.findViewById(R.id.listView1);
+        initOftenItem();
+        option = function_option;
+    }
+
+    // init often item
+    private void initOftenItem() {
         // set often item title
         DB_often db_often = new DB_often(mAct);
 
@@ -81,7 +73,6 @@ public class List_selectOftenItem
 
         for(int i=0;i<oftenCount;i++)
             mListStrArr.add(db_often.getOftenTitle(i,true));
-
 
         // set adapter
         db_often.open();
@@ -104,24 +95,36 @@ public class List_selectOftenItem
         mListView.setAdapter(adapter);
 
         // set up click listener
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            public void onItemClick(AdapterView<?> parent, View vw, int position, long id)
-            {
-                System.out.println("List_selectOftenItem / _showOftenItemsList / _onItemClick / position = " + position);
-                mAct.getSupportFragmentManager().popBackStack();
-                String title = db_often.getOftenTitle(position,true);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View vw, int position, long id){
 
-                Bundle result = new Bundle();
-                result.putString("oftenItem", title);
-                // The child fragment needs to still set the result on its parent fragment manager.
-                mAct.getSupportFragmentManager().setFragmentResult("requestOftenItem", result);
+                if(option == OftenItem.SELECT_OFTEN_ITEM) {
 
+                    // select often item
+                    mAct.getSupportFragmentManager().popBackStack();
+                    String title = db_often.getOftenTitle(position,true);
+
+                    Bundle result = new Bundle();
+                    result.putString("oftenItem", title);
+                    // The child fragment needs to still set the result on its parent fragment manager.
+                    mAct.getSupportFragmentManager().setFragmentResult("requestOftenItem", result);
+
+                } else if (option == OftenItem.CONFIG_OFTEN_ITEM) {
+                    // edit often item
+                    editOftenItem(position);
+                }
             }
         });
 
         // set up long click listener
-//        mListView.setOnItemLongClickListener(new Folder.FolderListener_longClick(mAct,adapter));
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // edit often item
+                editOftenItem(position);
+                return false;
+            }
+        } );
 
         controller = buildController(mListView);
         mListView.setFloatViewManager(controller);
@@ -132,6 +135,26 @@ public class List_selectOftenItem
 
         mListView.setDragListener(onDrag);
         mListView.setDropListener(onDrop);
+    }
+
+    // edit often item
+    void editOftenItem(int position){
+        editPosition = position;
+        DB_often db_often = new DB_often(mAct);
+        String title = db_often.getOftenTitle(position, true);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mAct);
+        LayoutInflater mInflater = (LayoutInflater) mAct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view2 = mInflater.inflate(R.layout.add_new_often_item, null);
+        builder.setTitle(R.string.config_set_often_item)
+                .setPositiveButton(R.string.btn_OK, listener_update)
+                .setNegativeButton(R.string.edit_note_button_delete, listener_delete)
+                .setNeutralButton(R.string.btn_Cancel, null);
+        builder.setView(view2);
+        titleEditText = view2.findViewById(R.id.edit_title);
+        titleEditText.setText(title);
+        AlertDialog mDialog = builder.create();
+        mDialog.show();
     }
 
     private static DragSortController buildController(DragSortListView dslv) {
@@ -146,22 +169,19 @@ public class List_selectOftenItem
     }
 
     // list view listener: on drag
-    private DragSortListView.DragListener onDrag = new DragSortListView.DragListener()
-    {
+    private DragSortListView.DragListener onDrag = new DragSortListView.DragListener(){
         @Override
         public void drag(int startPosition, int endPosition) {
         }
     };
 
     // list view listener: on drop
-    private DragSortListView.DropListener onDrop = new DragSortListView.DropListener()
-    {
+    private DragSortListView.DropListener onDrop = new DragSortListView.DropListener(){
         @Override
         public void drop(int startPosition, int endPosition) {
             //reorder data base storage
             int loop = Math.abs(startPosition-endPosition);
-            for(int i=0;i< loop;i++)
-            {
+            for(int i=0;i< loop;i++){
                 swapOftenItemRows(startPosition,endPosition);
                 if((startPosition-endPosition) >0)
                     endPosition++;
@@ -198,4 +218,40 @@ public class List_selectOftenItem
                 mOftenTitle1,false);
         db_often.close();
     }
+
+    // update listener
+    DialogInterface.OnClickListener listener_update = new DialogInterface.OnClickListener(){
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            String newOftenItem = titleEditText.getText().toString();
+
+            // update often item to DB
+            DB_often db_often = new DB_often(mAct);
+            long id = db_often.getOftenId(editPosition,true);
+            db_often.updateOften(id,newOftenItem,true);
+
+            // refresh list view
+            initOftenItem();
+
+            dialog.dismiss();
+        }
+    };
+
+    // delete listener
+    DialogInterface.OnClickListener listener_delete = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+            // delete often item
+            DB_often db_often = new DB_often(mAct);
+            long id = db_often.getOftenId(editPosition,true);
+            db_often.deleteOften(db_often,id ,true);
+
+            // refresh list view
+            initOftenItem();
+
+            dialog.dismiss();
+        }
+    };
+
 }

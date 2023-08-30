@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.note_add;
+package com.cw.sumlist.util.often;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -34,8 +34,8 @@ import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 
 public class OftenItem_adapter extends SimpleDragSortCursorAdapter
 {
-    OftenItem_adapter(Context context, int layout, Cursor c,
-                      String[] from, int[] to, int flags)
+    public OftenItem_adapter(Context context, int layout, Cursor c,
+                             String[] from, int[] to, int flags)
     {
         super(context, layout, c, from, to, flags);
     }
@@ -83,7 +83,6 @@ public class OftenItem_adapter extends SimpleDragSortCursorAdapter
 
         return convertView;
     }
-
 
     private static class ViewHolder
     {

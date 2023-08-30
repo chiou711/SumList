@@ -133,9 +133,9 @@
 	</LinearLayout>
 	<View android:layout_width="match_parent" android:layout_height="1dip" android:background="#4f4f4f" />
 
-	<!-- set often items -->
+	<!-- set often item -->
 	<LinearLayout
-		android:id="@+id/setOftenItems"
+		android:id="@+id/setOftenItem"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingLeft="5dp"
@@ -148,7 +148,7 @@
 			android:src="@drawable/ic_menu_add"
 			android:contentDescription="style"/>
 		<TextView
-			android:id="@+id/TextViewSetOftenItems"
+			android:id="@+id/TextViewSetOftenItem"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:minHeight="50dp"

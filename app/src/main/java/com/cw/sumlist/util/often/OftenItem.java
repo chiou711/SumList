@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.config;
+package com.cw.sumlist.util.often;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,11 +25,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_often;
+import com.mobeta.android.dslv.DragSortListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -37,17 +37,25 @@ import androidx.fragment.app.Fragment;
 /**
  * Created by cw on 2023/07/27
  */
-public class SetOftenItems extends Fragment{
+public class OftenItem extends Fragment{
     TextView title;
-    ListView mListView;
-    SetOftenItems_list list_selOftenIem;
+	DragSortListView mListView;
+	OftenItem_list setOftenIem_list;
 	public static View rootView;
     AppCompatActivity act;
-	Button btn_add_often_items;
+	Button btn_add_often_item;
 	AlertDialog mDialog;
 	EditText titleEditText;
+	int option;
+	public static int SELECT_OFTEN_ITEM = 1;
+	public static int CONFIG_OFTEN_ITEM = 2;
 
-	public SetOftenItems(){}
+
+	public OftenItem(){}
+
+	public OftenItem(int function_option){
+		option = function_option;
+	}
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -57,31 +65,31 @@ public class SetOftenItems extends Fragment{
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.set_often_items, container, false);
+		rootView = inflater.inflate(R.layout.select_often_item, container, false);
 		act = (AppCompatActivity) getActivity();
 
         // title
         title = (TextView) rootView.findViewById(R.id.select_list_title);
-        title.setText(R.string.config_often_items);
+        title.setText(R.string.often_item_title);
 
         // list view: selecting which pages to send
-        mListView = (ListView)rootView.findViewById(R.id.listView1);
+        mListView = rootView.findViewById(R.id.listView1);
 
         //show list for selection
-        list_selOftenIem = new SetOftenItems_list(act,rootView , mListView);
+		showListView();
 
-		// add button
-		btn_add_often_items = rootView.findViewById(R.id.btn_add_often_items);
-
-		btn_add_often_items.setOnClickListener(new View.OnClickListener() {
+		// add often item button
+		btn_add_often_item = rootView.findViewById(R.id.btn_add_often_item);
+		btn_add_often_item.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				System.out.println("------- btn_add_often_items on click");
+
+				// add often item dialog
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				LayoutInflater mInflater= (LayoutInflater) act.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 				View view = mInflater.inflate(R.layout.add_new_often_item, null);
-				builder.setTitle(R.string.config_set_often_items)
+				builder.setTitle(R.string.config_set_often_item)
 					   .setPositiveButton(R.string.btn_OK, listener_ok)
 					   .setNegativeButton(R.string.btn_Cancel, null);
 				builder.setView(view);
@@ -96,19 +104,18 @@ public class SetOftenItems extends Fragment{
 		return rootView;
 	}
 
-	DialogInterface.OnClickListener listener_ok = new DialogInterface.OnClickListener()
-	{
+	// confirm Add new often item
+	DialogInterface.OnClickListener listener_ok = new DialogInterface.OnClickListener()	{
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			String newOftenItem = titleEditText.getText().toString();
-			System.out.println("---- new often item = " + newOftenItem);
 
 			// add often item to DB
 			DB_often db_often = new DB_often(act);
 			db_often.insertOften(db_often,newOftenItem ,true);
 
 			// refresh listview
-			list_selOftenIem = new SetOftenItems_list(act,rootView , mListView);
+			showListView();
 
 			dialog.dismiss();
 		}
@@ -117,5 +124,14 @@ public class SetOftenItems extends Fragment{
 	@Override
 	public void onPause() {
 		super.onPause();
+	}
+
+	// show list view
+	void showListView(){
+		if(option == SELECT_OFTEN_ITEM) {
+			setOftenIem_list = new OftenItem_list(act, rootView, SELECT_OFTEN_ITEM);
+		} else if(option == CONFIG_OFTEN_ITEM){
+			setOftenIem_list = new OftenItem_list(act, rootView, CONFIG_OFTEN_ITEM);
+		}
 	}
 }

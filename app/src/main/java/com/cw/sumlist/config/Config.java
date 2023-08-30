@@ -27,6 +27,7 @@ import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_drawer;
 import com.cw.sumlist.util.ColorSet;
+import com.cw.sumlist.util.often.OftenItem;
 import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.preferences.Pref;
 
@@ -87,8 +88,8 @@ public class Config extends Fragment
 		// set vibration time length
 		setVibrationTimeLength();
 
-		// set often items
-		setOftenItems();
+		// set often item
+		setOftenItem();
 
 		// delete DB
 		deleteDB_button();
@@ -299,17 +300,17 @@ public class Config extends Fragment
 	}
 
 	// Set often items
-	void setOftenItems(){
-		View setOftenItems = mRootView.findViewById(R.id.setOftenItems);
+	void setOftenItem(){
+		View setOftenItem = mRootView.findViewById(R.id.setOftenItem);
 
 		// add new option
-		setOftenItems.setOnClickListener(new OnClickListener() {
+		setOftenItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				SetOftenItems selOftenItem = new SetOftenItems();
+				OftenItem oftenItem = new OftenItem(OftenItem.CONFIG_OFTEN_ITEM);
 				FragmentTransaction mFragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 				mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
-				mFragmentTransaction.replace(R.id.container_config, selOftenItem).addToBackStack("set often items").commit();
+				mFragmentTransaction.replace(R.id.container_config, oftenItem).addToBackStack("set often items").commit();
 			}
 		});
 	}

@@ -16,8 +16,8 @@
 
 package com.cw.sumlist.note_add;
 
+import com.cw.sumlist.util.often.OftenItem;
 import com.cw.sumlist.db.DB_folder;
-import com.cw.sumlist.db.DB_often;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_page;
@@ -448,10 +448,9 @@ public class Note_addText extends AppCompatActivity {
 	}
 
 	void selectOftenItem(){
-		SelectOftenItem selOftenItem = new SelectOftenItem();
+		OftenItem oftenItem = new OftenItem(OftenItem.SELECT_OFTEN_ITEM);
 		FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
 		mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
-//		mFragmentTransaction.replace(R.id.container, selOftenItem).addToBackStack("select often item").commit();
-		mFragmentTransaction.add(R.id.container, selOftenItem, "select often item").addToBackStack("select often item").commit();
+		mFragmentTransaction.add(R.id.container, oftenItem, "select often item").addToBackStack("select often item").commit();
 	}
 }
