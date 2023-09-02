@@ -664,10 +664,13 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     }
 
     // get footer sum of list view
-    public static String getFooterSumString(AppCompatActivity mAct)
-    {
+    public static String getFooterSumString(AppCompatActivity mAct){
+        // get list sum
         long listSum = getListSum(mAct);
+
+        // get folder sum
         long folderSum = getFolderSum();
+
         setListTotal(listSum);
         return mAct.getResources().getString(R.string.footer_text_day)+
                mAct.getResources().getString(R.string.footer_text_total)+

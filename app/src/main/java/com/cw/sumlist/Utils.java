@@ -63,20 +63,23 @@ public class Utils {
         int count = mDb_page.getNotesCount(true);
         long sum = 0;
 
+        mDb_page.open();
         for(int i=0;i<count;i++) {
-            int checked = mDb_page.getNoteMarking(i,true);
+            int checked = mDb_page.getNoteMarking(i,false);
 
             long value = 0;
             long qty = 0;
-            if(mDb_page.getNoteBody(i, true)>0)
-                value = mDb_page.getNoteBody(i, true);
+            if(mDb_page.getNoteBody(i, false)>0)
+                value = mDb_page.getNoteBody(i, false);
 
-            if(mDb_page.getNoteQuantity(i, true)>0)
-                qty = mDb_page.getNoteQuantity(i, true);
+            if(mDb_page.getNoteQuantity(i, false)>0)
+                qty = mDb_page.getNoteQuantity(i, false);
 
             if(checked==1)
                 sum += (value*qty);
         }
+        mDb_page.close();
+
         return sum;
     }
 
