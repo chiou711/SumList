@@ -138,10 +138,11 @@ public class SumPagesAdapter extends ArrayAdapter<String> {
 		mDb_folder.open();
 		int pageTableId = mDb_folder.getPageTableId(position,true);
 		DB_page db_page = new DB_page(act,pageTableId);
-		int count = db_page.getNotesCount(true);
 		String title;
 		int price,total = 0,marking;
+
 		db_page.open();
+		int count = db_page.getNotesCount(false);
 		for(int i=0;i<count;i++) {
 			title = db_page.getNoteTitle(i,false);
 			price = db_page.getNoteBody(i,false);
@@ -169,6 +170,7 @@ public class SumPagesAdapter extends ArrayAdapter<String> {
 				message = message.concat("\n");
 		}
 		db_page.close();
+
 		return message;
 	}
 

@@ -60,10 +60,10 @@ public class Utils {
     public static long getPageSum(Activity act, int pageTableId){
         DB_page mDb_page = new DB_page(act, pageTableId);
 
-        int count = mDb_page.getNotesCount(true);
         long sum = 0;
 
         mDb_page.open();
+        int count = mDb_page.getNotesCount(false);
         for(int i=0;i<count;i++) {
             int checked = mDb_page.getNoteMarking(i,false);
 
@@ -85,8 +85,10 @@ public class Utils {
 
     // get sum of a folder
     public static long getFolderSum(Activity act,int folder_table_id){
+        System.out.println("Utils / _getFolderSum / ");
         int folderSum = 0;
         DB_folder mDb_folder = new DB_folder(act, folder_table_id);
+
         mDb_folder.open();
         int pageCount = mDb_folder.getPagesCount(false);
         for(int i = 0; i< pageCount; i++){
@@ -97,7 +99,7 @@ public class Utils {
                     " , folderSum = " + folderSum);
         }
         mDb_folder.close();
-        System.out.println("Utils / _getFolderSum / ");
+
         return folderSum;
     }
 

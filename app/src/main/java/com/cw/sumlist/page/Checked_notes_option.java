@@ -296,8 +296,7 @@ public class Checked_notes_option {
     {
         mDb_page.open();
         int count = mDb_page.getNotesCount(false);
-        for(int i=0; i<count; i++)
-        {
+        for(int i=0; i<count; i++){
             Long rowId = mDb_page.getNoteId(i,false);
             String noteTitle = mDb_page.getNoteTitle(i,false);
             Integer noteBody = mDb_page.getNoteBody(i,false);
@@ -364,12 +363,9 @@ public class Checked_notes_option {
                     int count = mDb_page.getNotesCount(false);
 
                     //delete checked items that were moved
-                    for(int i=0; i<count; i++)
-                    {
+                    for(int i=0; i<count; i++){
                         if(mDb_page.getNoteMarking(i,false) == 1)
-                        {
                             mDb_page.deleteNote(mDb_page.getNoteId(i,false),false);
-                        }
                     }
                     mDb_page.close();
 
@@ -438,8 +434,7 @@ public class Checked_notes_option {
                             {
                                 mDb_page.open();
                                 int count = mDb_page.getNotesCount(false);
-                                for(int i=0; i<count; i++)
-                                {
+                                for(int i=0; i<count; i++){
                                     if(mDb_page.getNoteMarking(i,false) == 1)
                                         mDb_page.deleteNote(mDb_page.getNoteId(i,false),false);
                                 }

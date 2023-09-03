@@ -467,18 +467,18 @@ public class FolderUi
 
 		//update focus position
 		int iLastView_folderTableId = Pref.getPref_focusView_folder_tableId(act);
-		int count = db_drawer.getFoldersCount(true);
-    	for(int i=0;i<count;i++)
-    	{
-        	if(	db_drawer.getFolderTableId(i,true)== iLastView_folderTableId)
-        	{
+
+	    db_drawer.open();
+		int count = db_drawer.getFoldersCount(false);
+    	for(int i=0;i<count;i++){
+        	if(	db_drawer.getFolderTableId(i,false)== iLastView_folderTableId){
         		setFocus_folderPos(i);
                 DragSortListView listView = (DragSortListView) act.findViewById(R.id.drawer_listview);
 
-				listView.setItemChecked(getFocus_folderPos(), true);
+				listView.setItemChecked(getFocus_folderPos(), false);
         	}
     	}
-    	
+	    db_drawer.close();
     }	
     
     // select folder
