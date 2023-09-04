@@ -81,7 +81,7 @@ public class Note_addText extends AppCompatActivity {
 		    }
 	    });
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -117,10 +117,8 @@ public class Note_addText extends AppCompatActivity {
 	    selOftenItemBtn.setOnClickListener(new View.OnClickListener() {
 		    @Override
 		    public void onClick(View view) {
-				/// ???
-				// turn off IME first
-//			    titleEditText.setInputType(EditorInfo.TYPE_NULL);
-//			    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+			    // hide IME
+				hideIME(findViewById(R.id.edit_title));
 
 			    selectOftenItem();
 		    }
@@ -137,9 +135,7 @@ public class Note_addText extends AppCompatActivity {
 		System.out.println("Note_addText / _onPause / rowId = " + rowId);
 
 		// hide IME
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		EditText titleEditText =  findViewById(R.id.edit_title);
-		imm.hideSoftInputFromWindow(titleEditText.getWindowToken(), 0);
+		hideIME(findViewById(R.id.edit_title));
 	}
 
 	// for Rotate screen
@@ -452,5 +448,11 @@ public class Note_addText extends AppCompatActivity {
 		FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
 		mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
 		mFragmentTransaction.add(R.id.container, oftenItem, "select often item").addToBackStack("select often item").commit();
+	}
+
+	// hide IME
+	void hideIME(EditText titleEditText){
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(titleEditText.getWindowToken(), 0);
 	}
 }

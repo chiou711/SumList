@@ -37,7 +37,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@color/bar_color"
-		android:orientation="horizontal" >
+		android:orientation="horizontal"
+		android:padding="5dp">
 	<EditText android:id="@+id/edit_title"
 		  	android:layout_width="0dp"
 			android:layout_height="wrap_content"
@@ -91,7 +92,8 @@
 			  android:textSize="18sp"
 			  android:scrollbars="vertical"
 			  android:gravity="top"
-	/>
+			  android:paddingLeft="10dp"
+			  />
 
 	<!-- quantity -->
 	<LinearLayout
@@ -119,6 +121,7 @@
 		android:textSize="18sp"
 		android:minLines="1"
 		android:maxLines="1"
+		android:paddingLeft="10dp"
 		/>
 
 	<!-- new sum -->
