@@ -284,10 +284,6 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
         setFocus_tabPos(tab.getPosition());
 
-        //improve Pause_Resume UI
-        if(mTabsPagerAdapter == null)
-            return;
-
         // keep focus view page table Id
         int pageTableId = mTabsPagerAdapter.dbFolder.getPageTableId(getFocus_tabPos(), true);
         Pref.setPref_focusView_page_tableId(MainAct.mAct, pageTableId);
@@ -327,9 +323,6 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         if(Drawer.getFolderCount() == 0)
             return;//todo Check again
 
-        if(mTabsPagerAdapter == null)
-            return;
-
         // restore focus view page
         int pageCount = mTabsPagerAdapter.dbFolder.getPagesCount(true);
         for(int i=0;i<pageCount;i++)
@@ -363,10 +356,8 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     public void onPause() {
         super.onPause();
         System.out.println("TabsHost / _onPause");
-        // Remove fragments
-        if(TabsHost.mTabsPagerAdapter == null)
-            return;
 
+        // Remove fragments
         if(!MainAct.mAct.isDestroyed())
             removeTabs();//Put here will solve onBackStackChanged issue (no Page / _onCreate)
     }
@@ -745,7 +736,6 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
                 TabsHost.mTabsPagerAdapter.fragmentList.get(i).itemAdapter = null;
                 MainAct.mAct.getSupportFragmentManager().beginTransaction().remove(fragmentList.get(i)).commit();
             }
-            mTabsPagerAdapter = null;
         }
     }
 
