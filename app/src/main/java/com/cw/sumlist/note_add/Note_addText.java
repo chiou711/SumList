@@ -16,7 +16,6 @@
 
 package com.cw.sumlist.note_add;
 
-import com.cw.sumlist.util.often.OftenItem;
 import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.R;
@@ -24,6 +23,7 @@ import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.Util;
+import com.cw.sumlist.util.often.Often_select_grid;
 import com.cw.sumlist.util.preferences.Pref;
 
 import android.app.AlertDialog;
@@ -444,7 +444,7 @@ public class Note_addText extends AppCompatActivity {
 	}
 
 	void selectOftenItem(){
-		OftenItem oftenItem = new OftenItem(OftenItem.SELECT_OFTEN_ITEM);
+		Often_select_grid oftenItem = new Often_select_grid();
 		FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
 		mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
 		mFragmentTransaction.add(R.id.container, oftenItem, "select often item").addToBackStack("select often item").commit();

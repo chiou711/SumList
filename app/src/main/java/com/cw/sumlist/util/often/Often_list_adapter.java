@@ -29,15 +29,17 @@ import com.cw.sumlist.main.MainAct;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 
 /**
- * Created by cw on 2023/08/29
+ * Created by cw on 2023/09/10
  */
 
-public class OftenItem_adapter extends SimpleDragSortCursorAdapter
+public class Often_list_adapter extends SimpleDragSortCursorAdapter
 {
-    public OftenItem_adapter(Context context, int layout, Cursor c,
-                             String[] from, int[] to, int flags)
+    int layout;
+    public Often_list_adapter(Context context, int _layout, Cursor c,
+                              String[] from, int[] to, int flags)
     {
-        super(context, layout, c, from, to, flags);
+        super(context, _layout, c, from, to, flags);
+        layout = _layout;
     }
 
     @Override
@@ -65,7 +67,7 @@ public class OftenItem_adapter extends SimpleDragSortCursorAdapter
         // otherwise, get existing ViewHolder
         if (convertView == null)
         {
-            convertView = MainAct.mAct.getLayoutInflater().inflate(R.layout.often_item_row, parent, false);
+            convertView = MainAct.mAct.getLayoutInflater().inflate(layout, parent, false);
 
             // set up ViewHolder for this ListView item
             viewHolder = new ViewHolder();

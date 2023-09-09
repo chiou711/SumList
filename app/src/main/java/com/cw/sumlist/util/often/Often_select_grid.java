@@ -35,27 +35,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 /**
- * Created by cw on 2023/07/27
+ * Created by cw on 2023/09/10
  */
-public class OftenItem extends Fragment{
+public class Often_select_grid extends Fragment{
     TextView title;
 	DragSortListView mListView;
-	OftenItem_list setOftenIem_list;
+	Often_grid setOftenIem_grid;
 	public static View rootView;
     AppCompatActivity act;
 	Button btn_add_often_item;
 	AlertDialog mDialog;
 	EditText titleEditText;
-	int option;
-	public static int SELECT_OFTEN_ITEM = 1;
-	public static int CONFIG_OFTEN_ITEM = 2;
 
-
-	public OftenItem(){}
-
-	public OftenItem(int function_option){
-		option = function_option;
-	}
+	public Often_select_grid(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -65,7 +57,9 @@ public class OftenItem extends Fragment{
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.select_often_item, container, false);
+
+		rootView = inflater.inflate(R.layout.often_select_grid, container, false);
+
 		act = (AppCompatActivity) getActivity();
 
         // title
@@ -75,8 +69,8 @@ public class OftenItem extends Fragment{
         // list view: selecting which pages to send
         mListView = rootView.findViewById(R.id.listView1);
 
-        //show list for selection
-		showListView();
+        //show grid view for selection
+		showGridView();
 
 		// add often item button
 		btn_add_often_item = rootView.findViewById(R.id.btn_add_often_item);
@@ -115,7 +109,7 @@ public class OftenItem extends Fragment{
 			db_often.insertOften(db_often,newOftenItem ,true);
 
 			// refresh listview
-			showListView();
+			showGridView();
 
 			dialog.dismiss();
 		}
@@ -126,12 +120,9 @@ public class OftenItem extends Fragment{
 		super.onPause();
 	}
 
-	// show list view
-	void showListView(){
-		if(option == SELECT_OFTEN_ITEM) {
-			setOftenIem_list = new OftenItem_list(act, rootView, SELECT_OFTEN_ITEM);
-		} else if(option == CONFIG_OFTEN_ITEM){
-			setOftenIem_list = new OftenItem_list(act, rootView, CONFIG_OFTEN_ITEM);
-		}
+	// show grid view
+	void showGridView(){
+		setOftenIem_grid = new Often_grid(act, rootView);
 	}
+
 }
