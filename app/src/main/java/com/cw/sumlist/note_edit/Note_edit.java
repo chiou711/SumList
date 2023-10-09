@@ -43,7 +43,7 @@ public class Note_edit extends AppCompatActivity
 
     private Long noteId;
     Integer body,quantity;
-    private String title;
+    private String title,category;
     Note_edit_ui note_edit_ui;
     private boolean enSaveDb = true;
     DB_page dB;
@@ -86,11 +86,12 @@ public class Note_edit extends AppCompatActivity
     	position = extras.getInt("list_view_position");
     	noteId = extras.getLong(DB_page.KEY_NOTE_ID);
     	title = extras.getString(DB_page.KEY_NOTE_TITLE);
-    	body = extras.getInt(DB_page.KEY_NOTE_BODY);
+	    body = extras.getInt(DB_page.KEY_NOTE_BODY);
+	    category = extras.getString(DB_page.KEY_NOTE_CATEGORY);
     	quantity = extras.getInt(DB_page.KEY_NOTE_QUANTITY);
 
 		//initialization
-        note_edit_ui = new Note_edit_ui(this, dB, noteId, title, body,quantity);
+        note_edit_ui = new Note_edit_ui(this, dB, noteId, title, body,category,quantity);
         note_edit_ui.UI_init();
 
     	// show view

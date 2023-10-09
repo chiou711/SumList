@@ -35,9 +35,11 @@ public class Note_edit_ui {
 
 	private MyEditText titleEditText;
 	private MyEditText bodyEditText;
+	private MyEditText categoryEditText;
 	private MyEditText quantityEditText;
 	private String oriTitle;
 	private Integer oriBody;
+	private String oriCategory;
 	private Integer oriQuantity;
 	private Integer oriMarking;
 
@@ -47,13 +49,14 @@ public class Note_edit_ui {
 	private Activity act;
 	private int style;
 
-	Note_edit_ui(Activity act, DB_page _db, Long noteId, String strTitle, Integer body ,Integer quantity)
+	Note_edit_ui(Activity act, DB_page _db, Long noteId, String strTitle, Integer body ,String strCategory, Integer quantity)
     {
     	this.act = act;
 	    dB_page = _db;//Page.mDb_page;
 
     	oriTitle = strTitle;
 	    oriBody = body;
+		oriCategory = strCategory;
 	    oriQuantity = quantity;
 	    oriMarking = dB_page.getNoteMarking_byId(noteId);
 		
@@ -72,6 +75,7 @@ public class Note_edit_ui {
 
 		titleEditText =  (MyEditText) act.findViewById(R.id.edit_title);
 		bodyEditText =  (MyEditText) act.findViewById(R.id.edit_body);
+		categoryEditText =  (MyEditText) act.findViewById(R.id.edit_category);
 		quantityEditText = (MyEditText) act.findViewById(R.id.edit_quantity);
 
 		//set title color
@@ -82,6 +86,12 @@ public class Note_edit_ui {
 		if(bodyEditText != null){
 			bodyEditText.setTextColor(ColorSet.mText_ColorArray[style]);
 			bodyEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
+		}
+
+		//set category color
+		if(categoryEditText != null){
+			categoryEditText.setTextColor(ColorSet.mText_ColorArray[style]);
+			categoryEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
 		}
 
 		//set quantity color
@@ -113,6 +123,11 @@ public class Note_edit_ui {
 			bodyEditText.setText(String.valueOf(strBodyEdit));
 			bodyEditText.setSelection(String.valueOf(strBodyEdit).length());
 
+			// category
+			String strCategoryEdit = dB_page.getNoteCategory_byId(rowId);
+			categoryEditText.setText(String.valueOf(strCategoryEdit));
+			categoryEditText.setSelection(String.valueOf(strCategoryEdit).length());
+
 			// request cursor
 			titleEditText.requestFocus();
 		}
@@ -127,6 +142,10 @@ public class Note_edit_ui {
 			// renew body
 			bodyEditText.setText(strBlank);
 			bodyEditText.setSelection(strBlank.length());
+
+	        // renew category
+	        categoryEditText.setText(strBlank);
+	        categoryEditText.setSelection(strBlank.length());
         }
 	}
 
@@ -144,6 +163,11 @@ public class Note_edit_ui {
 		    int strBodyEdit = dB_page.getNoteBody_byId(rowId);
 		    bodyEditText.setText(String.valueOf(strBodyEdit));
 		    bodyEditText.setSelection(String.valueOf(strBodyEdit).length());
+
+		    // category
+		    String strCategoryEdit = dB_page.getNoteCategory_byId(rowId);
+		    categoryEditText.setText(String.valueOf(strCategoryEdit));
+		    categoryEditText.setSelection(String.valueOf(strCategoryEdit).length());
 
 		    // quantity
 		    int strQuantityEdit = dB_page.getNoteQuantity_byId(rowId);
@@ -165,6 +189,12 @@ public class Note_edit_ui {
 			    bodyEditText.requestFocus();
 		    }
 
+		    if(categoryEditText != null) {
+			    categoryEditText.setText(strEmpty);
+			    categoryEditText.setSelection(strEmpty.length());
+			    categoryEditText.requestFocus();
+		    }
+
 		    if(quantityEditText != null) {
 			    quantityEditText.setText(strEmpty);
 			    quantityEditText.setSelection(strEmpty.length());
@@ -173,27 +203,28 @@ public class Note_edit_ui {
     	}
     }
 
-	private boolean isBodyModified()
-    {
+	private boolean isTitleModified(){
+		return !oriTitle.equals(titleEditText.getText().toString());
+	}
+
+	private boolean isBodyModified(){
     	int value = Integer.valueOf(bodyEditText.getText().toString());
 	    System.out.println("--- value = " + value);
 	    System.out.println("--- oriBody = " + oriBody);
-
-
     	return (oriBody != value);
     }
 
-	private boolean isTitleModified()
-    {
-    	return !oriTitle.equals(titleEditText.getText().toString());
-    }
+	private boolean isCategoryModified(){
+		return !oriCategory.equals(categoryEditText.getText().toString());
+	}
 
 	boolean isNoteModified()
     {
     	boolean bModified = false;
 //		System.out.println("Note_edit_ui / _isNoteModified / isTitleModified() = " + isTitleModified());
     	if( isTitleModified() ||
-    		isBodyModified()  )
+    		isBodyModified()  ||
+			isCategoryModified() )
     	{
     		bModified = true;
     	}
@@ -209,6 +240,10 @@ public class Note_edit_ui {
 		if(bodyEditText != null)
 			body = bodyEditText.getText().toString();
 
+		String category ="";
+		if(categoryEditText != null)
+			category = categoryEditText.getText().toString();
+
 		String quantity = "";
 		if(quantityEditText != null)
 		    quantity = quantityEditText.getText().toString();
@@ -218,25 +253,27 @@ public class Note_edit_ui {
 	        if (rowId == null) // for Add new
 	        {
 	        	if( (!Util.isEmptyString(title)) ||
-	        		(!Util.isEmptyString(body)) ||
+			        (!Util.isEmptyString(body)) ||
+			        (!Util.isEmptyString(category)) ||
 		            (!Util.isEmptyString(quantity)) )
 	        	{
 	        		// insert
 	        		System.out.println("Note_edit_ui / _saveStateInDB / insert");
-	        		rowId = dB_page.insertNote(title, Integer.valueOf(body),  Integer.valueOf(quantity), 1);// add new note, get return row Id
+	        		rowId = dB_page.insertNote(title, Integer.valueOf(body),  category, Integer.valueOf(quantity), 1);// add new note, get return row Id
 	        	}
 	        }
 	        else // for Edit
 	        {
 	        	if( !Util.isEmptyString(title) ||
 			        !Util.isEmptyString(body) ||
+		            !Util.isEmptyString(category) ||
 	        		!Util.isEmptyString(quantity)       )
 	        	{
 	        		// update
 	        		if(bRollBackData) //roll back
 	        		{
 			        	System.out.println("Note_edit_ui / _saveStateInDB / update: roll back");
-	        			dB_page.updateNote(rowId, oriTitle, oriBody,  oriQuantity,oriMarking,true);
+	        			dB_page.updateNote(rowId, oriTitle, oriBody, oriCategory, oriQuantity,oriMarking,true);
 	        		}
 	        		else // update new
 	        		{
@@ -250,12 +287,13 @@ public class Note_edit_ui {
                         else
                             marking = oriMarking;
 
-	        			dB_page.updateNote(rowId, title, Integer.valueOf(body),  Integer.valueOf(quantity),
+	        			dB_page.updateNote(rowId, title, Integer.valueOf(body), category, Integer.valueOf(quantity),
 												marking, true); // update note
 	        		}
 	        	}
 	        	else if( Util.isEmptyString(title) &&
-			        	 Util.isEmptyString(body) &&
+						 Util.isEmptyString(body) &&
+				         Util.isEmptyString(category) &&
 				         Util.isEmptyString(quantity) )
 	        	{
 	        		// delete

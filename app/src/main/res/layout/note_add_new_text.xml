@@ -124,6 +124,52 @@
 		android:paddingLeft="10dp"
 		/>
 
+	<!-- category	-->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/bar_color"
+		android:orientation="horizontal" >
+		<ImageView
+			android:layout_width="20dp"
+			android:layout_height="20dp"
+			android:src="@android:drawable/ic_menu_edit"
+			/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/edit_note_dlg_category"
+			android:textColor="@android:color/white"/>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/bar_color"
+		android:orientation="horizontal"
+		android:padding="5dp">
+		<EditText android:id="@+id/edit_category"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="4"
+			android:textCursorDrawable="@drawable/cursor_edit"
+			android:inputType="textPhonetic|textAutoComplete"
+			android:textSize="18sp"
+			android:minLines="1"
+			android:maxLines="3"
+			android:cursorVisible="true"
+			/>
+		<Button
+			android:id="@+id/btn_select_category_item"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_gravity="center"
+			android:layout_margin="3dp"
+			android:textColor="@color/colorWhite"
+			android:text="@string/add_often_list"
+			android:background="@drawable/button"/>
+	</LinearLayout>
+
 	<!-- new sum -->
 	<LinearLayout
 		android:layout_width="match_parent"

@@ -148,10 +148,12 @@ public class Page extends Fragment implements OnStartDragListener {
         String noteTitle1;
         Integer noteBody1;
         Integer noteQuantity1;
+        String noteCategory1;
         Integer markingIndex1;
         Long noteNumber2 ;
         String noteTitle2;
         Integer noteBody2;
+        String noteCategory2;
         Integer noteQuantity2;
         Integer markingIndex2;
 
@@ -160,23 +162,27 @@ public class Page extends Fragment implements OnStartDragListener {
         noteTitle1 = dB_page.getNoteTitle(startPosition,false);
         noteBody1 = dB_page.getNoteBody(startPosition,false);
         noteQuantity1 = dB_page.getNoteQuantity(startPosition,false);
+        noteCategory1 = dB_page.getNoteCategory(startPosition,false);
         markingIndex1 = dB_page.getNoteMarking(startPosition,false);
 
         noteNumber2 = dB_page.getNoteId(endPosition,false);
         noteTitle2 = dB_page.getNoteTitle(endPosition,false);
         noteBody2 = dB_page.getNoteBody(endPosition,false);
         noteQuantity2 = dB_page.getNoteQuantity(endPosition,false);
+        noteCategory2 = dB_page.getNoteCategory(endPosition,false);
         markingIndex2 = dB_page.getNoteMarking(endPosition,false);
 
         dB_page.updateNote(noteNumber2,
                 noteTitle1,
                 noteBody1,
+                noteCategory1,
                 noteQuantity1,
                 markingIndex1,false);
 
         dB_page.updateNote(noteNumber1,
                 noteTitle2,
                 noteBody2,
+                noteCategory2,
                 noteQuantity2,
                 markingIndex2,false);
 

@@ -32,7 +32,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +52,6 @@ import com.cw.sumlist.page.Page;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.preferences.Pref;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 // if ENABLE_ADMOB = true, enable the following
 //import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -63,6 +61,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 //import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.cw.sumlist.define.Define.ENABLE_ITEM_TOUCH_SWIPE;
 
@@ -82,9 +81,8 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     // if ENABLE_ADMOB = true, enable the following
 //    private AdView adView;
 
-    public TabsHost()
-    {
-//        System.out.println("TabsHost / construct");
+    public TabsHost(){
+        System.out.println("TabsHost / construct");
     }
 
     @Override
@@ -158,7 +156,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         mTabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        mTabLayout.setOnTabSelectedListener(this);
+//        mTabLayout.setOnTabSelectedListener(this);
         mTabLayout.addOnTabSelectedListener(this);
 
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -278,10 +276,26 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         lastPageTableId = id;
     }
 
+    //https://stackoverflow.com/questions/45326669/android-ontabselected-not-called-at-first-time-with-customview
+    // first tab is selected by default.
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         System.out.println("TabsHost / _onTabSelected: " + tab.getPosition());
+        doTabSelected(tab);
+    }
 
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+        System.out.println("TabsHost / _onTabReselected");
+        doTabSelected(tab);
+    }
+
+    // do Tab Selected
+    void doTabSelected(TabLayout.Tab tab){
         setFocus_tabPos(tab.getPosition());
 
         // keep focus view page table Id
@@ -304,14 +318,6 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         setLongClickListener();
 
         showFooter(MainAct.mAct);
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
     }
 
     @Override
@@ -344,7 +350,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
                     @Override public void run() {
                         //todo How to skip tab 0?
                         if(mTabLayout.getTabAt(getFocus_tabPos()) != null)
-                            mTabLayout.getTabAt(getFocus_tabPos()).select();
+                            Objects.requireNonNull(mTabLayout.getTabAt(getFocus_tabPos())).select();
                     }
                 }, 100);
 
@@ -359,7 +365,7 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
 
         // Remove fragments
         if(!MainAct.mAct.isDestroyed())
-            removeTabs();//Put here will solve onBackStackChanged issue (no Page / _onCreate)
+            removePages();//Put here will solve onBackStackChanged issue (no Page / _onCreate)
     }
 
     // store scroll of recycler view
@@ -719,21 +725,21 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     }
 
 
-    public static void removeTabs() {
-//        System.out.println("TabsHost / _removeTabs");
+    public static void removePages() {
+//        System.out.println("TabsHost / _removePages");
 
-        ArrayList<Page> fragmentList = TabsHost.mTabsPagerAdapter.fragmentList;
+        ArrayList<Page> fragmentList = mTabsPagerAdapter.fragmentList;
         if( (fragmentList != null) &&
             (fragmentList.size() >0)  )
         {
             RecyclerView listView = fragmentList.get(TabsHost.getFocus_tabPos()).recyclerView;//drag_listView;
 
             if(listView != null)
-                TabsHost.store_listView_vScroll(listView);
+                store_listView_vScroll(listView);
 
             for (int i = 0; i < fragmentList.size(); i++) {
 //                System.out.println("TabsHost / _removeTabs / i = " + i);
-                TabsHost.mTabsPagerAdapter.fragmentList.get(i).itemAdapter = null;
+                mTabsPagerAdapter.fragmentList.get(i).itemAdapter = null;
                 MainAct.mAct.getSupportFragmentManager().beginTransaction().remove(fragmentList.get(i)).commit();
             }
         }

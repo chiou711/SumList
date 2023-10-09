@@ -409,17 +409,18 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 			return marking;
 		}
 
-		String strNote = db_page.getNoteTitle(position, false);
+		String strTitle = db_page.getNoteTitle(position, false);
 		int strBody = db_page.getNoteBody(position, false);
 		Integer quantity = db_page.getNoteQuantity(position, false);
+		String strCategory = db_page.getNoteCategory(position, false);
 		Long idNote = db_page.getNoteId(position, false);
 
 		// toggle the marking
 		if (db_page.getNoteMarking(position, false) == 0) {
-			db_page.updateNote(idNote, strNote, strBody, quantity, 1, false);
+			db_page.updateNote(idNote, strTitle, strBody, strCategory,quantity, 1, false);
 			marking = 1;
 		} else {
-			db_page.updateNote(idNote, strNote, strBody, quantity, 0, false);
+			db_page.updateNote(idNote, strTitle, strBody, strCategory,quantity, 0, false);
 			marking = 0;
 		}
 		db_page.close();
@@ -526,6 +527,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 		i.putExtra(DB_page.KEY_NOTE_ID, rowId);
 		i.putExtra(DB_page.KEY_NOTE_TITLE, db_page.getNoteTitle_byId(rowId));
 		i.putExtra(DB_page.KEY_NOTE_BODY, db_page.getNoteBody_byId(rowId));
+		i.putExtra(DB_page.KEY_NOTE_CATEGORY, db_page.getNoteCategory_byId(rowId));
 		i.putExtra(DB_page.KEY_NOTE_QUANTITY, db_page.getNoteQuantity_byId(rowId));
 		MainAct.dataActivityResultLauncher.launch(i);
 	}

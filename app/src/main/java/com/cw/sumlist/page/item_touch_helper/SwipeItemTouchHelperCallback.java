@@ -122,6 +122,7 @@ public class SwipeItemTouchHelperCallback extends ItemTouchHelper.Callback {
         db_page.updateNote(db_page.getNoteId(position,true),
                 db_page.getNoteTitle(position,true),
                 db_page.getNoteBody(position,true),
+                db_page.getNoteCategory(position,true),
                 db_page.getNoteQuantity(position,true)+i,
                 db_page.getNoteMarking(position,true),
                 true);

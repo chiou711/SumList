@@ -59,6 +59,7 @@ public class Note_addText extends AppCompatActivity {
 	EditText titleEditText;
 	EditText bodyEditText;
 	EditText quantityEditText;
+	EditText categoryEditText;
 	TextView newSumText;
 	Menu mMenu;
 
@@ -160,6 +161,7 @@ public class Note_addText extends AppCompatActivity {
 		titleEditText.addTextChangedListener(setTextWatcher());
 		bodyEditText.addTextChangedListener(setTextWatcher());
 		quantityEditText.addTextChangedListener(setTextWatcher());
+		categoryEditText.addTextChangedListener(setTextWatcher());
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -279,7 +281,6 @@ public class Note_addText extends AppCompatActivity {
 		boolean bEdit = false;
 		String curTitle = titleEditText.getText().toString();
 		String curBody = bodyEditText.getText().toString();
-		String curQuantiry = quantityEditText.getText().toString();
 
 		if(!Util.isEmptyString(curTitle)||
 		   !Util.isEmptyString(curBody)   )
@@ -294,6 +295,7 @@ public class Note_addText extends AppCompatActivity {
 		titleEditText = (EditText) findViewById(R.id.edit_title);
 		bodyEditText = (EditText) findViewById(R.id.edit_body);
 		quantityEditText = (EditText) findViewById(R.id.edit_quantity);
+		categoryEditText = (EditText) findViewById(R.id.edit_category);
 		newSumText = findViewById(R.id.new_sum);
 
 		int focusFolder_tableId = Pref.getPref_focusView_folder_tableId(this);
@@ -323,6 +325,10 @@ public class Note_addText extends AppCompatActivity {
 		quantityEditText.setTextColor(ColorSet.mText_ColorArray[style]);
 		quantityEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
 
+		//set category color
+		categoryEditText.setTextColor(ColorSet.mText_ColorArray[style]);
+		categoryEditText.setBackgroundColor(ColorSet.mBG_ColorArray[style]);
+
 		newSumText.setText(" : " + TabsHost.getListSum(this));
 	}
 
@@ -348,6 +354,11 @@ public class Note_addText extends AppCompatActivity {
 			quantityEditText.setText(String.valueOf(strQuantityEdit));
 			quantityEditText.setSelection(String.valueOf(strQuantityEdit).length());
 
+			// category
+			String strCategoryEdit = dB_page.getNoteCategory_byId(rowId);
+			categoryEditText.setText(strTitleEdit);
+			categoryEditText.setSelection(strTitleEdit.length());
+
 		} else {
 			// renew title
 			String strBlank = "";
@@ -362,6 +373,11 @@ public class Note_addText extends AppCompatActivity {
 			// quantity
 			quantityEditText.setText("1"); // default
 			quantityEditText.setSelection(1);
+
+			// renew category
+			categoryEditText.setText(strBlank);
+			categoryEditText.setSelection(strBlank.length());
+			categoryEditText.requestFocus();
 		}
 	}
 
@@ -394,6 +410,8 @@ public class Note_addText extends AppCompatActivity {
 		if(quantityEditText != null)
 			quantity = quantityEditText.getText().toString();
 
+		String category = categoryEditText.getText().toString();
+
 		if(enSaveDb)
 		{
 			// insert
@@ -411,7 +429,7 @@ public class Note_addText extends AppCompatActivity {
 					if(!Util.isEmptyString(quantity))
 						qty = Integer.valueOf(quantity);
 
-					rowId = dB_page.insertNote(title, value,  qty,  1);// add new note, get return row Id
+					rowId = dB_page.insertNote(title, value,  category, qty,  1);// add new note, get return row Id
 					System.out.println("Note_addText / _saveStateInDB / insert value = " + value);
 				}
 			}
@@ -429,7 +447,7 @@ public class Note_addText extends AppCompatActivity {
 					qty = Integer.valueOf(quantity);
 
 				//rowId != null
-				dB_page.updateNote(rowId,title, value,  qty,  1,true);// add new note, get return row Id
+				dB_page.updateNote(rowId,title, value,  category, qty,  1,true);// add new note, get return row Id
 				System.out.println("Note_addText / _saveStateInDB / update value = " + value);
 			}
 			// delete

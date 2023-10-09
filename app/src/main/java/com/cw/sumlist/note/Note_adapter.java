@@ -235,6 +235,7 @@ public class Note_adapter extends FragmentStatePagerAdapter
 	    String strTitle = db_page.getNoteTitle(position,true);
 	    long price = db_page.getNoteBody(position,true);
 	    long quantity = db_page.getNoteQuantity(position,true);
+	    String strCategory = db_page.getNoteCategory(position,true);
 
     	// replace note title
 		boolean bSetGray = false;
@@ -308,6 +309,7 @@ public class Note_adapter extends FragmentStatePagerAdapter
 	    String labelTitle = act.getResources().getString(R.string.edit_note_dlg_title);
 	    String labelPrice = act.getResources().getString(R.string.edit_note_dlg_body);
 	    String labelQty = act.getResources().getString(R.string.edit_note_dlg_quantity);
+	    String labelCategory = act.getResources().getString(R.string.edit_note_dlg_category);
 	    String labelSubtotal = act.getResources().getString(R.string.edit_note_dlg_subtotal);
 	    String labelTotal = act.getResources().getString(R.string.footer_text_total);
 
@@ -335,6 +337,13 @@ public class Note_adapter extends FragmentStatePagerAdapter
 			    labelQty + " " + quantity +
 			    "</font>" + tag_end + "</p>"+
 				separatedLineTitle +
+
+			    // category
+			    "<p align=\"left\">" + tag_start +
+			    "<font color=\"" + colorStr + "\">" +
+			    labelCategory + " " + strCategory +
+			    "</font>" + tag_end + "</p>" +
+			    separatedLineTitle +
 
 			    // sub total
 			    "<p align=\"right\">" + tag_start +

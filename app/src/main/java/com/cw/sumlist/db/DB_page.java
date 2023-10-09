@@ -43,6 +43,7 @@ public class DB_page
     public static final String KEY_NOTE_ID = "_id"; //do not rename _id for using CursorAdapter (BaseColumns._ID)
 	public static final String KEY_NOTE_TITLE = "note_title";
 	public static final String KEY_NOTE_BODY = "note_body";
+	public static final String KEY_NOTE_CATEGORY = "note_category";
 	public static final String KEY_NOTE_QUANTITY = "note_quantity";
     public static final String KEY_NOTE_MARKING = "note_marking";
 
@@ -101,6 +102,7 @@ public class DB_page
           KEY_NOTE_ID,
 		  KEY_NOTE_TITLE,
 		  KEY_NOTE_BODY,
+		  KEY_NOTE_CATEGORY,//@@@ how to add this to ready DB?
           KEY_NOTE_QUANTITY,
           KEY_NOTE_MARKING,
       };
@@ -138,13 +140,14 @@ public class DB_page
     
     // Insert note
     // createTime: 0 will update time
-    public long insertNote(String title, int body,  int quantity,int marking )
+    public long insertNote(String title, int body,  String category, int quantity,int marking )
     {
     	this.open();
 
         ContentValues args = new ContentValues();
 	    args.put(KEY_NOTE_TITLE, title);
 	    args.put(KEY_NOTE_BODY, body);
+	    args.put(KEY_NOTE_CATEGORY, category);
         args.put(KEY_NOTE_QUANTITY, quantity);
         args.put(KEY_NOTE_MARKING,marking);
         long rowId = mSqlDb.insert(DB_PAGE_TABLE_NAME, null, args);
@@ -174,7 +177,8 @@ public class DB_page
 									DB_PAGE_TABLE_NAME,
 					                new String[] {KEY_NOTE_ID,
 									              KEY_NOTE_TITLE,
-									              KEY_NOTE_BODY,
+							                      KEY_NOTE_BODY,
+							                      KEY_NOTE_CATEGORY,
 				  								  KEY_NOTE_QUANTITY,
         										  KEY_NOTE_MARKING},
 					                KEY_NOTE_ID + "=" + rowId,
@@ -189,7 +193,7 @@ public class DB_page
 
     // update note
     // 		createTime:  0 for Don't update time
-    public boolean updateNote(long rowId, String title, Integer body, Integer quantity, Integer marking, boolean enDbOpenClose)
+    public boolean updateNote(long rowId, String title, Integer body, String category, Integer quantity, Integer marking, boolean enDbOpenClose)
     {
     	if(enDbOpenClose)
     		this.open();
@@ -197,6 +201,7 @@ public class DB_page
         ContentValues args = new ContentValues();
 	    args.put(KEY_NOTE_TITLE, title);
 	    args.put(KEY_NOTE_BODY, body);
+	    args.put(KEY_NOTE_CATEGORY, category);
         args.put(KEY_NOTE_QUANTITY, quantity);
         args.put(KEY_NOTE_MARKING, marking);
         
@@ -277,6 +282,18 @@ public class DB_page
 
 		return body;
 	}
+
+	public String getNoteCategory_byId(Long mRowId)
+	{
+		this.open();
+
+		String category = queryNote(mRowId).getString(queryNote(mRowId)
+				.getColumnIndexOrThrow(DB_page.KEY_NOTE_CATEGORY));
+
+		this.close();
+
+		return category;
+	}
 	
 	public Integer getNoteMarking_byId(Long mRowId)
 	{
@@ -337,6 +354,23 @@ public class DB_page
 			this.close();
 
 		return body;
+	}
+
+	@SuppressLint("Range")
+	public String getNoteCategory(int position,boolean enDbOpenClose)
+	{
+		String category = "";
+
+		if(enDbOpenClose)
+			this.open();
+
+		if(mCursor_note.moveToPosition(position))
+			category = mCursor_note.getString(mCursor_note.getColumnIndex(KEY_NOTE_CATEGORY));
+
+		if(enDbOpenClose)
+			this.close();
+
+		return category;
 	}
 
 	@SuppressLint("Range")

@@ -111,7 +111,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textColor="@android:color/white"
-			android:labelFor="@+id/edit_body"
+			android:labelFor="@+id/edit_quantity"
 			android:text="@string/edit_note_dlg_quantity" />
 	</LinearLayout>
 	<com.cw.sumlist.util.MyEditText
@@ -119,6 +119,36 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:inputType="numberSigned"
+		android:textCursorDrawable="@drawable/cursor_edit"
+		android:minLines="1"
+		android:maxLines="1" />
+	<View android:layout_width="match_parent" android:layout_height="1dip" android:background="#4f4f4f" />
+
+	<!-- category header -->
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/bar_color"
+		tools:ignore="UseCompoundDrawables" >
+		<ImageView
+			android:layout_width="20dp"
+			android:layout_height="20dp"
+			android:src="@android:drawable/ic_menu_edit"
+			android:contentDescription="@string/edit_note_dlg_category"
+			/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"
+			android:labelFor="@+id/edit_category"
+			android:text="@string/edit_note_dlg_category" />
+	</LinearLayout>
+	<com.cw.sumlist.util.MyEditText
+		android:id="@+id/edit_category"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:inputType="textPhonetic|textAutoComplete"
 		android:textCursorDrawable="@drawable/cursor_edit"
 		android:minLines="1"
 		android:maxLines="1" />

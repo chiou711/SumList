@@ -209,6 +209,7 @@ public class Checked_notes_option {
                     String copyItemsTitle[] = new String[count];
                     Integer copyItemsBody[] = new Integer[count];
                     Integer copyItemsQuantity[] = new Integer[count];
+                    String copyItemsCategory[] = new String[count];
                     Integer copyItemsMarking[] = new Integer[count];
                     int cCopy = 0;
 
@@ -221,6 +222,7 @@ public class Checked_notes_option {
                             copyItemsTitle[cCopy] = mDb_page.getNoteTitle(i,false);
                             copyItemsBody[cCopy] = mDb_page.getNoteBody(i,false);
                             copyItemsQuantity[cCopy] = mDb_page.getNoteQuantity(i,false);
+                            copyItemsCategory[cCopy] = mDb_page.getNoteCategory(i,false);
                             copyItemsMarking[cCopy] = mDb_page.getNoteMarking(i,false);
                             cCopy++;
                         }
@@ -228,9 +230,9 @@ public class Checked_notes_option {
                     mDb_page.close();
 
                     if(option == MOVE_CHECKED_NOTE)
-                        operateCheckedTo(mAct,copyItemsTitle, copyItemsBody,   copyItemsQuantity,  copyItemsMarking, MOVE_TO); // move to
+                        operateCheckedTo(mAct,copyItemsTitle, copyItemsBody,  copyItemsCategory, copyItemsQuantity,  copyItemsMarking, MOVE_TO); // move to
                     else if(option == COPY_CHECKED_NOTE)
-                        operateCheckedTo(mAct,copyItemsTitle, copyItemsBody,   copyItemsQuantity,  copyItemsMarking, COPY_TO);// copy to
+                        operateCheckedTo(mAct,copyItemsTitle, copyItemsBody,  copyItemsCategory, copyItemsQuantity,  copyItemsMarking, COPY_TO);// copy to
 
                 }
                 else
@@ -279,7 +281,8 @@ public class Checked_notes_option {
             String noteTitle = mDb_page.getNoteTitle(i,false);
             Integer noteBody = mDb_page.getNoteBody(i,false);
             Integer noteQuantity = mDb_page.getNoteQuantity(i,false);
-            mDb_page.updateNote(rowId, noteTitle, noteBody,  noteQuantity, action,false);// action 1:check all, 0:uncheck all
+            String noteCategory = mDb_page.getNoteCategory(i,false);
+            mDb_page.updateNote(rowId, noteTitle, noteBody, noteCategory, noteQuantity, action,false);// action 1:check all, 0:uncheck all
             // Stop if unmarked item is at playing state
         }
         mDb_page.close();
@@ -302,7 +305,8 @@ public class Checked_notes_option {
             Integer noteBody = mDb_page.getNoteBody(i,false);
             Integer quantity = mDb_page.getNoteQuantity(i,false);
             Integer marking = (mDb_page.getNoteMarking(i,false)==1)?0:1;
-            mDb_page.updateNote(rowId, noteTitle, noteBody, quantity, marking, false);// action 1:check all, 0:uncheck all
+            String noteCategory = mDb_page.getNoteCategory(i,false);
+            mDb_page.updateNote(rowId, noteTitle, noteBody, noteCategory, quantity, marking, false);// action 1:check all, 0:uncheck all
         }
         mDb_page.close();
 
@@ -316,7 +320,7 @@ public class Checked_notes_option {
      *   operate checked to: move to, copy to
      *
      */
-    private void operateCheckedTo(final AppCompatActivity act,final String[] copyItemsTitle, final Integer[] copyItemsBody,
+    private void operateCheckedTo(final AppCompatActivity act,final String[] copyItemsTitle, final Integer[] copyItemsBody, String[] copyItemsCategory,
                                   final Integer[] copyItemsQuantity, final Integer[] copyRemarks, final int action)
     {
         //list all pages
@@ -352,7 +356,7 @@ public class Checked_notes_option {
                 {
                     // move to same page is not allowed
                     if(!((action == MOVE_TO) && (srcPageTableId == destPageTableId)))
-                        mDb_page.insertNote(copyItemsTitle[i], copyItemsBody[i], copyItemsQuantity[i], copyRemarks[i]);
+                        mDb_page.insertNote(copyItemsTitle[i], copyItemsBody[i], copyItemsCategory[i],copyItemsQuantity[i], copyRemarks[i]);
                 }
 
                 //recover table Id of original page
