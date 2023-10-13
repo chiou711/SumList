@@ -62,67 +62,93 @@
 		android:background="@drawable/button"/>
 	</LinearLayout>
 
-	<!-- Price -->
+
+	<!-- price + quantity start -->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@color/bar_color"
 		android:orientation="horizontal" >
-		<ImageView
-			android:layout_width="20dp"
-			android:layout_height="20dp"
-			android:src="@android:drawable/ic_menu_edit"
-			/>
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/edit_note_dlg_body"
-			android:textColor="@android:color/white"/>
-	</LinearLayout>
 
-	<EditText android:id="@+id/edit_body"
-			  android:layout_width="match_parent"
-			  android:layout_height="0dp"
-			  android:layout_weight="1"
-              android:textCursorDrawable="@drawable/cursor_edit"
-			  android:inputType="numberSigned"
-			  android:minLines="1"
-			  android:maxLines="1"
-			  android:autoLink="all"
-			  android:textSize="18sp"
-			  android:scrollbars="vertical"
-			  android:gravity="top"
-			  android:paddingLeft="10dp"
-			  />
-
-	<!-- quantity -->
+	<!-- Price start -->
 	<LinearLayout
-		android:layout_width="match_parent"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
+		android:layout_weight="1"
 		android:background="@color/bar_color"
-		android:orientation="horizontal" >
-		<ImageView
-			android:layout_width="20dp"
-			android:layout_height="20dp"
-			android:src="@android:drawable/ic_menu_edit"
-			/>
-		<TextView
-			android:layout_width="wrap_content"
+		android:orientation="vertical" >
+		<LinearLayout
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/edit_note_dlg_quantity"
-			android:textColor="@android:color/white"/>
-	</LinearLayout>
+			android:background="@color/bar_color"
+			android:orientation="horizontal" >
+			<ImageView
+				android:layout_width="20dp"
+				android:layout_height="20dp"
+				android:src="@android:drawable/ic_menu_edit"
+				/>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/edit_note_dlg_body"
+				android:textColor="@android:color/white"/>
+		</LinearLayout>
 
-	<EditText android:id="@+id/edit_quantity"
-		android:layout_width="match_parent"
+		<EditText android:id="@+id/edit_body"
+				  android:layout_width="match_parent"
+				  android:layout_height="wrap_content"
+				  android:textCursorDrawable="@drawable/cursor_edit"
+				  android:inputType="numberSigned"
+				  android:minLines="1"
+				  android:maxLines="1"
+				  android:autoLink="all"
+				  android:textSize="18sp"
+				  android:scrollbars="vertical"
+				  android:gravity="top"
+				  android:paddingLeft="10dp"
+				  />
+	</LinearLayout>
+	<!-- Price end -->
+
+	<!-- quantity start -->
+	<LinearLayout
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:textCursorDrawable="@drawable/cursor_edit"
-		android:inputType="numberSigned"
-		android:textSize="18sp"
-		android:minLines="1"
-		android:maxLines="1"
-		android:paddingLeft="10dp"
-		/>
+		android:layout_weight="1"
+		android:background="@color/bar_color"
+		android:orientation="vertical" >
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/bar_color"
+			android:orientation="horizontal" >
+			<ImageView
+				android:layout_width="20dp"
+				android:layout_height="20dp"
+				android:src="@android:drawable/ic_menu_edit"
+				/>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/edit_note_dlg_quantity"
+				android:textColor="@android:color/white"/>
+		</LinearLayout>
+
+		<EditText android:id="@+id/edit_quantity"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textCursorDrawable="@drawable/cursor_edit"
+			android:inputType="numberSigned"
+			android:textSize="18sp"
+			android:minLines="1"
+			android:maxLines="1"
+			android:paddingLeft="10dp"
+			/>
+	</LinearLayout>
+	<!-- quantity end -->
+
+	</LinearLayout>
+	<!-- price + quantity end -->
 
 	<!-- category	-->
 	<LinearLayout

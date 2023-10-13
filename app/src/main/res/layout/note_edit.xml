@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- title header 		   --> 
-<!-- title Edit and Picture-->
+<!-- title Edit 		   -->
 <!-- body header 		   -->
 <!-- body Edit 			   -->
 <!-- bottoms 			   -->
@@ -44,7 +44,7 @@
 			android:text="@string/edit_note_dlg_title" />
 	</LinearLayout>
 	
-<!-- title Edit and Picture -->
+<!-- title Edit -->
 	<LinearLayout
 		android:id="@+id/edit_title_block"
 		android:layout_width="match_parent"
@@ -64,7 +64,20 @@
 	    android:maxLines="3" />
 	</LinearLayout>
 
-	<!-- Body header -->
+	<!-- price + quantity start -->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/bar_color"
+		android:orientation="horizontal" >
+
+	<!-- Price start -->
+	<LinearLayout
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:background="@color/bar_color"
+		android:orientation="vertical" >
 	<LinearLayout
 		android:orientation="horizontal"
 		android:layout_width="match_parent"
@@ -92,9 +105,16 @@
 		android:inputType="numberSigned"
 		android:minLines="1"
 		android:maxLines="1"/>
-	<View android:layout_width="match_parent" android:layout_height="1dip" android:background="#4f4f4f" />
+	</LinearLayout>
+	<!-- Price end -->
 
-	<!-- quantity header -->
+	<!-- quantity start -->
+	<LinearLayout
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:background="@color/bar_color"
+		android:orientation="vertical" >
 	<LinearLayout
 		android:orientation="horizontal"
 		android:layout_width="match_parent"
@@ -122,7 +142,11 @@
 		android:textCursorDrawable="@drawable/cursor_edit"
 		android:minLines="1"
 		android:maxLines="1" />
-	<View android:layout_width="match_parent" android:layout_height="1dip" android:background="#4f4f4f" />
+	</LinearLayout>
+	<!-- quantity end -->
+
+	</LinearLayout>
+	<!-- price + quantity end -->
 
 	<!-- category header -->
 	<LinearLayout
@@ -152,10 +176,8 @@
 		android:textCursorDrawable="@drawable/cursor_edit"
 		android:minLines="1"
 		android:maxLines="1" />
-	<View android:layout_width="match_parent" android:layout_height="1dip" android:background="#4f4f4f" />
 
-<!-- buttons  -->
-	
+	<!-- buttons  -->
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
