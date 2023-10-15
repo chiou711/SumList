@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.util.often;
+package com.cw.sumlist.util.often.config;
 
 import android.content.Context;
 import android.database.Cursor;

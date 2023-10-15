@@ -23,7 +23,8 @@ import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.Util;
-import com.cw.sumlist.util.often.Often_select_grid;
+import com.cw.sumlist.util.category.select.Category_select_grid;
+import com.cw.sumlist.util.often.select.Often_select_grid;
 import com.cw.sumlist.util.preferences.Pref;
 
 import android.app.AlertDialog;
@@ -81,6 +82,16 @@ public class Note_addText extends AppCompatActivity {
 			    titleEditText.setText(result);
 		    }
 	    });
+
+	    getSupportFragmentManager().setFragmentResultListener("requestCategoryItem", this, new FragmentResultListener() {
+		    @Override
+		    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+			    // We use a String here, but any type that can be put in a Bundle is supported.
+			    String result = bundle.getString("categoryItem");
+			    categoryEditText.setText(result);
+		    }
+	    });
+
     }
 
     @Override
@@ -122,6 +133,18 @@ public class Note_addText extends AppCompatActivity {
 				hideIME(findViewById(R.id.edit_title));
 
 			    selectOftenItem();
+		    }
+	    });
+
+		// category item button
+	    Button selCategoryItemBtn = findViewById(R.id.btn_select_category_item);
+	    selCategoryItemBtn.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View view) {
+			    // hide IME
+			    hideIME(findViewById(R.id.edit_title));
+
+			    selectCategoryItem();
 		    }
 	    });
     }
@@ -466,6 +489,13 @@ public class Note_addText extends AppCompatActivity {
 		FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
 		mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
 		mFragmentTransaction.add(R.id.container, oftenItem, "select often item").addToBackStack("select often item").commit();
+	}
+
+	void selectCategoryItem(){
+		Category_select_grid categoryItem = new Category_select_grid();
+		FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+		mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+		mFragmentTransaction.add(R.id.container, categoryItem, "select category item").addToBackStack("select category item").commit();
 	}
 
 	// hide IME

@@ -28,7 +28,7 @@ import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_drawer;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.Util;
-import com.cw.sumlist.util.often.Often_config_list;
+import com.cw.sumlist.util.often.config.Often_config_list;
 import com.cw.sumlist.util.preferences.Pref;
 
 import android.app.AlertDialog;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.util.often;
+package com.cw.sumlist.util.category.config;
 
 import android.app.AlertDialog;
 import android.content.Context;

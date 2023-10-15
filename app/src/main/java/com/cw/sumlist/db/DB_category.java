@@ -31,7 +31,7 @@ public class DB_category
     private static DatabaseHelper mDbHelper ;
     private SQLiteDatabase mSqlDb;
 
-    // Table name format: Categroy
+    // Table name format: Category
     public static String DB_CATEGORY_TABLE_NAME = "Category";
 
 	// Cursor
@@ -45,9 +45,7 @@ public class DB_category
 	    // initial titles
 	    if(getCategoryCount(true) == 0){
 		    String[] categoryItems = {
-				    "麵包","飲料",
-				    "早餐","午餐","晚餐",
-				    "Costco","全聯","大潤發","億客來"
+				    "食品","交通","居家"
 		    };
 
 		    for(int i=0;i<categoryItems.length;i++)
@@ -164,7 +162,7 @@ public class DB_category
 	}
 
 	@SuppressLint("Range")
-	public Long getCategoryd(int position,boolean enDbOpenClose){
+	public Long getCategoryId(int position,boolean enDbOpenClose){
 		if(enDbOpenClose)
 			this.open();
 

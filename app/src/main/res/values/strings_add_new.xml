@@ -10,6 +10,7 @@
     <string name="add_new_note_message">spending item content:</string>
     <string name="add_new_note_button_add">Add</string>
     <string name="add_often_list">often</string>
+    <string name="add_category_list">category</string>
     <string name="add_new_note_confirm_save">The new spending item has contained content, do you want to save it?</string>
     <string name="dialog_add_new_option_title">Set the operation for new spending item:</string>
     <string name="dialog_add_new_multiple">Adding ready spending item: involve all same kind files in the directory</string>

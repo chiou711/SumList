@@ -10,6 +10,7 @@
     <string name="add_new_note_message">消费项目内容:</string>
     <string name="add_new_note_button_add">新增</string>
     <string name="add_often_list">经常</string>
+    <string name="add_category_list">类别</string>
     <string name="add_new_note_confirm_save">已经有内容在新消费项目中，您要保存它吗？</string>
     <string name="dialog_add_new_option_title">设定新增消费项目的操作：</string>
     <string name="dialog_add_new_multiple">新增本地消费项目时：包括目录中的所有同类文件</string>

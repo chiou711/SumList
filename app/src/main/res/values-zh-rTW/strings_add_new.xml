@@ -10,6 +10,7 @@
     <string name="add_new_note_message">消費項目內容:</string>
     <string name="add_new_note_button_add">新增</string>
     <string name="add_often_list">經常</string>
+    <string name="add_category_list">類別</string>
     <string name="add_new_note_confirm_save">已經有內容在新消費項目中，您想要保存它嗎?</string>
     <string name="dialog_add_new_option_title">設定新增消費項目的操作：</string>
     <string name="dialog_add_new_multiple">新增現成消費項目時：包括目錄中的所有同類文件</string>

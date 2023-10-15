@@ -192,7 +192,7 @@
 			android:layout_gravity="center"
 			android:layout_margin="3dp"
 			android:textColor="@color/colorWhite"
-			android:text="@string/add_often_list"
+			android:text="@string/add_category_list"
 			android:background="@drawable/button"/>
 	</LinearLayout>
 
