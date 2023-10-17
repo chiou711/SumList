@@ -5,4 +5,5 @@ class Db_cache {
 	String body;
 	Integer quantity;
 	Integer marking;
+	String category;
 }

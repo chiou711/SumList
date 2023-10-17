@@ -50,6 +50,7 @@ import com.cw.sumlist.util.preferences.Pref;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.cw.sumlist.db.DB_page.KEY_NOTE_CATEGORY;
 import static com.cw.sumlist.db.DB_page.KEY_NOTE_MARKING;
 import static com.cw.sumlist.db.DB_page.KEY_NOTE_QUANTITY;
 import static com.cw.sumlist.db.DB_page.KEY_NOTE_TITLE;
@@ -64,6 +65,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 	private String strTitle;
 	private String strBody;
 	private Integer quantity;
+	private String strCategory;
 	private Integer marking;
 	private int style;
 	DB_folder dbFolder;
@@ -100,6 +102,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 		TextView textTitle;
 		TextView textBody;
 		TextView textQuantity;
+		TextView textCategory;
 
 		public ViewHolder(View v) {
 			super(v);
@@ -121,6 +124,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 			textTitle = v.findViewById(R.id.row_title);
 			textBody = v.findViewById(R.id.row_body);
 			textQuantity = v.findViewById(R.id.row_quantity);
+			textCategory = v.findViewById(R.id.row_category);
 		}
 
 		public TextView getItemIdView() {
@@ -137,6 +141,10 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 
 		public TextView getQuantityView() {
 			return textQuantity;
+		}
+
+		public TextView getCategoryView() {
+			return textCategory;
 		}
 
 		int selectColor;
@@ -183,11 +191,13 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 			strBody = listCache.get(position).body;
 			quantity = listCache.get(position).quantity;
 			marking = listCache.get(position).marking;
+			strCategory = listCache.get(position).category;
 		} else {
 			strTitle = "";
 			strBody = "";
 			quantity = 0;
 			marking = 0;
+			strCategory = "";
 		}
 
 		// style
@@ -283,6 +293,17 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 			holder.textQuantity.setVisibility(View.VISIBLE);
 			holder.textQuantity.setText("x" + String.valueOf(quantity));
 			holder.textQuantity.setTextSize((float) 11.00);
+		}
+
+		// show text category
+		if (Util.isEmptyString(strCategory)) {
+			// make sure empty title is empty after scrolling
+			holder.textCategory.setVisibility(View.VISIBLE);
+			holder.textCategory.setText("");
+		} else {
+			holder.textCategory.setVisibility(View.VISIBLE);
+			holder.textCategory.setTextSize((float) 11.00);
+			holder.textCategory.setText(strCategory);
 		}
 
 		setBindViewHolder_listeners(holder, position);
@@ -496,6 +517,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 				cache.body = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NOTE_BODY));
 				cache.quantity = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_NOTE_QUANTITY));
 				cache.marking = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_NOTE_MARKING));
+				cache.category= cursor.getString(cursor.getColumnIndexOrThrow(KEY_NOTE_CATEGORY));
 
 				listCache.add(cache);
 			}
@@ -538,6 +560,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 		setTextView_strikeThrough(holder.getTitleView());
 		setTextView_strikeThrough(holder.getBodyView());
 		setTextView_strikeThrough(holder.getQuantityView());
+		setTextView_strikeThrough(holder.getCategoryView());
 	}
 
 	// set text view strike through
@@ -554,6 +577,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 		setTextView_color(holder.getTitleView());
 		setTextView_color(holder.getBodyView());
 		setTextView_color(holder.getQuantityView());
+		setTextView_color(holder.getCategoryView());
 	}
 
 	// set text view color
