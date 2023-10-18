@@ -23,7 +23,7 @@
     tools:ignore="UseCompoundDrawables">
 
 <TextView 
-    android:id="@+id/often_item_title"
+    android:id="@+id/category_item_title"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="1"
@@ -35,7 +35,7 @@
     android:background="?android:attr/activatedBackgroundIndicator"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"/>
 <ImageView
-        android:id="@+id/often_item_drag"
+        android:id="@+id/category_item_drag"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginEnd="0dp"

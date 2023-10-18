@@ -24,19 +24,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cw.sumlist.R;
-import com.cw.sumlist.db.DB_often;
+import com.cw.sumlist.db.DB_category;
 import com.cw.sumlist.main.MainAct;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 
 /**
- * Created by cw on 2023/09/10
+ * Created by cw on 2023/10/18
  */
 
-public class Often_list_adapter extends SimpleDragSortCursorAdapter
+public class Category_list_adapter extends SimpleDragSortCursorAdapter
 {
     int layout;
-    public Often_list_adapter(Context context, int _layout, Cursor c,
-                              String[] from, int[] to, int flags)
+    public Category_list_adapter(Context context, int _layout, Cursor c,
+                                 String[] from, int[] to, int flags)
     {
         super(context, _layout, c, from, to, flags);
         layout = _layout;
@@ -44,8 +44,8 @@ public class Often_list_adapter extends SimpleDragSortCursorAdapter
 
     @Override
     public int getCount() {
-        DB_often db_often = new DB_often(MainAct.mAct);
-        return db_often.getOftenCount(true);
+        DB_category db_category = new DB_category(MainAct.mAct);
+        return db_category.getCategoryCount(true);
     }
 
     @Override
@@ -71,15 +71,15 @@ public class Often_list_adapter extends SimpleDragSortCursorAdapter
 
             // set up ViewHolder for this ListView item
             viewHolder = new ViewHolder();
-            viewHolder.oftenItemTitle = (TextView) convertView.findViewById(R.id.often_item_title);
-            viewHolder.dragIcon = (ImageView) convertView.findViewById(R.id.often_item_drag);
+            viewHolder.categoryItemTitle = (TextView) convertView.findViewById(R.id.category_item_title);
+            viewHolder.dragIcon = (ImageView) convertView.findViewById(R.id.category_item_drag);
             convertView.setTag(viewHolder); // store as View's tag
         }
         else // get the ViewHolder from the convertView's tag
             viewHolder = (ViewHolder) convertView.getTag();
 
-        DB_often db_often= new DB_often(MainAct.mAct);
-        viewHolder.oftenItemTitle.setText(db_often.getOftenTitle(position,true));
+        DB_category db_category= new DB_category(MainAct.mAct);
+        viewHolder.categoryItemTitle.setText(db_category.getCategoryTitle(position,true));
 
         viewHolder.dragIcon.setVisibility(View.VISIBLE);
 
@@ -88,7 +88,7 @@ public class Often_list_adapter extends SimpleDragSortCursorAdapter
 
     private static class ViewHolder
     {
-        TextView oftenItemTitle; // refers to ListView item's ImageView
+        TextView categoryItemTitle; // refers to ListView item's ImageView
         ImageView dragIcon;
     }
 }

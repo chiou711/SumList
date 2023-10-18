@@ -28,7 +28,7 @@
 			 android:paddingLeft="5dp"
 			 />
 		 <Button
-			 android:id="@+id/btn_add_often_item"
+			 android:id="@+id/btn_add_category_item"
 			 android:layout_width="0dp"
 			 android:layout_weight="1"
 			 android:layout_height="wrap_content"

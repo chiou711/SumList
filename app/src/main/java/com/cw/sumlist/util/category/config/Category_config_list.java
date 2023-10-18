@@ -28,26 +28,26 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cw.sumlist.R;
-import com.cw.sumlist.db.DB_often;
+import com.cw.sumlist.db.DB_category;
 import com.mobeta.android.dslv.DragSortListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 /**
- * Created by cw on 2023/09/10
+ * Created by cw on 2023/10/18
  */
-public class Often_config_list extends Fragment{
+public class Category_config_list extends Fragment{
     TextView title;
 	DragSortListView mListView;
-	Often_list setOftenIem_list;
+	Category_list setCategoryIem_list;
 	public static View rootView;
     AppCompatActivity act;
-	Button btn_add_often_item;
+	Button btn_add_category_item;
 	AlertDialog mDialog;
 	EditText titleEditText;
 
-	public Often_config_list(){}
+	public Category_config_list(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -57,12 +57,12 @@ public class Often_config_list extends Fragment{
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.often_config_list, container, false);
+		rootView = inflater.inflate(R.layout.category_config_list, container, false);
 		act = (AppCompatActivity) getActivity();
 
         // title
         title = (TextView) rootView.findViewById(R.id.select_list_title);
-        title.setText(R.string.often_item_title);
+        title.setText(R.string.category_item_title);
 
         // list view: selecting which pages to send
         mListView = rootView.findViewById(R.id.listView1);
@@ -70,18 +70,18 @@ public class Often_config_list extends Fragment{
         //show list for selection
 		showListView();
 
-		// add often item button
-		btn_add_often_item = rootView.findViewById(R.id.btn_add_often_item);
-		btn_add_often_item.setOnClickListener(new View.OnClickListener() {
+		// add category item button
+		btn_add_category_item = rootView.findViewById(R.id.btn_add_category_item);
+		btn_add_category_item.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
-				// add often item dialog
+				// add category item dialog
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				LayoutInflater mInflater= (LayoutInflater) act.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-				View view = mInflater.inflate(R.layout.add_new_often_item, null);
-				builder.setTitle(R.string.config_set_often_item)
+				View view = mInflater.inflate(R.layout.add_new_category_item, null);
+				builder.setTitle(R.string.config_set_category_item)
 					   .setPositiveButton(R.string.btn_OK, listener_ok)
 					   .setNegativeButton(R.string.btn_Cancel, null);
 				builder.setView(view);
@@ -96,15 +96,15 @@ public class Often_config_list extends Fragment{
 		return rootView;
 	}
 
-	// confirm Add new often item
+	// confirm Add new category item
 	DialogInterface.OnClickListener listener_ok = new DialogInterface.OnClickListener()	{
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			String newOftenItem = titleEditText.getText().toString();
+			String newCategoryItem = titleEditText.getText().toString();
 
-			// add often item to DB
-			DB_often db_often = new DB_often(act);
-			db_often.insertOften(db_often,newOftenItem ,true);
+			// add category item to DB
+			DB_category db_category = new DB_category(act);
+			db_category.insertCategory(db_category,newCategoryItem ,true);
 
 			// refresh listview
 			showListView();
@@ -120,7 +120,7 @@ public class Often_config_list extends Fragment{
 
 	// show list view
 	void showListView(){
-		setOftenIem_list = new Often_list(act, rootView);
+		setCategoryIem_list = new Category_list(act, rootView);
 	}
 
 }

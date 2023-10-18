@@ -28,6 +28,7 @@ import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_drawer;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.Util;
+import com.cw.sumlist.util.category.config.Category_config_list;
 import com.cw.sumlist.util.often.config.Often_config_list;
 import com.cw.sumlist.util.preferences.Pref;
 
@@ -90,6 +91,9 @@ public class Config extends Fragment
 
 		// set often item
 		setOftenItem();
+
+		// set category item
+		setCategoryItem();
 
 		// delete DB
 		deleteDB_button();
@@ -315,7 +319,22 @@ public class Config extends Fragment
 		});
 	}
 
-   
+	// Set category items
+	void setCategoryItem(){
+		View setCategoryItem = mRootView.findViewById(R.id.setCategoryItem);
+
+		// add new option
+		setCategoryItem.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Category_config_list categoryItem = new Category_config_list();
+				FragmentTransaction mFragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+				mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+				mFragmentTransaction.replace(R.id.container_config, categoryItem).addToBackStack("set often items").commit();
+			}
+		});
+	}
+
     /**
      * Delete DB
      *
