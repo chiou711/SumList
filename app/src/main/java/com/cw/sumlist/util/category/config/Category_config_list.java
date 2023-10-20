@@ -45,7 +45,7 @@ public class Category_config_list extends Fragment{
     AppCompatActivity act;
 	Button btn_add_category_item;
 	AlertDialog mDialog;
-	EditText titleEditText;
+	EditText categoryEditText;
 
 	public Category_config_list(){}
 
@@ -86,7 +86,7 @@ public class Category_config_list extends Fragment{
 					   .setNegativeButton(R.string.btn_Cancel, null);
 				builder.setView(view);
 
-				titleEditText =  view.findViewById(R.id.edit_title);
+				categoryEditText =  view.findViewById(R.id.edit_category);
 
 				mDialog = builder.create();
 				mDialog.show();
@@ -100,7 +100,7 @@ public class Category_config_list extends Fragment{
 	DialogInterface.OnClickListener listener_ok = new DialogInterface.OnClickListener()	{
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			String newCategoryItem = titleEditText.getText().toString();
+			String newCategoryItem = categoryEditText.getText().toString();
 
 			// add category item to DB
 			DB_category db_category = new DB_category(act);

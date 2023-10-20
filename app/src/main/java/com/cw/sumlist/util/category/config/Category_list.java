@@ -47,7 +47,7 @@ public class Category_list {
     public List<String> mListStrArr; // list view string array
     public int count;
     AppCompatActivity mAct;
-    EditText titleEditText;
+    EditText categoryEditText;
     private DragSortController controller;
     int editPosition;
     Category_list_adapter adapter;
@@ -92,12 +92,12 @@ public class Category_list {
         mListView.setAdapter(adapter);
 
         // set up click listener
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View vw, int position, long id){
-                // edit category item
-                editCategoryItem(position);
-            }
-        });
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View vw, int position, long id){
+//                // edit category item
+//                editCategoryItem(position);
+//            }
+//        });
 
         // set up long click listener
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
@@ -124,7 +124,7 @@ public class Category_list {
     void editCategoryItem(int position){
         editPosition = position;
         DB_category db_category = new DB_category(mAct);
-        String title = db_category.getCategoryTitle(position, true);
+        String category = db_category.getCategoryTitle(position, true);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mAct);
         LayoutInflater mInflater = (LayoutInflater) mAct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -134,10 +134,10 @@ public class Category_list {
                 .setNegativeButton(R.string.edit_note_button_delete, listener_delete)
                 .setNeutralButton(R.string.btn_Cancel, null);
         builder.setView(view2);
-        titleEditText = view2.findViewById(R.id.edit_title);
-        titleEditText.setText(title);
-        AlertDialog mDialog = builder.create();
-        mDialog.show();
+        categoryEditText = view2.findViewById(R.id.edit_category);
+        categoryEditText.setText(category);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private static DragSortController buildController(DragSortListView dslv) {
@@ -206,7 +206,7 @@ public class Category_list {
     DialogInterface.OnClickListener listener_update = new DialogInterface.OnClickListener(){
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            String newCategoryItem = titleEditText.getText().toString();
+            String newCategoryItem = categoryEditText.getText().toString();
 
             // update category item to DB
             DB_category db_category = new DB_category(mAct);

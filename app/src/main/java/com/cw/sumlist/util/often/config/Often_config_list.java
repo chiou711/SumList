@@ -100,11 +100,12 @@ public class Often_config_list extends Fragment{
 	DialogInterface.OnClickListener listener_ok = new DialogInterface.OnClickListener()	{
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			String newOftenItem = titleEditText.getText().toString();
+			String newOften_titleItem = titleEditText.getText().toString();
+			String newOften_categoryItem = titleEditText.getText().toString();
 
 			// add often item to DB
 			DB_often db_often = new DB_often(act);
-			db_often.insertOften(db_often,newOftenItem ,true);
+			db_often.insertOften(db_often,newOften_titleItem ,newOften_categoryItem,true);
 
 			// refresh listview
 			showListView();

@@ -50,8 +50,14 @@ public class DB_often
 				    "Costco","全聯","大潤發","億客來"
 		    };
 
+		    String[] categoryItems = {
+				    "食","食",
+				    "食","食","食",
+				    "綜合","綜合","綜合","綜合"
+		    };
+
 		    for(int i=0;i<oftenItems.length;i++)
-			    insertOften(this,oftenItems[i] ,true);
+			    insertOften(this,oftenItems[i] ,categoryItems[i] ,true);
 	    }
     }
 
@@ -72,7 +78,8 @@ public class DB_often
 		tableCreated = DB_OFTEN_TABLE_NAME;
 		DB_CREATE = "CREATE TABLE IF NOT EXISTS " + tableCreated + "(" +
 				KEY_OFTEN_ID + " INTEGER PRIMARY KEY," +
-				KEY_OFTEN_TITLE + " TEXT);";
+				KEY_OFTEN_TITLE + " TEXT," +
+				KEY_OFTEN_CATEGORY + " TEXT);";
 		mSqlDb.execSQL(DB_CREATE);
 
         mCursor_often = this.getOftenCursor();
@@ -88,6 +95,7 @@ public class DB_often
 	// Often rows
 	public static final String KEY_OFTEN_ID = "often_id"; //can rename _id for using BaseAdapter
 	public static final String KEY_OFTEN_TITLE = "often_title";
+	public static final String KEY_OFTEN_CATEGORY = "often_category";
 
 	/*
 	 * Often table columns
@@ -95,6 +103,7 @@ public class DB_often
 	private String[] strOftenColumns = new String[] {
 			KEY_OFTEN_ID + " AS " + BaseColumns._ID,
 			KEY_OFTEN_TITLE,
+			KEY_OFTEN_CATEGORY,
 	};
 
 	public Cursor getOftenCursor() {
@@ -122,12 +131,13 @@ public class DB_often
 		return count;
 	}
 
-	public long insertOften(DB_often db,String title, boolean enDbOpenClose){
+	public long insertOften(DB_often db,String title,String category, boolean enDbOpenClose){
 		if(enDbOpenClose)
 			db.open();
 
 		ContentValues args = new ContentValues();
 		args.put(KEY_OFTEN_TITLE, title);
+		args.put(KEY_OFTEN_CATEGORY, category);
 		long rowId = mSqlDb.insert(DB_often.DB_OFTEN_TABLE_NAME, null, args);
 
 		if(enDbOpenClose)
@@ -148,12 +158,13 @@ public class DB_often
 	}
 
 
-	public boolean updateOften(long rowId, String title, boolean enDbOpenClose){
+	public boolean updateOften(long rowId, String title, String category, boolean enDbOpenClose){
 		if(enDbOpenClose)
 			this.open();
 
 		ContentValues args = new ContentValues();
 		args.put(KEY_OFTEN_TITLE, title);
+		args.put(KEY_OFTEN_CATEGORY, category);
 
 		int cUpdateItems = mSqlDb.update(DB_OFTEN_TABLE_NAME, args, KEY_OFTEN_ID + "=" + rowId, null);
 
@@ -191,6 +202,20 @@ public class DB_often
 
 		mCursor_often.moveToPosition(position);
 		String title = mCursor_often.getString(mCursor_often.getColumnIndex(KEY_OFTEN_TITLE));
+
+		if(enDbOpenClose)
+			this.close();
+
+		return title;
+	}
+
+	@SuppressLint("Range")
+	public String getOftenCategory(int position, boolean enDbOpenClose){
+		if(enDbOpenClose)
+			this.open();
+
+		mCursor_often.moveToPosition(position);
+		String title = mCursor_often.getString(mCursor_often.getColumnIndex(KEY_OFTEN_CATEGORY));
 
 		if(enDbOpenClose)
 			this.close();

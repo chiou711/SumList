@@ -106,7 +106,7 @@ public class Often_select_grid extends Fragment{
 
 			// add often item to DB
 			DB_often db_often = new DB_often(act);
-			db_often.insertOften(db_often,newOftenItem ,true);
+			db_often.insertOften(db_often,newOftenItem ,"TBD",true);//@@@
 
 			// refresh listview
 			showGridView();

@@ -102,7 +102,7 @@ public class DB_page
           KEY_NOTE_ID,
 		  KEY_NOTE_TITLE,
 		  KEY_NOTE_BODY,
-		  KEY_NOTE_CATEGORY,//@@@ how to add this to ready DB?
+		  KEY_NOTE_CATEGORY,
           KEY_NOTE_QUANTITY,
           KEY_NOTE_MARKING,
       };

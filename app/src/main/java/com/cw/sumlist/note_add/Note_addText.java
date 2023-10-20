@@ -78,8 +78,12 @@ public class Note_addText extends AppCompatActivity {
 		    @Override
 		    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
 			    // We use a String here, but any type that can be put in a Bundle is supported.
-			    String result = bundle.getString("oftenItem");
-			    titleEditText.setText(result);
+			    String title = bundle.getString("oftenItem");
+			    titleEditText.setText(title);
+
+				// also add category
+			    String category = bundle.getString("categoryItem");
+			    categoryEditText.setText(category);
 		    }
 	    });
 
@@ -379,8 +383,8 @@ public class Note_addText extends AppCompatActivity {
 
 			// category
 			String strCategoryEdit = dB_page.getNoteCategory_byId(rowId);
-			categoryEditText.setText(strTitleEdit);
-			categoryEditText.setSelection(strTitleEdit.length());
+			categoryEditText.setText(strCategoryEdit);
+			categoryEditText.setSelection(strCategoryEdit.length());
 
 		} else {
 			// renew title

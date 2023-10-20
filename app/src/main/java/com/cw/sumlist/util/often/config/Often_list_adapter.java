@@ -72,6 +72,7 @@ public class Often_list_adapter extends SimpleDragSortCursorAdapter
             // set up ViewHolder for this ListView item
             viewHolder = new ViewHolder();
             viewHolder.oftenItemTitle = (TextView) convertView.findViewById(R.id.often_item_title);
+            viewHolder.oftenItemCategory = (TextView) convertView.findViewById(R.id.often_item_category);
             viewHolder.dragIcon = (ImageView) convertView.findViewById(R.id.often_item_drag);
             convertView.setTag(viewHolder); // store as View's tag
         }
@@ -80,6 +81,7 @@ public class Often_list_adapter extends SimpleDragSortCursorAdapter
 
         DB_often db_often= new DB_often(MainAct.mAct);
         viewHolder.oftenItemTitle.setText(db_often.getOftenTitle(position,true));
+        viewHolder.oftenItemCategory.setText(db_often.getOftenCategory(position,true));
 
         viewHolder.dragIcon.setVisibility(View.VISIBLE);
 
@@ -89,6 +91,7 @@ public class Often_list_adapter extends SimpleDragSortCursorAdapter
     private static class ViewHolder
     {
         TextView oftenItemTitle; // refers to ListView item's ImageView
+        TextView oftenItemCategory; // refers to ListView item's ImageView
         ImageView dragIcon;
     }
 }

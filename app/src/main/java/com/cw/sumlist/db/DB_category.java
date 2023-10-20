@@ -45,7 +45,7 @@ public class DB_category
 	    // initial titles
 	    if(getCategoryCount(true) == 0){
 		    String[] categoryItems = {
-				    "食品","交通","居家"
+				    "食","衣","住","行","育","樂","綜合"
 		    };
 
 		    for(int i=0;i<categoryItems.length;i++)

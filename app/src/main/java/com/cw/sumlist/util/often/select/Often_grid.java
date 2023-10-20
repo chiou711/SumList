@@ -93,9 +93,11 @@ public class Often_grid {
                 // select often item
                 mAct.getSupportFragmentManager().popBackStack();
                 String title = db_often.getOftenTitle(position,true);
+                String category = db_often.getOftenCategory(position,true);
 
                 Bundle result = new Bundle();
                 result.putString("oftenItem", title);
+                result.putString("categoryItem", category);
                 // The child fragment needs to still set the result on its parent fragment manager.
                 mAct.getSupportFragmentManager().setFragmentResult("requestOftenItem", result);
             }
@@ -142,7 +144,7 @@ public class Often_grid {
             // update often item to DB
             DB_often db_often = new DB_often(mAct);
             long id = db_often.getOftenId(editPosition,true);
-            db_often.updateOften(id,newOftenItem,true);
+            db_often.updateOften(id,newOftenItem,"TBD",true);//@@@
 
             // refresh list view
             initOftenItem();

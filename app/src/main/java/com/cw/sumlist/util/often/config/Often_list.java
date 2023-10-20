@@ -48,6 +48,7 @@ public class Often_list {
     public int count;
     AppCompatActivity mAct;
     EditText titleEditText;
+    EditText categoryEditText;
     private DragSortController controller;
     int editPosition;
     Often_list_adapter adapter;
@@ -92,12 +93,12 @@ public class Often_list {
         mListView.setAdapter(adapter);
 
         // set up click listener
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View vw, int position, long id){
-                // edit often item
-                editOftenItem(position);
-            }
-        });
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View vw, int position, long id){
+//                // edit often item
+//                editOftenItem(position);
+//            }
+//        });
 
         // set up long click listener
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
@@ -125,6 +126,7 @@ public class Often_list {
         editPosition = position;
         DB_often db_often = new DB_often(mAct);
         String title = db_often.getOftenTitle(position, true);
+        String category = db_often.getOftenCategory(position, true);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mAct);
         LayoutInflater mInflater = (LayoutInflater) mAct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -135,7 +137,9 @@ public class Often_list {
                 .setNeutralButton(R.string.btn_Cancel, null);
         builder.setView(view2);
         titleEditText = view2.findViewById(R.id.edit_title);
+        categoryEditText = view2.findViewById(R.id.edit_category);
         titleEditText.setText(title);
+        categoryEditText.setText(category);
         AlertDialog mDialog = builder.create();
         mDialog.show();
     }
@@ -181,6 +185,8 @@ public class Often_list {
     private static Long mOftenId2 = (long) 1;
     private static String mOftenTitle1;
     private static String mOftenTitle2;
+    private static String mOftenCategory1;
+    private static String mOftenCategory2;
     static void swapOftenItemRows(int startPosition, int endPosition)
     {
         Activity act = MainAct.mAct;
@@ -189,16 +195,21 @@ public class Often_list {
         db_often.open();
         mOftenId1 = db_often.getOftenId(startPosition,false);
         mOftenTitle1 = db_often.getOftenTitle(startPosition,false);
+        mOftenCategory1 = db_often.getOftenCategory(startPosition,false);
 
         mOftenId2 = db_often.getOftenId(endPosition,false);
         mOftenTitle2 = db_often.getOftenTitle(endPosition,false);
+        mOftenCategory2 = db_often.getOftenCategory(endPosition,false);
 
         db_often.updateOften(mOftenId1,
-                mOftenTitle2
-                ,false);
+                mOftenTitle2,
+                mOftenCategory2,
+                false);
 
         db_often.updateOften(mOftenId2,
-                mOftenTitle1,false);
+                mOftenTitle1,
+                mOftenCategory1,
+                false);
         db_often.close();
     }
 
@@ -207,11 +218,12 @@ public class Often_list {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             String newOftenItem = titleEditText.getText().toString();
+            String newOften_categoryItem = categoryEditText.getText().toString();
 
             // update often item to DB
             DB_often db_often = new DB_often(mAct);
             long id = db_often.getOftenId(editPosition,true);
-            db_often.updateOften(id,newOftenItem,true);
+            db_often.updateOften(id,newOftenItem,newOften_categoryItem,true);
 
             // refresh list view
             initOftenItem();
