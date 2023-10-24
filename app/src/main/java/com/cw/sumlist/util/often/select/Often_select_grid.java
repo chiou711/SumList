@@ -39,7 +39,6 @@ import androidx.fragment.app.Fragment;
  */
 public class Often_select_grid extends Fragment{
     TextView title;
-	DragSortListView mListView;
 	Often_grid setOftenIem_grid;
 	public static View rootView;
     AppCompatActivity act;
@@ -65,9 +64,6 @@ public class Often_select_grid extends Fragment{
         // title
         title = (TextView) rootView.findViewById(R.id.select_list_title);
         title.setText(R.string.often_item_title);
-
-        // list view: selecting which pages to send
-        mListView = rootView.findViewById(R.id.listView1);
 
         //show grid view for selection
 		showGridView();
@@ -125,4 +121,7 @@ public class Often_select_grid extends Fragment{
 		setOftenIem_grid = new Often_grid(act, rootView);
 	}
 
+	public void hideGridView(){
+		getActivity().getSupportFragmentManager().popBackStack();
+	}
 }

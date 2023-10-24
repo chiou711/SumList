@@ -84,6 +84,8 @@ public class Note_addText extends AppCompatActivity {
 				// also add category
 			    String category = bundle.getString("categoryItem");
 			    categoryEditText.setText(category);
+
+			    oftenItem = null;
 		    }
 	    });
 
@@ -93,6 +95,8 @@ public class Note_addText extends AppCompatActivity {
 			    // We use a String here, but any type that can be put in a Bundle is supported.
 			    String result = bundle.getString("categoryItem");
 			    categoryEditText.setText(result);
+
+			    categoryItem = null;
 		    }
 	    });
 
@@ -488,18 +492,45 @@ public class Note_addText extends AppCompatActivity {
 		return rowId;
 	}
 
+	Often_select_grid oftenItem;
 	void selectOftenItem(){
-		Often_select_grid oftenItem = new Often_select_grid();
-		FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-		mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
-		mFragmentTransaction.add(R.id.container, oftenItem, "select often item").addToBackStack("select often item").commit();
+
+		// disable category grid view
+		if(categoryItem != null) {
+			categoryItem.hideGridView();
+			categoryItem = null;
+		}
+
+		if(oftenItem == null) {
+			oftenItem = new Often_select_grid();
+			FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+			mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+			mFragmentTransaction.add(R.id.container, oftenItem, "select often item").addToBackStack("select often item").commit();
+		} else {
+			oftenItem.hideGridView();
+			oftenItem = null;
+		}
+
 	}
 
+	Category_select_grid categoryItem;
 	void selectCategoryItem(){
-		Category_select_grid categoryItem = new Category_select_grid();
-		FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-		mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
-		mFragmentTransaction.add(R.id.container, categoryItem, "select category item").addToBackStack("select category item").commit();
+
+		// disable often grid view
+		if(oftenItem != null) {
+			oftenItem.hideGridView();
+			oftenItem = null;
+		}
+
+		if(categoryItem == null) {
+			categoryItem = new Category_select_grid();
+			FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+			mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+			mFragmentTransaction.add(R.id.container, categoryItem, "select category item").addToBackStack("select category item").commit();
+		} else {
+			categoryItem.hideGridView();
+			categoryItem = null;
+		}
 	}
 
 	// hide IME

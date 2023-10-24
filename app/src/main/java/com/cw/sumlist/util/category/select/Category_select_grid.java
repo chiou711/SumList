@@ -125,4 +125,7 @@ public class Category_select_grid extends Fragment{
 		setCategoryIem_grid = new Category_grid(act, rootView);
 	}
 
+	public void hideGridView(){
+		getActivity().getSupportFragmentManager().popBackStack();
+	}
 }
