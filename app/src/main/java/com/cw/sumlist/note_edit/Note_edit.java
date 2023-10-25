@@ -21,9 +21,12 @@ import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.Util;
+import com.cw.sumlist.util.category.select.Category_select_grid;
+import com.cw.sumlist.util.often.select.Often_select_grid;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
@@ -31,12 +34,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentResultListener;
+import androidx.fragment.app.FragmentTransaction;
 
 public class Note_edit extends AppCompatActivity
 {
@@ -50,6 +58,8 @@ public class Note_edit extends AppCompatActivity
     int position;
     final int EDIT_LINK = 1;
 	static final int CHANGE_LINK = R.id.ADD_LINK;
+	EditText titleEditText;
+	EditText categoryEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -164,6 +174,60 @@ public class Note_edit extends AppCompatActivity
             	}
             }
         });
+
+	    // often item button
+	    Button selOftenItemBtn = findViewById(R.id.btn_select_often_item);
+	    selOftenItemBtn.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View view) {
+			    // hide IME
+			    hideIME(findViewById(R.id.edit_title));
+
+			    selectOftenItem();
+		    }
+	    });
+
+	    // category item button
+	    Button selCategoryItemBtn = findViewById(R.id.btn_select_category_item);
+	    selCategoryItemBtn.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View view) {
+			    // hide IME
+			    hideIME(findViewById(R.id.edit_title));
+
+			    selectCategoryItem();
+		    }
+	    });
+
+	    titleEditText = (EditText) findViewById(R.id.edit_title);
+	    categoryEditText = (EditText) findViewById(R.id.edit_category);
+
+	    getSupportFragmentManager().setFragmentResultListener("requestOftenItem", this, new FragmentResultListener() {
+		    @Override
+		    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+			    // We use a String here, but any type that can be put in a Bundle is supported.
+			    String title = bundle.getString("oftenItem");
+			    titleEditText.setText(title);
+
+			    // also add category
+			    String category = bundle.getString("categoryItem");
+			    categoryEditText.setText(category);
+
+			    oftenItem = null;
+		    }
+	    });
+
+	    getSupportFragmentManager().setFragmentResultListener("requestCategoryItem", this, new FragmentResultListener() {
+		    @Override
+		    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+			    // We use a String here, but any type that can be put in a Bundle is supported.
+			    String result = bundle.getString("categoryItem");
+			    categoryEditText.setText(result);
+
+			    categoryItem = null;
+		    }
+	    });
+
     }
     
     // confirm to update change or not
@@ -299,5 +363,51 @@ public class Note_edit extends AppCompatActivity
 		}
 
 	}
-	
+
+	Often_select_grid oftenItem;
+	void selectOftenItem(){
+
+		// disable category grid view
+		if(categoryItem != null) {
+			categoryItem.hideGridView();
+			categoryItem = null;
+		}
+
+		if(oftenItem == null) {
+			oftenItem = new Often_select_grid();
+			FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+			mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+			mFragmentTransaction.add(R.id.container, oftenItem, "select often item").addToBackStack("select often item").commit();
+		} else {
+			oftenItem.hideGridView();
+			oftenItem = null;
+		}
+
+	}
+
+	Category_select_grid categoryItem;
+	void selectCategoryItem(){
+
+		// disable often grid view
+		if(oftenItem != null) {
+			oftenItem.hideGridView();
+			oftenItem = null;
+		}
+
+		if(categoryItem == null) {
+			categoryItem = new Category_select_grid();
+			FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+			mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
+			mFragmentTransaction.add(R.id.container, categoryItem, "select category item").addToBackStack("select category item").commit();
+		} else {
+			categoryItem.hideGridView();
+			categoryItem = null;
+		}
+	}
+
+	// hide IME
+	void hideIME(EditText titleEditText){
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(titleEditText.getWindowToken(), 0);
+	}
 }

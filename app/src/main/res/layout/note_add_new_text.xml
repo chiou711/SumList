@@ -14,7 +14,7 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical">
 
-	<!-- title -->
+	<!-- title header -->
 	<LinearLayout 
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:textColor="@android:color/white"/>
 	</LinearLayout>
 
-	<!-- item	-->
+	<!-- title Edit	-->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
