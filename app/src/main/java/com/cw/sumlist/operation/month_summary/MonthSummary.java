@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.config;
+package com.cw.sumlist.operation.month_summary;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -36,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cw.sumlist.R;
+import com.cw.sumlist.db.DB_category;
 import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.main.MainAct;
@@ -115,6 +116,19 @@ public class MonthSummary extends Fragment {
 		int pages_count = dB_folder.getPagesCount(true);
 		String summaryStr = "";
 
+		DB_category db_category = new DB_category(act);
+		int categoryCount =db_category.getCategoryCount(true);
+
+		// category title array
+		List<String> category_title_array = new ArrayList<>();
+		for(int i=0;i<categoryCount;i++)
+			category_title_array.add(db_category.getCategoryTitle(i,true));
+
+		// category sum array
+		List<Integer> category_sum = new ArrayList<>();
+		for(int i=0;i<categoryCount;i++)
+			category_sum.add(0);
+
 		for (int i = 0; i < pages_count; i++) {
 			// page title
 			String pageTitle = dB_folder.getPageTitle(i,true);
@@ -140,13 +154,28 @@ public class MonthSummary extends Fragment {
 					summaryStr = summaryStr.concat(db_page.getNoteTitle(j,false));
 
 					// note quantity
+					int quantity = db_page.getNoteQuantity(j,false);
 					summaryStr = summaryStr.concat(" x ");
 					summaryStr = summaryStr.concat(String
-							.valueOf(db_page.getNoteQuantity(j,false)));
+							.valueOf(quantity));
 
 					// note price
+					int price = db_page.getNoteBody(j,false);
 					summaryStr = summaryStr.concat(" = ");
-					summaryStr = summaryStr.concat(String.valueOf(db_page.getNoteBody(j,false)));
+					summaryStr = summaryStr.concat(String.valueOf(price));
+
+					// category title
+					String cat_string = String.valueOf(db_page.getNoteCategory(j,false));
+					summaryStr = summaryStr.concat(" (");
+					summaryStr = summaryStr.concat(cat_string);
+					summaryStr = summaryStr.concat(")");
+
+					// get category sum
+					for(int cat=0;cat<categoryCount;cat++){
+						if(cat_string.contains(category_title_array.get(cat)))
+							category_sum.set(cat, category_sum.get(cat) + price*quantity);
+					}
+
 					summaryStr = summaryStr.concat("\n");
 				}
 				db_page.close();
@@ -154,6 +183,21 @@ public class MonthSummary extends Fragment {
 				summaryStr = summaryStr.concat("\n");
 			}
 		}
+
+		// set header: category item sum
+		String header =act.getResources().getString(R.string.category_item_title);
+		for(int cat=0;cat<categoryCount;cat++){
+			header = header.concat("\n")
+					.concat(" - ")
+					.concat(category_title_array.get(cat))
+					.concat(" : ")
+					.concat(String.valueOf(category_sum.get(cat)));
+		}
+
+		// final summary
+		summaryStr = header.concat("\n").concat("\n")
+					       .concat(summaryStr);
+
 		return summaryStr;
 	}
 
