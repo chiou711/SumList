@@ -86,6 +86,8 @@ public class Note_addText extends AppCompatActivity {
 			    categoryEditText.setText(category);
 
 			    oftenItem = null;
+
+			    bodyEditText.requestFocus();
 		    }
 	    });
 
@@ -97,6 +99,8 @@ public class Note_addText extends AppCompatActivity {
 			    categoryEditText.setText(result);
 
 			    categoryItem = null;
+
+			    bodyEditText.requestFocus();
 		    }
 	    });
 
@@ -408,7 +412,6 @@ public class Note_addText extends AppCompatActivity {
 			// renew category
 			categoryEditText.setText(strBlank);
 			categoryEditText.setSelection(strBlank.length());
-			categoryEditText.requestFocus();
 		}
 	}
 

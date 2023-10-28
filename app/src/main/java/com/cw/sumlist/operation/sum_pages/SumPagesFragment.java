@@ -76,7 +76,8 @@ public class SumPagesFragment extends Fragment{
         super.onResume();
 
         //show list for selection
-        sum_pages = new SumPages(act,rootView , gridview_sumlist, MainAct.pageSumArr);
+	    if(sum_pages == null)
+            sum_pages = new SumPages(act,rootView , gridview_sumlist, MainAct.pageSumArr);
     }
 
 }
