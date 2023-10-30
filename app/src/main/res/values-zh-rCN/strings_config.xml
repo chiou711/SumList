@@ -17,6 +17,7 @@
     <string name="config_select_sum_folders_title">选择月清单:</string>
     <string name="often_item_title">经常使用的项目:</string>
     <string name="category_item_title">类别项目:</string>
+    <string name="category_ratio">类别比例:</string>
     <string name="config_set_often_item">设定经常使用的项目</string>
     <string name="config_set_category_item">设置类别项目</string>
 </resources>

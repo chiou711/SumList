@@ -185,13 +185,21 @@ public class MonthSummary extends Fragment {
 		}
 
 		// set header: category item sum
-		String header =act.getResources().getString(R.string.category_item_title);
+		String header =act.getResources().getString(R.string.category_ratio);
 		for(int cat=0;cat<categoryCount;cat++){
+			int categorySum = category_sum.get(cat);
+			double ratio = Math.round( categorySum*100.0/MainAct.folder_sum);
+			String ratioStr = String.valueOf((int)ratio);
+
 			header = header.concat("\n")
 					.concat(" - ")
 					.concat(category_title_array.get(cat))
 					.concat(" : ")
-					.concat(String.valueOf(category_sum.get(cat)));
+					.concat(ratioStr)
+					.concat("%")
+					.concat(" (")
+					.concat(String.valueOf(categorySum))
+					.concat(")");
 		}
 
 		// final summary

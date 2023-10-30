@@ -17,6 +17,7 @@
     <string name="config_select_sum_folders_title">Select month lists:</string>
     <string name="often_item_title">Often use items:</string>
     <string name="category_item_title">Category items:</string>
+    <string name="category_ratio">Category ratio:</string>
     <string name="config_set_often_item">Set up often use items</string>
     <string name="config_set_category_item">Set up category items</string>
 </resources>
