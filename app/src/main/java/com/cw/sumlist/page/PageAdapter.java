@@ -38,7 +38,7 @@ import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.note.Note;
-import com.cw.sumlist.note_edit.Note_edit;
+import com.cw.sumlist.note_edit.Note_edit_act;
 import com.cw.sumlist.page.item_touch_helper.ItemTouchHelperAdapter;
 import com.cw.sumlist.page.item_touch_helper.ItemTouchHelperViewHolder;
 import com.cw.sumlist.page.item_touch_helper.OnStartDragListener;
@@ -544,7 +544,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 		DB_page db_page = new DB_page(mAct, TabsHost.getCurrentPageTableId());
 		Long rowId = db_page.getNoteId(position, true);
 
-		Intent i = new Intent(mAct, Note_edit.class);
+		Intent i = new Intent(mAct, Note_edit_act.class);
 		i.putExtra("list_view_position", position);
 		i.putExtra(DB_page.KEY_NOTE_ID, rowId);
 		i.putExtra(DB_page.KEY_NOTE_TITLE, db_page.getNoteTitle_byId(rowId));

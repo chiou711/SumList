@@ -46,7 +46,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 
-public class Note_edit extends AppCompatActivity
+public class Note_edit_act extends AppCompatActivity
 {
 
     private Long noteId;
@@ -129,10 +129,10 @@ public class Note_edit extends AppCompatActivity
 
             public void onClick(View view)
 			{
-				Util util = new Util(Note_edit.this);
+				Util util = new Util(Note_edit_act.this);
 				util.vibrate();
 
-				Builder builder1 = new Builder(Note_edit.this );
+				Builder builder1 = new Builder(Note_edit_act.this );
 				builder1.setTitle(R.string.confirm_dialog_title)
 					.setMessage(R.string.confirm_dialog_message)
 					.setNegativeButton(R.string.confirm_dialog_button_no, new OnClickListener()
@@ -233,7 +233,7 @@ public class Note_edit extends AppCompatActivity
     // confirm to update change or not
     void confirmToUpdateDlg()
     {
-		AlertDialog.Builder builder = new AlertDialog.Builder(Note_edit.this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(Note_edit_act.this);
 		builder.setTitle(R.string.confirm_dialog_title)
 	           .setMessage(R.string.edit_note_confirm_update)
 	           // Yes, to update
@@ -355,7 +355,7 @@ public class Note_edit extends AppCompatActivity
 		if( (requestCode == EDIT_LINK) && (resultCode == RESULT_CANCELED))
 		{
 			System.out.println("Note_edit / _onActivityResult / canceled");
-			Toast.makeText(Note_edit.this, R.string.note_cancel_add_new, Toast.LENGTH_LONG).show();
+			Toast.makeText(Note_edit_act.this, R.string.note_cancel_add_new, Toast.LENGTH_LONG).show();
             setResult(RESULT_CANCELED, getIntent());
             enSaveDb = true;
 			MainAct.isEdited_link = false;

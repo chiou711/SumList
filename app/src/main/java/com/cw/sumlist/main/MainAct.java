@@ -31,7 +31,7 @@ import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.drawer.Drawer;
 import com.cw.sumlist.folder.Folder;
 import com.cw.sumlist.folder.FolderUi;
-import com.cw.sumlist.note_add.Note_addText;
+import com.cw.sumlist.note_add.Note_addText_act;
 import com.cw.sumlist.operation.month_summary.MonthSummary;
 import com.cw.sumlist.operation.delete.DeleteFolders;
 import com.cw.sumlist.operation.delete.DeletePages;
@@ -724,7 +724,7 @@ public class MainAct extends AppCompatActivity implements FragmentManager.OnBack
                 SharedPreferences mPref_add_new_note_location = getSharedPreferences("add_new_note_option", 0);
                 boolean bTop = mPref_add_new_note_location.getString("KEY_ADD_NEW_NOTE_TO","bottom").equalsIgnoreCase("top");
 
-                Intent intent = new Intent(this, Note_addText.class);
+                Intent intent = new Intent(this, Note_addText_act.class);
                 if(bTop)
                     intent.putExtra("extra_ADD_NEW_TO_TOP", "true");
                 else

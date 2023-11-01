@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="00002"
-    android:versionName="00.00.02">
+    >
 
     <!-- if ENABLE_ADMOB = true, enable the following-->
 <!--    <uses-permission android:name="android.permission.INTERNET" />-->
@@ -46,7 +45,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.cw.sumlist.note_add.Note_addText"
+        <activity android:name="com.cw.sumlist.note_add.Note_addText_act"
                   android:theme="@style/MyTheme"
                   android:windowSoftInputMode="adjustPan"
                   android:screenOrientation="portrait"
@@ -55,7 +54,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cw.sumlist.main.MainAct" />
         </activity>
-        <activity android:name="com.cw.sumlist.note_edit.Note_edit"
+        <activity android:name="com.cw.sumlist.note_edit.Note_edit_act"
                  android:theme="@style/MyTheme"
                  android:screenOrientation="portrait"
                  android:windowSoftInputMode="adjustPan"/>
@@ -81,6 +80,7 @@
 <!--        <meta-data-->
 <!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
 <!--            android:value="@string/ad_mob_app_id_test"/>-->
+
         <!-- mail Json -->
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -51,7 +51,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-public class Note_addText extends AppCompatActivity {
+public class Note_addText_act extends AppCompatActivity {
 
 	DB_page dB_page;
     static Long rowId;
@@ -268,10 +268,10 @@ public class Note_addText extends AppCompatActivity {
 					int qty = 0;
 					String qtyStr = String.valueOf(quantityEditText.getText());
 					if(!qtyStr.equalsIgnoreCase(""))
-						qty = Integer.valueOf(qtyStr);
+						qty = Integer.parseInt(qtyStr);
 
-					long newSum = TabsHost.getListSum(Note_addText.this) + (int) (price * qty);
-					newSumText.setText(" : " + newSum);
+					long newSum = TabsHost.getListSum(Note_addText_act.this) + (int) (price * qty);
+					newSumText.setText(" : ".concat( String.valueOf(newSum)));
 
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
@@ -283,7 +283,7 @@ public class Note_addText extends AppCompatActivity {
 	void confirmUpdateChangeDlg(){
 		getIntent().putExtra("NOTE_ADDED","edited");
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(Note_addText.this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(Note_addText_act.this);
 		builder.setTitle(R.string.confirm_dialog_title)
 				.setMessage(R.string.add_new_note_confirm_save)
 				.setPositiveButton(R.string.confirm_dialog_button_yes, new DialogInterface.OnClickListener(){
