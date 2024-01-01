@@ -178,22 +178,20 @@ public class FolderUi
                 if(MainAct.mFolderTitles != null)
                     MainAct.mFolderTitles.add(folderTitle);
 
-                // insert new drawer Id and Title
+                // insert new folder table Id and Title
                 db_drawer.insertFolder(newTableId, folderTitle,true );
 
                 // insert folder table
                 db_drawer.insertFolderTable(newTableId, true);
 
                 // add new folder to the top
-                if(mAddFolderAt == 0)
-                {
+                if(mAddFolderAt == 0){
                     int startCursor = db_drawer.getFoldersCount(true)-1;
                     int endCursor = 0;
 
                     //reorder data base storage for ADD_NEW_TO_TOP option
                     int loop = Math.abs(startCursor-endCursor);
-                    for(int i=0;i< loop;i++)
-                    {
+                    for(int i=0;i< loop;i++){
                         swapFolderRows(startCursor,endCursor);
                         if((startCursor-endCursor) >0)
                             endCursor++;
@@ -201,16 +199,20 @@ public class FolderUi
                             endCursor--;
                     }
 
-                    // update focus folder position
-                    if(db_drawer.getFoldersCount(true)==1)
-                        setFocus_folderPos(0);
-                    else
-                        setFocus_folderPos(getFocus_folderPos()+1);
-
-                    // update focus folder table Id for Add to top
-                    Pref.setPref_focusView_folder_tableId(act,db_drawer.getFolderTableId(getFocus_folderPos(),true) );
-
+                    setFocus_folderPos(0);
+                } else {
+	                // update focus folder position
+	                if(db_drawer.getFoldersCount(true)==1)
+		                setFocus_folderPos(0);
+	                else
+		                setFocus_folderPos(getFocus_folderPos()+1);
                 }
+
+	            // update focus folder table Id for Add to top
+	            Pref.setPref_focusView_folder_tableId(act,newTableId);
+
+	            // reset folder sum
+	            Pref.setPref_folder_sum(act,newTableId,0);
 
                 // recover focus folder table Id
                 DB_folder.setFocusFolder_tableId(Pref.getPref_focusView_folder_tableId(act));
