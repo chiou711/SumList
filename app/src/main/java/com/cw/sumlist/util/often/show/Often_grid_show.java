@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.util.often.select;
+package com.cw.sumlist.util.often.show;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_often;
-import com.mobeta.android.dslv.DragSortListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -37,7 +36,7 @@ import androidx.fragment.app.Fragment;
 /**
  * Created by cw on 2023/09/10
  */
-public class Often_select_grid extends Fragment{
+public class Often_grid_show extends Fragment{
     TextView title;
 	Often_grid setOftenIem_grid;
 	public static View rootView;
@@ -45,8 +44,9 @@ public class Often_select_grid extends Fragment{
 	Button btn_add_often_item;
 	AlertDialog mDialog;
 	EditText titleEditText;
+	EditText categoryEditText;
 
-	public Often_select_grid(){}
+	public Often_grid_show(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -57,7 +57,7 @@ public class Often_select_grid extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		rootView = inflater.inflate(R.layout.often_select_grid, container, false);
+		rootView = inflater.inflate(R.layout.often_grid_show, container, false);
 
 		act = (AppCompatActivity) getActivity();
 
@@ -85,6 +85,8 @@ public class Often_select_grid extends Fragment{
 				builder.setView(view);
 
 				titleEditText =  view.findViewById(R.id.edit_title);
+				categoryEditText =  view.findViewById(R.id.edit_category);
+				
 
 				mDialog = builder.create();
 				mDialog.show();
@@ -98,11 +100,12 @@ public class Often_select_grid extends Fragment{
 	DialogInterface.OnClickListener listener_ok = new DialogInterface.OnClickListener()	{
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
-			String newOftenItem = titleEditText.getText().toString();
+			String newOftenItem_title = titleEditText.getText().toString();
+			String newOftenItem_category = categoryEditText.getText().toString();
 
 			// add often item to DB
 			DB_often db_often = new DB_often(act);
-			db_often.insertOften(db_often,newOftenItem ,"TBD",true);//@@@
+			db_often.insertOften(db_often,newOftenItem_title ,newOftenItem_category,true);//@@@
 
 			// refresh listview
 			showGridView();

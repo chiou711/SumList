@@ -24,7 +24,7 @@ import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.category.select.Category_select_grid;
-import com.cw.sumlist.util.often.select.Often_select_grid;
+import com.cw.sumlist.util.often.show.Often_grid_show;
 import com.cw.sumlist.util.preferences.Pref;
 
 import android.app.AlertDialog;
@@ -144,7 +144,7 @@ public class Note_addText_act extends AppCompatActivity {
 			    // hide IME
 				hideIME(findViewById(R.id.edit_title));
 
-			    selectOftenItem();
+			    showOftenItems();
 		    }
 	    });
 
@@ -495,8 +495,8 @@ public class Note_addText_act extends AppCompatActivity {
 		return rowId;
 	}
 
-	Often_select_grid oftenItem;
-	void selectOftenItem(){
+	Often_grid_show oftenItem;
+	void showOftenItems(){
 
 		// disable category grid view
 		if(categoryItem != null) {
@@ -505,7 +505,7 @@ public class Note_addText_act extends AppCompatActivity {
 		}
 
 		if(oftenItem == null) {
-			oftenItem = new Often_select_grid();
+			oftenItem = new Often_grid_show();
 			FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
 			mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
 			mFragmentTransaction.add(R.id.container, oftenItem, "select often item").addToBackStack("select often item").commit();

@@ -22,7 +22,7 @@ import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.category.select.Category_select_grid;
-import com.cw.sumlist.util.often.select.Often_select_grid;
+import com.cw.sumlist.util.often.show.Often_grid_show;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -364,7 +364,7 @@ public class Note_edit_act extends AppCompatActivity
 
 	}
 
-	Often_select_grid oftenItem;
+	Often_grid_show oftenItem;
 	void selectOftenItem(){
 
 		// disable category grid view
@@ -374,7 +374,7 @@ public class Note_edit_act extends AppCompatActivity
 		}
 
 		if(oftenItem == null) {
-			oftenItem = new Often_select_grid();
+			oftenItem = new Often_grid_show();
 			FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
 			mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
 			mFragmentTransaction.add(R.id.container, oftenItem, "select often item").addToBackStack("select often item").commit();

@@ -37,7 +37,7 @@ import androidx.fragment.app.Fragment;
 /**
  * Created by cw on 2023/09/10
  */
-public class Often_config_list extends Fragment{
+public class Often_list_config extends Fragment{
     TextView title;
 	DragSortListView mListView;
 	Often_list setOftenIem_list;
@@ -47,7 +47,7 @@ public class Often_config_list extends Fragment{
 	AlertDialog mDialog;
 	EditText titleEditText;
 
-	public Often_config_list(){}
+	public Often_list_config(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState)

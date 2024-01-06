@@ -29,7 +29,7 @@ import com.cw.sumlist.db.DB_drawer;
 import com.cw.sumlist.util.ColorSet;
 import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.category.config.Category_config_list;
-import com.cw.sumlist.util.often.config.Often_config_list;
+import com.cw.sumlist.util.often.config.Often_list_config;
 import com.cw.sumlist.util.preferences.Pref;
 
 import android.app.AlertDialog;
@@ -311,7 +311,7 @@ public class Config extends Fragment
 		setOftenItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Often_config_list oftenItem = new Often_config_list();
+				Often_list_config oftenItem = new Often_list_config();
 				FragmentTransaction mFragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 				mFragmentTransaction.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right);
 				mFragmentTransaction.replace(R.id.container_config, oftenItem).addToBackStack("set often items").commit();

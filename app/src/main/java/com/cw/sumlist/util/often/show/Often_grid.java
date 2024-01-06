@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.cw.sumlist.util.often.select;
+package com.cw.sumlist.util.often.show;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -45,6 +45,7 @@ public class Often_grid {
     public int count;
     AppCompatActivity mAct;
     EditText titleEditText;
+    EditText categoryEditText;
     int editPosition;
     Often_grid_adapter adapter;
 
@@ -120,6 +121,7 @@ public class Often_grid {
         editPosition = position;
         DB_often db_often = new DB_often(mAct);
         String title = db_often.getOftenTitle(position, true);
+        String category = db_often.getOftenCategory(position, true);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mAct);
         LayoutInflater mInflater = (LayoutInflater) mAct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -131,6 +133,9 @@ public class Often_grid {
         builder.setView(view2);
         titleEditText = view2.findViewById(R.id.edit_title);
         titleEditText.setText(title);
+        categoryEditText = view2.findViewById(R.id.edit_category);
+        categoryEditText.setText(category);
+
         AlertDialog mDialog = builder.create();
         mDialog.show();
     }
@@ -139,12 +144,13 @@ public class Often_grid {
     DialogInterface.OnClickListener listener_update = new DialogInterface.OnClickListener(){
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            String newOftenItem = titleEditText.getText().toString();
+            String newOftenItem_title = titleEditText.getText().toString();
+            String newOftenItem_category = categoryEditText.getText().toString();
 
             // update often item to DB
             DB_often db_often = new DB_often(mAct);
             long id = db_often.getOftenId(editPosition,true);
-            db_often.updateOften(id,newOftenItem,"TBD",true);//@@@
+            db_often.updateOften(id,newOftenItem_title,newOftenItem_category,true);//@@@
 
             // refresh list view
             initOftenItem();
