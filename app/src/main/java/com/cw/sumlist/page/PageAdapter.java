@@ -401,7 +401,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 						mDragStartListener.onStartDrag(viewHolder);
 						return true;
 					case MotionEvent.ACTION_UP:
-//						v.performClick();
+						v.performClick();
 						return true;
 				}
 				return false;
@@ -495,10 +495,6 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 
 		setBindViewHolder_listeners((ViewHolder) sourceViewHolder, toPos);
 		setBindViewHolder_listeners((ViewHolder) targetViewHolder, fromPos);
-
-		updateDbCache();
-
-		notifyDataSetChanged();
 	}
 
 	// update list cache from DB

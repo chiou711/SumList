@@ -46,6 +46,7 @@ public class Often_list_config extends Fragment{
 	Button btn_add_often_item;
 	AlertDialog mDialog;
 	EditText titleEditText;
+	EditText categoryEditText;
 
 	public Often_list_config(){}
 
@@ -87,6 +88,7 @@ public class Often_list_config extends Fragment{
 				builder.setView(view);
 
 				titleEditText =  view.findViewById(R.id.edit_title);
+				categoryEditText =  view.findViewById(R.id.edit_category);
 
 				mDialog = builder.create();
 				mDialog.show();
@@ -101,7 +103,7 @@ public class Often_list_config extends Fragment{
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			String newOften_titleItem = titleEditText.getText().toString();
-			String newOften_categoryItem = titleEditText.getText().toString();
+			String newOften_categoryItem = categoryEditText.getText().toString();
 
 			// add often item to DB
 			DB_often db_often = new DB_often(act);

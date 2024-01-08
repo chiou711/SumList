@@ -33,6 +33,7 @@ import com.cw.sumlist.R;
 import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.page.item_touch_helper.OnStartDragListener;
+import com.cw.sumlist.page.item_touch_helper.SimpleItemTouchHelperCallback;
 import com.cw.sumlist.page.item_touch_helper.SwipeItemTouchHelperCallback;
 import com.cw.sumlist.tabs.TabsHost;
 import com.cw.sumlist.util.preferences.Pref;
@@ -106,6 +107,10 @@ public class Page extends Fragment implements OnStartDragListener {
         // swipe callback
         if(ENABLE_ITEM_TOUCH_SWIPE) {
             ItemTouchHelper.Callback callback = new SwipeItemTouchHelperCallback(itemAdapter);
+            itemTouchHelper = new ItemTouchHelper(callback);
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+        } else {
+            ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(itemAdapter);
             itemTouchHelper = new ItemTouchHelper(callback);
             itemTouchHelper.attachToRecyclerView(recyclerView);
         }
@@ -217,7 +222,7 @@ public class Page extends Fragment implements OnStartDragListener {
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        if(ENABLE_ITEM_TOUCH_SWIPE)
+//        if(ENABLE_ITEM_TOUCH_SWIPE)
             itemTouchHelper.startDrag(viewHolder);
     }
 }
