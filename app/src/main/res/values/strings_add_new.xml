@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="add_new_note">Add new spending item</string>
+    <string name="add_new_note_same_as_last">Same as last</string>
     <string name="add_new_note_position">New spending item position at list:</string>
     <string name="add_new_note_top">To the top</string>
     <string name="add_new_note_bottom">To the bottom</string>

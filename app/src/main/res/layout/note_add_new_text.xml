@@ -218,16 +218,36 @@
 			android:layout_height="wrap_content"
 			android:textColor="@android:color/white"/>
 	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/accent_500"
+		android:orientation="horizontal" >
 	<Button
 		android:id="@+id/btn_add"
-		android:layout_width="wrap_content"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
+		android:layout_weight="1"
 		android:layout_margin="3dp"
 		android:padding="15dp"
 		android:textColor="@color/colorWhite"
 		android:text="@string/add_new_note"
 		android:background="@drawable/button"/>
+
+	<Button
+		android:id="@+id/btn_same_as_last"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_weight="1"
+		android:layout_margin="3dp"
+		android:padding="15dp"
+		android:textColor="@color/colorWhite"
+		android:text="@string/add_new_note_same_as_last"
+		android:background="@drawable/button"/>
+	</LinearLayout>
 
 </LinearLayout>
 </ScrollView>

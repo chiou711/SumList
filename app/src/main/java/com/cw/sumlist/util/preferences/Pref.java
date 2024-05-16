@@ -153,4 +153,31 @@ public class Pref
         return pref.getLong(keyName, -1); // default sum is -1
     }
 
+    // Set Same as last: title
+    public static void setPref_same_as_last_tilte(Activity act, String title ) {
+        SharedPreferences pref = act.getSharedPreferences("same_as_last", 0);
+        String keyName = "KEY_SAME_AS_LAST_TITLE";
+        pref.edit().putString(keyName, title).apply();
+    }
+
+    // Get Same as last: title
+    public static String getPref_same_as_last_title(Activity act) {
+        SharedPreferences pref = act.getSharedPreferences("same_as_last", 0);
+        String keyName = "KEY_SAME_AS_LAST_TITLE";
+        return pref.getString(keyName, "none_title");
+    }
+
+    // Set Same as last: category
+    public static void setPref_same_as_last_category(Activity act, String category) {
+        SharedPreferences pref = act.getSharedPreferences("same_as_last", 0);
+        String keyName = "KEY_SAME_AS_LAST_CATEGORY";
+        pref.edit().putString(keyName, category).apply();
+    }
+
+    // Get Same as last: category
+    public static String getPref_same_as_last_category(Activity act) {
+        SharedPreferences pref = act.getSharedPreferences("same_as_last", 0);
+        String keyName = "KEY_SAME_AS_LAST_CATEGORY";
+        return pref.getString(keyName, "none_category");
+    }
 }

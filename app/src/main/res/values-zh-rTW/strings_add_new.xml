@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="add_new_note">新增消費項目</string>
+    <string name="add_new_note_same_as_last">同上次</string>
     <string name="add_new_note_position">新消費項目位置：</string>
     <string name="add_new_note_top">到頂部</string>
     <string name="add_new_note_bottom">到底部</string>

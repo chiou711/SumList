@@ -136,6 +136,15 @@ public class Note_addText_act extends AppCompatActivity {
 			}
 		});
 
+	    // add same as last button
+	    Button addSameAsLastBtn = findViewById(R.id.btn_same_as_last);
+	    addSameAsLastBtn.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View view) {
+			    addSameAsLast();
+		    }
+	    });
+
 	    // often item button
 	    Button selOftenItemBtn = findViewById(R.id.btn_select_often_item);
 	    selOftenItemBtn.setOnClickListener(new View.OnClickListener() {
@@ -183,7 +192,8 @@ public class Note_addText_act extends AppCompatActivity {
 	}
 
 	@Override
-	public void onBackPressed(){
+	public void onBackPressed() {
+		super.onBackPressed();
 		stopEdit();
 	}
 
@@ -235,6 +245,10 @@ public class Note_addText_act extends AppCompatActivity {
 			enSaveDb = true;
 			rowId = saveStateInDB(rowId, enSaveDb);
 
+			// update Same as last
+			Pref.setPref_same_as_last_tilte(this,titleEditText.getText().toString());
+			Pref.setPref_same_as_last_category(this,categoryEditText.getText().toString());
+
 			int notes_count = dB_page.getNotesCount(true);
 
 			if( getIntent().getExtras().getString("extra_ADD_NEW_TO_TOP", "false").equalsIgnoreCase("true") &&
@@ -249,6 +263,12 @@ public class Note_addText_act extends AppCompatActivity {
 			rowId = null;
 			populate_text_view(rowId);
 		}
+	}
+
+	// add Same as last
+	void addSameAsLast(){
+		titleEditText.setText(Pref.getPref_same_as_last_title(this));
+		categoryEditText.setText(Pref.getPref_same_as_last_category(this));
 	}
 
 	TextWatcher setTextWatcher(){
