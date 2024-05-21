@@ -66,8 +66,4 @@ public class ColorSet
         return act.getResources().getColor(R.color.highlight_color);
     }
 
-    public static int getPauseColor(Activity act)
-    {
-        return act.getResources().getColor(R.color.pause_color);
-    }
 }

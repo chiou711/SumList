@@ -17,15 +17,19 @@
 package com.cw.sumlist.util.often.show;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cw.sumlist.R;
+import com.cw.sumlist.db.DB_category;
 import com.cw.sumlist.db.DB_often;
 import com.cw.sumlist.main.MainAct;
+import com.cw.sumlist.util.ColorSet;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 /**
@@ -34,11 +38,14 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 public class Often_grid_adapter extends SimpleCursorAdapter
 {
+    String firstCategoryTitle;
     int layout;
     public Often_grid_adapter(Context context, int _layout, Cursor c,
                               String[] from, int[] to, int flags)   {
         super(context, _layout, c, from, to, flags);
         layout = _layout;
+        DB_category db_category = new DB_category(MainAct.mAct);
+        firstCategoryTitle = db_category.getCategoryTitle(0,true);
     }
 
     @Override
@@ -78,6 +85,18 @@ public class Often_grid_adapter extends SimpleCursorAdapter
 
         DB_often db_often= new DB_often(MainAct.mAct);
         viewHolder.oftenItemTitle.setText(db_often.getOftenTitle(position,true));
+        String oftenCategory = db_often.getOftenCategory(position,true);
+
+//        System.out.println("--- oftenCategory = " + oftenCategory);
+//        System.out.println("--- firstCategoryTitle = " + firstCategoryTitle);
+
+        // set background color of first category
+        if((oftenCategory!=null) &&
+           oftenCategory.equalsIgnoreCase(firstCategoryTitle)) {
+            viewHolder.oftenItemTitle.setBackgroundColor(ColorSet.mBG_ColorArray[0]);
+        } else {
+            viewHolder.oftenItemTitle.setBackground(ResourcesCompat.getDrawable(MainAct.mAct.getResources(), R.drawable.button, null));
+        }
 
         return convertView;
     }
