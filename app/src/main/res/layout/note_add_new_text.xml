@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/container"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="match_parent"
               android:orientation="vertical" >
 <include layout="@layout/toolbar" />
-<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-    android:orientation="vertical">
+<!--<ScrollView-->
+<!--	android:layout_width="match_parent"-->
+<!--	android:layout_height="match_parent"-->
+<!--    android:orientation="vertical">-->
 <LinearLayout
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
@@ -20,16 +20,47 @@
 		android:layout_height="wrap_content"
         android:background="@color/bar_color"
         android:orientation="horizontal" >
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:orientation="horizontal" >
 		<ImageView 
 		    android:layout_width="20dp"
 			android:layout_height="20dp" 
-			android:src="@android:drawable/ic_menu_edit" 
-			/>
+			android:src="@android:drawable/ic_menu_edit"
+			android:contentDescription="TODO" />
 		<TextView 
 		    android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
 			android:text="@string/edit_note_dlg_title"
             android:textColor="@android:color/white"/>
+		</LinearLayout>
+
+		<!-- new sum -->
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:gravity="end"
+			android:layout_marginEnd="3dp"
+			android:orientation="horizontal" >
+			<ImageView
+				android:layout_width="20dp"
+				android:layout_height="20dp"
+				android:src="@android:drawable/ic_menu_add"
+				android:contentDescription="TODO" />
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/footer_text_reference_total"
+				android:textColor="@android:color/white"/>
+			<TextView
+				android:id="@+id/new_sum"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@android:color/white"/>
+		</LinearLayout>
 	</LinearLayout>
 
 	<!-- title Edit	-->
@@ -49,7 +80,7 @@
 		    android:minLines="1"
 		    android:maxLines="3"
 			android:cursorVisible="true"
-			/>
+			android:autofillHints="" />
 	<Button
 		android:id="@+id/btn_select_often_item"
 		android:layout_width="0dp"
@@ -62,13 +93,13 @@
 		android:background="@drawable/button"/>
 	</LinearLayout>
 
-
 	<!-- price + quantity start -->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@color/bar_color"
-		android:orientation="horizontal" >
+		android:orientation="horizontal"
+		android:baselineAligned="false">
 
 	<!-- Price start -->
 	<LinearLayout
@@ -105,7 +136,8 @@
 				  android:textSize="18sp"
 				  android:scrollbars="vertical"
 				  android:gravity="top"
-				  android:paddingLeft="10dp"
+				  android:paddingStart="10dp"
+				  android:paddingEnd="10dp"
 				  />
 	</LinearLayout>
 	<!-- Price end -->
@@ -125,8 +157,7 @@
 			<ImageView
 				android:layout_width="20dp"
 				android:layout_height="20dp"
-				android:src="@android:drawable/ic_menu_edit"
-				/>
+				android:src="@android:drawable/ic_menu_edit"/>
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -142,15 +173,16 @@
 			android:textSize="18sp"
 			android:minLines="1"
 			android:maxLines="1"
-			android:paddingLeft="10dp"
-			/>
+			android:paddingStart="10dp"
+			android:paddingEnd="10dp"
+			android:autofillHints="" />
 	</LinearLayout>
 	<!-- quantity end -->
 
 	</LinearLayout>
 	<!-- price + quantity end -->
 
-	<!-- category	-->
+	<!-- category title	-->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -167,6 +199,8 @@
 			android:text="@string/edit_note_dlg_category"
 			android:textColor="@android:color/white"/>
 	</LinearLayout>
+
+    <!-- edit category + button -->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -183,7 +217,7 @@
 			android:minLines="1"
 			android:maxLines="3"
 			android:cursorVisible="true"
-			/>
+			android:autofillHints="" />
 		<Button
 			android:id="@+id/btn_select_category_item"
 			android:layout_width="0dp"
@@ -196,33 +230,12 @@
 			android:background="@drawable/button"/>
 	</LinearLayout>
 
-	<!-- new sum -->
+    <!-- buttons -->
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="@color/accent_500"
-		android:orientation="horizontal" >
-		<ImageView
-			android:layout_width="20dp"
-			android:layout_height="20dp"
-			android:src="@android:drawable/ic_menu_add"
-			/>
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/footer_text_reference_total"
-			android:textColor="@android:color/white"/>
-		<TextView
-			android:id="@+id/new_sum"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textColor="@android:color/white"/>
-	</LinearLayout>
-
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="@color/accent_500"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:background="@color/bar_color"
 		android:orientation="horizontal" >
 	<Button
 		android:id="@+id/btn_add"
@@ -249,5 +262,5 @@
 	</LinearLayout>
 
 </LinearLayout>
-</ScrollView>
+<!--</ScrollView>-->
 </LinearLayout>
