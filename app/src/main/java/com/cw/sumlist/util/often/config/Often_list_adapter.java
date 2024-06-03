@@ -24,9 +24,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cw.sumlist.R;
+import com.cw.sumlist.db.DB_category;
 import com.cw.sumlist.db.DB_often;
 import com.cw.sumlist.main.MainAct;
+import com.cw.sumlist.util.ColorSet;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
+
+import androidx.core.content.res.ResourcesCompat;
 
 /**
  * Created by cw on 2023/09/10
@@ -35,11 +39,14 @@ import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 public class Often_list_adapter extends SimpleDragSortCursorAdapter
 {
     int layout;
+    String firstCategoryTitle;
     public Often_list_adapter(Context context, int _layout, Cursor c,
                               String[] from, int[] to, int flags)
     {
         super(context, _layout, c, from, to, flags);
         layout = _layout;
+        DB_category db_category = new DB_category(MainAct.mAct);
+        firstCategoryTitle = db_category.getCategoryTitle(0,true);
     }
 
     @Override
@@ -80,8 +87,18 @@ public class Often_list_adapter extends SimpleDragSortCursorAdapter
             viewHolder = (ViewHolder) convertView.getTag();
 
         DB_often db_often= new DB_often(MainAct.mAct);
-        viewHolder.oftenItemTitle.setText(db_often.getOftenTitle(position,true));
-        viewHolder.oftenItemCategory.setText(db_often.getOftenCategory(position,true));
+        String title = db_often.getOftenTitle(position,true);
+        String category = db_often.getOftenCategory(position,true);
+        viewHolder.oftenItemTitle.setText(title);
+        viewHolder.oftenItemCategory.setText(category);
+
+        // set background color to differentiate first category and other categories
+        if((category!=null) &&
+            category.equalsIgnoreCase(firstCategoryTitle)) {
+            viewHolder.oftenItemTitle.setBackground(ResourcesCompat.getDrawable(MainAct.mAct.getResources(), R.drawable.button, null));
+        } else {
+            viewHolder.oftenItemTitle.setBackgroundColor(ColorSet.mBG_ColorArray[0]);
+        }
 
         viewHolder.dragIcon.setVisibility(View.VISIBLE);
 

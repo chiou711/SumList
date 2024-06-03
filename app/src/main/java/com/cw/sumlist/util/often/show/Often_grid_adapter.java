@@ -90,12 +90,12 @@ public class Often_grid_adapter extends SimpleCursorAdapter
 //        System.out.println("--- oftenCategory = " + oftenCategory);
 //        System.out.println("--- firstCategoryTitle = " + firstCategoryTitle);
 
-        // set background color of first category
+        // set background color to differentiate first category and other categories
         if((oftenCategory!=null) &&
            oftenCategory.equalsIgnoreCase(firstCategoryTitle)) {
-            viewHolder.oftenItemTitle.setBackgroundColor(ColorSet.mBG_ColorArray[0]);
-        } else {
             viewHolder.oftenItemTitle.setBackground(ResourcesCompat.getDrawable(MainAct.mAct.getResources(), R.drawable.button, null));
+        } else {
+            viewHolder.oftenItemTitle.setBackgroundColor(ColorSet.mBG_ColorArray[0]);
         }
 
         return convertView;
