@@ -48,38 +48,38 @@
             app:showAsAction="never"
             android:title="@string/page_operation"
             >
-        <menu>
-            <item
-                android:id="@+id/ADD_NEW_PAGE"
-                android:orderInCategory="1"
-                app:showAsAction="never"
-                android:title="@string/add_new_page"
-                android:icon="@drawable/ic_menu_add_new_page"/>
-            <item
-                android:id="@+id/ADD_NEW_PAGE_MULTI"
-                android:orderInCategory="1"
-                app:showAsAction="never"
-                android:title="@string/add_new_page_multi"
-                android:icon="@drawable/ic_menu_add_new_page"/>
-            <item
-                android:id="@+id/CHANGE_PAGE_COLOR"
-                android:orderInCategory="2"
-                app:showAsAction="never"
-                android:title="@string/change_page_color"
-                android:icon="@drawable/ic_color_a"/>
-            <item
-                android:id="@+id/SHIFT_PAGE"
-                android:orderInCategory="3"
-                app:showAsAction="never"
-                android:title="@string/rearrange_page"
-                android:icon="@drawable/ic_dragger_horizontal"/>
-            <item
-                android:id="@+id/DELETE_PAGES"
-                android:orderInCategory="4"
-                app:showAsAction="never"
-                android:title="@string/delete_pages"
-                android:icon="@drawable/ic_delete"/>
-        </menu>
+            <menu>
+                <item
+                    android:id="@+id/ADD_NEW_PAGE"
+                    android:orderInCategory="1"
+                    app:showAsAction="never"
+                    android:title="@string/add_new_page"
+                    android:icon="@drawable/ic_menu_add_new_page"/>
+                <item
+                    android:id="@+id/ADD_NEW_PAGE_MULTI"
+                    android:orderInCategory="1"
+                    app:showAsAction="never"
+                    android:title="@string/add_new_page_multi"
+                    android:icon="@drawable/ic_menu_add_new_page"/>
+                <item
+                    android:id="@+id/CHANGE_PAGE_COLOR"
+                    android:orderInCategory="2"
+                    app:showAsAction="never"
+                    android:title="@string/change_page_color"
+                    android:icon="@drawable/ic_color_a"/>
+                <item
+                    android:id="@+id/SHIFT_PAGE"
+                    android:orderInCategory="3"
+                    app:showAsAction="never"
+                    android:title="@string/rearrange_page"
+                    android:icon="@drawable/ic_dragger_horizontal"/>
+                <item
+                    android:id="@+id/DELETE_PAGES"
+                    android:orderInCategory="4"
+                    app:showAsAction="never"
+                    android:title="@string/delete_pages"
+                    android:icon="@drawable/ic_delete"/>
+            </menu>
         </item>
 
         <!-- folder sum -->

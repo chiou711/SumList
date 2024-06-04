@@ -11,8 +11,12 @@
         <item name="windowNoTitle">true</item>
         <item name="android:itemBackground">@color/bar_color</item>
         <item name="android:itemTextAppearance">@style/customMenuTextAppearance</item>
+        <item name="listMenuViewStyle">@style/listMenuViewStyle</item>
         <!-- Change Overflow Menu ListView Item Height & Property -->
         <!--<item name="android:listPreferredItemHeightSmall">50dp</item>-->
+    </style>
+    <style name="listMenuViewStyle" parent="Base.Widget.AppCompat.ListMenuView">
+        <item name="subMenuArrow">@android:drawable/ic_menu_more </item>
     </style>
 
     <style name="splashScreenTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
