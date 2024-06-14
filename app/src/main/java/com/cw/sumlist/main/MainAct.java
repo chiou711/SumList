@@ -21,6 +21,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.cw.sumlist.R;
 import com.cw.sumlist.Utils;
@@ -587,6 +588,12 @@ public class MainAct extends AppCompatActivity implements FragmentManager.OnBack
 
         // inflate menu
         getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        // clear submenu header
+        MenuItem menuMore = menu.findItem(R.id.page_operation);
+        if (menuMore != null) {
+            Objects.requireNonNull(menuMore.getSubMenu()).clearHeader();
+        }
 
         return super.onCreateOptionsMenu(menu);
     }

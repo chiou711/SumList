@@ -17,6 +17,7 @@
 		 android:textSize="22sp" android:textStyle="bold"
 		 android:gravity="center_vertical" 
 		 android:text="@string/config_select_pages_title"
+		 android:textColor="@color/colorBlack"
 		 android:textAppearance="?android:attr/textAppearanceLarge"
 		 android:paddingLeft="5dp"
 		 />
@@ -30,6 +31,7 @@
         android:clickable="true"
         android:textSize="20sp"
         android:paddingLeft="5dp"
+		android:textColor="@color/colorBlack"
         android:gravity="center_vertical" />
    	
    	<View android:layout_width="match_parent" android:layout_height="1dp" android:background="#4f4f4f" />	
