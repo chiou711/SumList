@@ -698,7 +698,6 @@ public class MainAct extends AppCompatActivity implements FragmentManager.OnBack
                             Toast.LENGTH_SHORT).show();
                 }
                 mFolder.getAdapter().notifyDataSetChanged();
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 return true;
 
             // for landscape layout
@@ -751,7 +750,7 @@ public class MainAct extends AppCompatActivity implements FragmentManager.OnBack
                 expand_card_view.edit().putBoolean("KEY_EXPAND_CARD_VIEW",!bExpand).apply();
 
                 TabsHost.reloadCurrentPage();
-                invalidateOptionsMenu();
+                invalidateOptionsMenu();// creates call to onPrepareOptionsMenu()
 
                 return true;
 
