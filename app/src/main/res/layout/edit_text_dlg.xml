@@ -4,16 +4,8 @@
     android:layout_height="wrap_content" 
     android:textCursorDrawable="@null"
     android:inputType="textEmailAddress"
+    android:textColor="@color/colorBlack"
     android:textSize="28sp"
     android:minLines="1"
     android:maxLines="5"
     />
-<!-- 
-android:textCursorDrawable="@drawable/text_cursor"
-android:textStyle="bold"
-style="@style/cwEditText" 
--->
-<!-- 
-Setting the android:textCursorDrawable attribute to @null 
-should result in the use of android:textColor as the cursor color. 
--->
