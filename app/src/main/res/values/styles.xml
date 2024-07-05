@@ -14,11 +14,10 @@
         <item name="listMenuViewStyle">@style/listMenuViewStyle</item>
         <!-- Change Overflow Menu ListView Item Height & Property -->
         <!--<item name="android:listPreferredItemHeightSmall">50dp</item>-->
-        <!-- window background color  -->
+        <!-- drawer background, note background -->
         <item name="android:windowBackground">@color/colorBlack</item>
-<!--        <item name="android:windowBackground">@color/bar_color</item>-->
-        <!-- main text color  -->
-        <item name="android:textColorPrimary">@color/colorWhite</item>
+        <!-- dialog title/message text color  -->
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
     </style>
     <style name="listMenuViewStyle" parent="Base.Widget.AppCompat.ListMenuView">
         <item name="subMenuArrow">@android:drawable/ic_menu_more </item>
