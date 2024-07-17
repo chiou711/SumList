@@ -280,19 +280,23 @@ public class Note_addText_act extends AppCompatActivity {
 				else
 					mMenu.findItem(R.id.ADD_TEXT_NOTE).setVisible(true);
 
-					int price = 0;
-					String priceStr = String.valueOf(bodyEditText.getText());
-					if(!priceStr.equalsIgnoreCase(""))
-						price = Integer.parseInt(priceStr);
+				int price = 0;
+				String priceStr = bodyEditText.getText().toString();
 
-					int qty = 0;
-					String qtyStr = String.valueOf(quantityEditText.getText());
-					if(!qtyStr.equalsIgnoreCase(""))
-						qty = Integer.parseInt(qtyStr);
+				// avoid Exception
+				if(priceStr.equalsIgnoreCase("-"))
+					priceStr = priceStr.replace("-","");
 
-					long newSum = TabsHost.getListSum(Note_addText_act.this) + (int) (price * qty);
-					newSumText.setText(" : ".concat( String.valueOf(newSum)));
+				if(!priceStr.equalsIgnoreCase(""))
+					price = Integer.valueOf(priceStr);
 
+				int qty = 0;
+				String qtyStr = String.valueOf(quantityEditText.getText());
+				if(!qtyStr.equalsIgnoreCase(""))
+					qty = Integer.parseInt(qtyStr);
+
+				long newSum = TabsHost.getListSum(Note_addText_act.this) + (int) (price * qty);
+				newSumText.setText(" : ".concat( String.valueOf(newSum)));
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
 			public void onTextChanged(CharSequence s, int start, int before, int count){}
@@ -456,9 +460,9 @@ public class Note_addText_act extends AppCompatActivity {
 	Long saveStateInDB(Long rowId,boolean enSaveDb){
 		String title = titleEditText.getText().toString();
 
-		String body = "";
+		String price = "";
 		if(bodyEditText != null)
-			body = bodyEditText.getText().toString();
+			price = bodyEditText.getText().toString();
 
 		String quantity = "";
 		if(quantityEditText != null)
@@ -472,11 +476,11 @@ public class Note_addText_act extends AppCompatActivity {
 			if (rowId == null) // for Add new
 			{
 				if( (!Util.isEmptyString(title)) ||
-					(!Util.isEmptyString(body))    ){
+					(!Util.isEmptyString(price))    ){
 					// value
 					int value = 0;
-					if(!Util.isEmptyString(body))
-						value = Integer.valueOf(body);
+					if(!Util.isEmptyString(price))
+						value = Integer.valueOf(price);
 
 					// quantity
 					int qty = 1; // default 1
@@ -489,11 +493,11 @@ public class Note_addText_act extends AppCompatActivity {
 			}
 			// update
 			else if ( !Util.isEmptyString(title) &&
-			          !Util.isEmptyString(body)    ) {
+			          !Util.isEmptyString(price)    ) {
 				// value
 				int value = 0;
-				if(!Util.isEmptyString(body))
-					value = Integer.valueOf(body);
+				if(!Util.isEmptyString(price))
+					value = Integer.valueOf(price);
 
 				// quantity
 				int qty = 1; // default 1
@@ -506,7 +510,7 @@ public class Note_addText_act extends AppCompatActivity {
 			}
 			// delete
 			else if ( Util.isEmptyString(title) &&
-					  Util.isEmptyString(body)    ){
+					  Util.isEmptyString(price)    ){
 				System.out.println("Note_edit_ui / _saveStateInDB / delete");
 				deleteNote(rowId);
 				rowId = null;

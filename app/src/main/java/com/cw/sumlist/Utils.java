@@ -69,7 +69,7 @@ public class Utils {
 
             long value = 0;
             long qty = 0;
-            if(mDb_page.getNoteBody(i, false)>0)
+            if(mDb_page.getNoteBody(i, false) != 0)
                 value = mDb_page.getNoteBody(i, false);
 
             if(mDb_page.getNoteQuantity(i, false)>0)
