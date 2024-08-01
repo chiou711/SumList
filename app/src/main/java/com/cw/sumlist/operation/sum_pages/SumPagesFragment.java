@@ -46,6 +46,7 @@ import com.cw.sumlist.util.preferences.Pref;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -117,8 +118,8 @@ public class SumPagesFragment extends Fragment{
 	void inputEMailDialog()	{
 		AlertDialog.Builder builder1;
 
-		mPref_email = getActivity().getSharedPreferences("email_addr", 0);
-		editEMailAddrText = (EditText)getActivity().getLayoutInflater()
+		mPref_email = requireActivity().getSharedPreferences("email_addr", 0);
+		editEMailAddrText = (EditText)requireActivity().getLayoutInflater()
 				.inflate(R.layout.edit_text_dlg, null);
 		builder1 = new AlertDialog.Builder(getActivity());
 
@@ -177,22 +178,22 @@ public class SumPagesFragment extends Fragment{
 
 			if(strEMailAddr.length() > 0)
 			{
-				Bundle extras = getActivity().getIntent().getExtras();
+				Bundle extras = requireActivity().getIntent().getExtras();
 
 				// default file name: with tab title
-				String defaultFileName = "SumList_summary";
+				String defaultFileName = "SumList_sum_pages";
 				attachmentFileName[0] = defaultFileName + "_" +
 						Util.getCurrentTimeString() + // time
 						".txt"; // extension name
 
 				System.out.println("--- attachment file name = " + attachmentFileName[0]);
 				Util util = new Util(getActivity());
-				String summary = getSummary_content();
+				String sum_pages_string = getSum_pages_string();
 
 				if(extras == null){
 					// TXT file
 					util.exportToSdCardFile(attachmentFileName[0], // attachment name
-							summary); // sent string
+							sum_pages_string); // sent string
 				}
 
 				mPref_email.edit().putString("KEY_DEFAULT_EMAIL_ADDR", strEMailAddr).apply();
@@ -200,7 +201,7 @@ public class SumPagesFragment extends Fragment{
 				// call next dialog
 				sendEMail(strEMailAddr,  // eMail address
 						attachmentFileName, // attachment file name
-						summary
+						sum_pages_string
 				);
 				dialog.dismiss();
 			}
@@ -217,7 +218,7 @@ public class SumPagesFragment extends Fragment{
 	public static String[] mAttachmentFileName;
 	void sendEMail(String strEMailAddr,  // eMail address
 	               String[] attachmentFileName,
-	               String summary)
+	               String sumPagesStr)
 	{
 		mAttachmentFileName = attachmentFileName;
 		// new ACTION_SEND intent
@@ -228,10 +229,11 @@ public class SumPagesFragment extends Fragment{
 
 		// attachment: message
 		List<String> filePaths = new ArrayList<String>();
-		for(int i=0;i<attachmentFileName.length;i++){
-			String messagePath = act.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString() +
+		for (String s : attachmentFileName) {
+			String messagePath = Objects.requireNonNull(act.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)) +
 					"/" +
-					attachmentFileName[i];// message file name
+					s;// message file name
+			System.out.println("--- messagePath = " + messagePath);
 			filePaths.add(messagePath);
 		}
 
@@ -242,7 +244,9 @@ public class SumPagesFragment extends Fragment{
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 					uri = Uri.fromFile(new File(file));
 				} else {
-					uri = FileProvider.getUriForFile(act, getContext().getPackageName() + ".MonthSummary" , new File(file));
+					uri = FileProvider.getUriForFile(act, requireContext().getPackageName()
+//							+".operation"
+							, new File(file));
 				}
 			}
 
@@ -250,59 +254,59 @@ public class SumPagesFragment extends Fragment{
 		}
 
 		mEMailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{strEMailAddr}) // eMail address
-				.putExtra(Intent.EXTRA_SUBJECT,"Mail SumList summary" )// eMail subject
-				.putExtra(Intent.EXTRA_TEXT,summary) // eMail body (open issue)
+				.putExtra(Intent.EXTRA_SUBJECT,"Mail SumList sum pages" )// eMail subject
+				.putExtra(Intent.EXTRA_TEXT,sumPagesStr) // eMail body (open issue)
 				.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris ); // multiple eMail attachment
 
-		getActivity().startActivity(Intent.createChooser(mEMailIntent,
+		requireActivity().startActivity(Intent.createChooser(mEMailIntent,
 				"mail_chooser_title") );
 	}
 
-	// get summary content string
-	String getSummary_content(){
-		String summary = "";
+	// get Sum pages string
+	String getSum_pages_string(){
+		String sumPagesStr = "";
 		int length = SumPages.checkedTabs.size();
 		DB_folder dB_folder = new DB_folder(act, Pref.getPref_focusView_folder_tableId(act));
 		dB_folder.open();
 		int sum_pages = 0;
 		for (int i = 0; i < length; i++) {
 			if(SumPages.checkedTabs.get(i)) {
-				summary = summary.concat(dB_folder.getPageTitle(i, false));
+				sumPagesStr = sumPagesStr.concat(dB_folder.getPageTitle(i, false));
 
 				DB_page db_page = new DB_page(act, dB_folder.getPageTableId(i,false));
 
-				summary = summary.concat("\n");
+				sumPagesStr = sumPagesStr.concat("\n");
 
 				// note title, note body
 				db_page.open();
 				int page_sum = 0;
 				for(int j=0;j<db_page.getNotesCount(false);j++) {
 					String title = db_page.getNoteTitle(j, false);
-					summary = summary.concat(title);
-					summary = summary.concat(" ");
+					sumPagesStr = sumPagesStr.concat(title);
+					sumPagesStr = sumPagesStr.concat(" ");
 					int price = db_page.getNoteBody(j,false);
 					int quantity = db_page.getNoteQuantity(j,false);
-					summary = summary.concat(String.valueOf(price));
-					summary = summary.concat("*");
-					summary = summary.concat(String.valueOf(quantity));
-					summary = summary.concat("\n");
+					sumPagesStr = sumPagesStr.concat(String.valueOf(price));
+					sumPagesStr = sumPagesStr.concat("*");
+					sumPagesStr = sumPagesStr.concat(String.valueOf(quantity));
+					sumPagesStr = sumPagesStr.concat("\n");
 
 					page_sum += price*quantity;
 				}
 				db_page.close();
 
-				summary = summary.concat("page sum = ");
-				summary = summary.concat(String.valueOf(page_sum));
-				summary = summary.concat("\n");
+				sumPagesStr = sumPagesStr.concat("page sum = ");
+				sumPagesStr = sumPagesStr.concat(String.valueOf(page_sum));
+				sumPagesStr = sumPagesStr.concat("\n");
 
 				sum_pages += page_sum;
 			}
-			summary = summary.concat("\n");
+			sumPagesStr = sumPagesStr.concat("\n");
 		}
 		dB_folder.close();
 
-		summary = summary.concat("Sum of selected items = ");
-		summary = summary.concat(String.valueOf(sum_pages));
-		return summary;
+		sumPagesStr = sumPagesStr.concat("Sum of selected items = ");
+		sumPagesStr = sumPagesStr.concat(String.valueOf(sum_pages));
+		return sumPagesStr;
 	}
 }

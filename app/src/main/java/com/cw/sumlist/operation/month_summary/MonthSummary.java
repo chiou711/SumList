@@ -47,6 +47,7 @@ import com.cw.sumlist.util.preferences.Pref;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -274,7 +275,7 @@ public class MonthSummary extends Fragment {
 			String strEMailAddr = editEMailAddrText.getText().toString();
 			if(strEMailAddr.length() > 0)
 			{
-				Bundle extras = getActivity().getIntent().getExtras();
+				Bundle extras = requireActivity().getIntent().getExtras();
 
 				// default file name: with tab title
 				String defaultFileName = "SumList_summary";
@@ -325,10 +326,10 @@ public class MonthSummary extends Fragment {
 
 		// attachment: message
 		List<String> filePaths = new ArrayList<String>();
-		for(int i=0;i<attachmentFileName.length;i++){
-			String messagePath = act.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString() +
+		for (String s : attachmentFileName) {
+			String messagePath = Objects.requireNonNull(act.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)).toString() +
 					"/" +
-					attachmentFileName[i];// message file name
+					s;// message file name
 			filePaths.add(messagePath);
 		}
 
@@ -339,7 +340,9 @@ public class MonthSummary extends Fragment {
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 					uri = Uri.fromFile(new File(file));
 				} else {
-					uri = FileProvider.getUriForFile(act, getContext().getPackageName() + ".MonthSummary" , new File(file));
+					uri = FileProvider.getUriForFile(act, requireContext().getPackageName()
+//							+ ".operation"
+							, new File(file));
 				}
 			}
 
@@ -351,7 +354,7 @@ public class MonthSummary extends Fragment {
 				.putExtra(Intent.EXTRA_TEXT,text_body) // eMail body (open issue)
 				.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris ); // multiple eMail attachment
 
-		getActivity().startActivity(Intent.createChooser(mEMailIntent,
+		requireActivity().startActivity(Intent.createChooser(mEMailIntent,
 						"mail_chooser_title") );
 	}
 
