@@ -788,10 +788,10 @@ public class MainAct extends AppCompatActivity implements FragmentManager.OnBack
                 }
             return true;
 
-            case MenuId.FOLDER_SUM:
+            case MenuId.SUM_PAGES:
                 mMenu.setGroupVisible(R.id.group_notes, false); //hide the menu
                 mMenu.setGroupVisible(R.id.group_pages_and_more, false);
-                setTitle(R.string.folder_sum);
+                setTitle(R.string.sum_pages);
 
 
                 mSumPagesFragment = new SumPagesFragment();

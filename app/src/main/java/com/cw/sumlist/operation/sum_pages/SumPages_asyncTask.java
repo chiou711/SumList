@@ -27,10 +27,10 @@ class SumPages_asyncTask extends AsyncTask<Void, Integer, Void> {
 
 		Util.lockOrientation(act);
 
-		messageText = (TextView) rootView.findViewById(R.id.folder_sum_message);
+		messageText = (TextView) rootView.findViewById(R.id.sum_pages_message);
 		messageText.setText(R.string.reading_data);
 
-		progressBar = (ProgressBar) rootView.findViewById(R.id.folder_sum_progress);
+		progressBar = (ProgressBar) rootView.findViewById(R.id.sum_pages_progress);
 		progressBar.setVisibility(View.VISIBLE);
 	}
 
@@ -59,10 +59,10 @@ class SumPages_asyncTask extends AsyncTask<Void, Integer, Void> {
 		Util.unlockOrientation(act);
 
 		// hide progress bar
-		rootView.findViewById(R.id.show_folder_sum_progress).setVisibility(View.GONE);
+		rootView.findViewById(R.id.show_sum_pages_progress).setVisibility(View.GONE);
 
 		// init: set All checked
-		CheckBox checkTvSelAll = rootView.findViewById(R.id.check_box_select_all_pages_folder_sum);
+		CheckBox checkTvSelAll = rootView.findViewById(R.id.check_box_select_all_pages_sum_pages);
 		checkTvSelAll.callOnClick();
 	} // onPostExecute
 }

@@ -74,14 +74,14 @@ public class SumPagesFragment extends Fragment{
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.folder_sum, container, false);
+		rootView = inflater.inflate(R.layout.sum_pages, container, false);
         act = MainAct.mAct;
 
-		gridview_sumlist = rootView.findViewById(R.id.folder_sum_grid_view);
+		gridview_sumlist = rootView.findViewById(R.id.sum_pages_grid_view);
 
         // title
         title = (TextView) rootView.findViewById(R.id.select_list_title);
-        title.setText(R.string.folder_sum_title);
+        title.setText(R.string.sum_pages_title);
 
         // folder sum
         textFolderSum = (TextView) rootView.findViewById(R.id.textFolderSum);
@@ -264,7 +264,7 @@ public class SumPagesFragment extends Fragment{
 		int length = SumPages.checkedTabs.size();
 		DB_folder dB_folder = new DB_folder(act, Pref.getPref_focusView_folder_tableId(act));
 		dB_folder.open();
-		int folder_sum = 0;
+		int sum_pages = 0;
 		for (int i = 0; i < length; i++) {
 			if(SumPages.checkedTabs.get(i)) {
 				summary = summary.concat(dB_folder.getPageTitle(i, false));
@@ -295,14 +295,14 @@ public class SumPagesFragment extends Fragment{
 				summary = summary.concat(String.valueOf(page_sum));
 				summary = summary.concat("\n");
 
-				folder_sum += page_sum;
+				sum_pages += page_sum;
 			}
 			summary = summary.concat("\n");
 		}
 		dB_folder.close();
 
 		summary = summary.concat("Sum of selected items = ");
-		summary = summary.concat(String.valueOf(folder_sum));
+		summary = summary.concat(String.valueOf(sum_pages));
 		return summary;
 	}
 }

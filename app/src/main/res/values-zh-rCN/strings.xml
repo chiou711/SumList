@@ -39,9 +39,9 @@
     <string name="folder_operation">月清单操作</string>
     <string name="page_operation">日清单操作</string>
     <string name="settings_operation">设置</string>
-    <string name="folder_sum">月消费</string>
+    <string name="sum_pages">本月消费</string>
     <string name="month_summary">邮寄月消费</string>
-    <string name="folder_sum_title">选择月清单：</string>
+    <string name="sum_pages_title">选择日消费：</string>
     <string name="set_enable">启用</string>
     <string name="set_disable">停用</string>
     <string name="no_page_yet">还没有日清单</string>

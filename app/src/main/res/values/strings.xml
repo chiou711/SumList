@@ -39,9 +39,9 @@
     <string name="folder_operation">Month list operation</string>
     <string name="page_operation">Day list operation</string>
     <string name="settings_operation">Settings</string>
-    <string name="folder_sum">Month spending</string>
+    <string name="sum_pages">Current month spending</string>
     <string name="month_summary">Mail month spending</string>
-    <string name="folder_sum_title">Select month lists:</string>
+    <string name="sum_pages_title">Select day spending:</string>
     <string name="set_enable">Enable</string>
     <string name="set_disable">Disable</string>
     <string name="no_page_yet">No list yet</string>

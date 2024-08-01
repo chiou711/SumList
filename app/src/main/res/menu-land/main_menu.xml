@@ -85,7 +85,7 @@
 
         <!-- folder sum -->
         <item
-            android:id="@+id/FOLDER_SUM"
+            android:id="@+id/SUM_PAGES"
             android:orderInCategory="4"
             app:showAsAction="never"
             android:title="@string/settings_operation"

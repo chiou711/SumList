@@ -55,7 +55,7 @@ public class SumPages {
         pageSumArr = _pageSumArr;
 
         // checked Text View: select all
-        checkTvSelAll = rootView.findViewById(R.id.check_box_select_all_pages_folder_sum);
+        checkTvSelAll = rootView.findViewById(R.id.check_box_select_all_pages_sum_pages);
 
         // init
         checkTvSelAll.setChecked(true);
@@ -122,7 +122,7 @@ public class SumPages {
         mChkNum = 0;
 
         // set grid view
-        gridView = (GridView) root.findViewById(R.id.folder_sum_grid_view);
+        gridView = (GridView) root.findViewById(R.id.sum_pages_grid_view);
 
         // DB
         int pageTableId = Pref.getPref_focusView_page_tableId(act);

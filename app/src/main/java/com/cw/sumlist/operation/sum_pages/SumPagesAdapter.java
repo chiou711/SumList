@@ -50,7 +50,7 @@ public class SumPagesAdapter extends ArrayAdapter<String> {
 	public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 		if(convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) act.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.folder_sum_grid_item, parent,false);
+			convertView = inflater.inflate(R.layout.sum_pages_grid_item, parent,false);
 		}
 
 		// check box
@@ -69,7 +69,7 @@ public class SumPagesAdapter extends ArrayAdapter<String> {
 					SumPages.mChkNum--;
 
 				if (!chkBox.isChecked()) {
-					CheckBox checkTvSelAll = rootView.findViewById(R.id.check_box_select_all_pages_folder_sum);
+					CheckBox checkTvSelAll = rootView.findViewById(R.id.check_box_select_all_pages_sum_pages);
 					checkTvSelAll.setChecked(false);
 				}
 

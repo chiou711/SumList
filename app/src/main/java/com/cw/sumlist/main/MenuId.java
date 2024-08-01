@@ -44,7 +44,7 @@ public class MenuId {
         static final int DELETE_PAGES = R.id.DELETE_PAGES;
 
         // folder sum
-        static final int FOLDER_SUM = R.id.FOLDER_SUM;
+        static final int SUM_PAGES = R.id.SUM_PAGES;
 
         // month summary
         static final int MONTH_SUMMARY = R.id.MONTH_SUMMARY;
