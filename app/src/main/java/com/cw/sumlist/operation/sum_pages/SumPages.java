@@ -42,7 +42,7 @@ public class SumPages {
     GridView gridView;
 
     public static List<String> gridStrArr; // grid view string array
-    static List<Boolean> checkedTabs; // checked grid items array
+    public static List<Boolean> checkedTabs; // checked grid items array
     public static int pageCount;
     public static long folderSum;
     SumPagesAdapter listAdapter;
