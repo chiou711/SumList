@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.cw.sumlist.R;
 import com.cw.sumlist.main.MainAct;
+import com.cw.sumlist.operation.MailDialog;
 import com.cw.sumlist.util.BaseBackPressedListener;
 
 import androidx.fragment.app.Fragment;
@@ -36,9 +37,8 @@ public class MonthSummary extends Fragment {
 	Activity act;
 	TextView summary_text_view;
 	Button backBtn,mailBtn;
-	String summary_content;
-	String summary_title;
 	String text;
+	String title,content;
 
 	public MonthSummary(){}
 
@@ -49,14 +49,12 @@ public class MonthSummary extends Fragment {
 
 		mRootView = inflater.inflate(R.layout.month_summary, container, false);
 
-		MailDialog_monthSummary mailDialog = new MailDialog_monthSummary(requireActivity());
-
-		// summary content
-		summary_content = mailDialog.summary_content;
-		summary_title = mailDialog.summary_title;
+		MailDialog mailDialog = new MailDialog(requireActivity());
+		title = mailDialog.getSummayTitleString();
+		content = mailDialog.getSummaryString();
 
 		// summary text view
-		text = summary_title.concat("\n").concat(summary_content);
+		text = title.concat("\n").concat(content);
 		summary_text_view = mRootView.findViewById(R.id.month_summary_text);
 		summary_text_view.setText(text);
 
@@ -75,7 +73,7 @@ public class MonthSummary extends Fragment {
 			@Override
 			public void onClick(View view) {
 				// mail
-				mailDialog.inputMailAddress(requireActivity());
+				mailDialog.inputMailAddress(title,content);
 			}
 		});
 

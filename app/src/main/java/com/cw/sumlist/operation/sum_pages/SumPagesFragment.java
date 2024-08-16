@@ -16,18 +16,17 @@
 
 package com.cw.sumlist.operation.sum_pages;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import com.cw.sumlist.R;
 import com.cw.sumlist.main.MainAct;
+import com.cw.sumlist.operation.MailDialog;
 import com.cw.sumlist.util.BaseBackPressedListener;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,9 +39,6 @@ public class SumPagesFragment extends Fragment{
 	SumPages sum_pages;
     TextView textFolderSum;
 	Button mailBtn;
-
-	SharedPreferences mPref_email;
-	EditText editEMailAddrText;
 
 	public SumPagesFragment(){
 	}
@@ -70,16 +66,15 @@ public class SumPagesFragment extends Fragment{
 
 		((MainAct)act).setOnBackPressedListener(new BaseBackPressedListener(act));
 
-
-		MailDialog_sumPages mailDialog = new MailDialog_sumPages(requireActivity());
-
 		// mail button
 		mailBtn = rootView.findViewById(R.id.mail_pages);
 		mailBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				// mail
-				mailDialog.inputMailAddress(requireActivity());
+				// mail dialog
+				MailDialog mailDialog = new MailDialog(requireActivity());
+				mailDialog.inputMailAddress(mailDialog.getSumPagesTitleString(),
+											mailDialog.getSumPagesContentString());
 			}
 		});
 		return rootView;

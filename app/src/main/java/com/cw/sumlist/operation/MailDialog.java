@@ -1,4 +1,4 @@
-package com.cw.sumlist.operation.month_summary;
+package com.cw.sumlist.operation;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,6 +21,7 @@ import com.cw.sumlist.db.DB_category;
 import com.cw.sumlist.db.DB_folder;
 import com.cw.sumlist.db.DB_page;
 import com.cw.sumlist.main.MainAct;
+import com.cw.sumlist.operation.sum_pages.SumPages;
 import com.cw.sumlist.util.Util;
 import com.cw.sumlist.util.preferences.Pref;
 
@@ -31,22 +32,16 @@ import java.util.Objects;
 
 import androidx.core.content.FileProvider;
 
-public class MailDialog_monthSummary {
+public class MailDialog {
 	EditText editEMailAddrText;
 	SharedPreferences mPref_email;
 	Intent mEMailIntent;
-	public String summary_title;
-	public String summary_content;
-	public MailDialog_monthSummary(Activity act) {
-
-		// summary title
-		summary_title = getTitleString(act);
-
-		// summary content
-		summary_content = getSummaryString(act);
+	Activity act;
+	public MailDialog(Activity act) {
+		this.act = act;
 	}
 
-	public void inputMailAddress(Activity act) {
+	public void inputMailAddress(String mailTitle,String mailContent) {
 
 		AlertDialog.Builder builder1;
 
@@ -77,7 +72,7 @@ public class MailDialog_monthSummary {
 
 		// override positive button
 		Button enterButton = mDialog.getButton(DialogInterface.BUTTON_POSITIVE);
-		enterButton.setOnClickListener(new Click2mail(act, mDialog));
+		enterButton.setOnClickListener(new Click2mail(act, mDialog,mailTitle,mailContent));
 
 		// back
 		mDialog.setOnKeyListener(new Dialog.OnKeyListener() {
@@ -93,7 +88,8 @@ public class MailDialog_monthSummary {
 		});
 	}
 
-	public String getTitleString(Activity act){
+	// get summary title
+	public String getSummayTitleString(){
 		String summary_title;
 		String folder_title = (String) MainAct.mFolderTitle;
 		String title = folder_title.concat(" ( ").concat(String.valueOf(MainAct.folder_sum)).concat(" ) ");
@@ -105,7 +101,7 @@ public class MailDialog_monthSummary {
 	}
 
 	// get summary string
-	public String getSummaryString(Activity act){
+	public String getSummaryString(){
 		DB_folder dB_folder = new DB_folder(act , Pref.getPref_focusView_folder_tableId(act));
 		int pages_count = dB_folder.getPagesCount(true);
 		String summaryStr = "";
@@ -203,13 +199,76 @@ public class MailDialog_monthSummary {
 		return summaryStr;
 	}
 
+	// get sum pages title
+	public String getSumPagesTitleString(){
+		String sumPages_title;
+		String folder_title = (String) MainAct.mFolderTitle;
+		String title = folder_title.concat(" ( ").concat(String.valueOf(MainAct.folder_sum)).concat(" ) ");
+
+		// summary title
+		sumPages_title = act.getResources().getString(R.string.sum_pages) +
+				" : " + title + "\n";
+		return sumPages_title;
+	}
+
+	// get Sum pages string
+	public String getSumPagesContentString(){
+		String sumPagesStr = "";
+		int length = SumPages.checkedTabs.size();
+		DB_folder dB_folder = new DB_folder(act, Pref.getPref_focusView_folder_tableId(act));
+		dB_folder.open();
+		int sum_pages = 0;
+		for (int i = 0; i < length; i++) {
+			if(SumPages.checkedTabs.get(i)) {
+				sumPagesStr = sumPagesStr.concat(dB_folder.getPageTitle(i, false));
+
+				DB_page db_page = new DB_page(act, dB_folder.getPageTableId(i,false));
+
+				sumPagesStr = sumPagesStr.concat("\n");
+
+				// note title, note body
+				db_page.open();
+				int page_sum = 0;
+				for(int j=0;j<db_page.getNotesCount(false);j++) {
+					String title = db_page.getNoteTitle(j, false);
+					sumPagesStr = sumPagesStr.concat(title);
+					sumPagesStr = sumPagesStr.concat(" ");
+					int price = db_page.getNoteBody(j,false);
+					int quantity = db_page.getNoteQuantity(j,false);
+					sumPagesStr = sumPagesStr.concat(String.valueOf(price));
+					sumPagesStr = sumPagesStr.concat("*");
+					sumPagesStr = sumPagesStr.concat(String.valueOf(quantity));
+					sumPagesStr = sumPagesStr.concat("\n");
+
+					page_sum += price*quantity;
+				}
+				db_page.close();
+
+				sumPagesStr = sumPagesStr.concat("page sum = ");
+				sumPagesStr = sumPagesStr.concat(String.valueOf(page_sum));
+				sumPagesStr = sumPagesStr.concat("\n");
+
+				sum_pages += page_sum;
+			}
+			sumPagesStr = sumPagesStr.concat("\n");
+		}
+		dB_folder.close();
+
+		sumPagesStr = sumPagesStr.concat("Sum of selected items = ");
+		sumPagesStr = sumPagesStr.concat(String.valueOf(sum_pages));
+		return sumPagesStr;
+	}
+
 	class Click2mail implements View.OnClickListener {
 		private final Dialog dialog;
 		Activity act;
+		String mailTitle,mailContent;
 
-		public Click2mail(Activity _act, Dialog dialog) {
+		public Click2mail(Activity _act, Dialog dialog,String _mailTitle,String _mailContent) {
 			this.dialog = dialog;
 			this.act = _act;
+			mailTitle = _mailTitle;
+			mailContent = _mailContent;
 		}
 
 		@Override
@@ -228,7 +287,7 @@ public class MailDialog_monthSummary {
 				System.out.println("--- attachment file name = " + attachmentFileName[0]);
 				Util util = new Util(act);
 
-				String textFileBody = summary_title.concat("-------------\n").concat(summary_content);
+				String textFileBody = mailTitle.concat("-------------\n").concat(mailContent);
 				if (extras == null) {
 					// TXT file
 					util.exportToSdCardFile(attachmentFileName[0], // attachment name
@@ -240,7 +299,9 @@ public class MailDialog_monthSummary {
 				// call next dialog
 				sendMail(act,
 						strEMailAddr,  // eMail address
-						attachmentFileName // attachment file name
+						attachmentFileName, // attachment file name
+						mailTitle,
+						mailContent
 				);
 				dialog.dismiss();
 			} else {
@@ -255,7 +316,9 @@ public class MailDialog_monthSummary {
 	public static String[] mAttachmentFileName;
 	void sendMail(Activity act,
 	              String strEMailAddr,  // eMail address
-	              String[] attachmentFileName)
+	              String[] attachmentFileName,
+	              String mailTitle,
+	              String mailContent)
 	{
 		mAttachmentFileName = attachmentFileName;
 		// new ACTION_SEND intent
@@ -265,7 +328,7 @@ public class MailDialog_monthSummary {
 		mEMailIntent.setType("text/plain");//can select which APP will be used to send mail
 
 		// open issue: cause warning for Key android.intent.extra.TEXT expected ArrayList
-		String text_body = summary_title.concat("-------------\n").concat(summary_content);
+		String text_body = mailTitle.concat("-------------\n").concat(mailContent);
 
 		// attachment: message
 		List<String> filePaths = new ArrayList<String>();
@@ -293,7 +356,7 @@ public class MailDialog_monthSummary {
 		}
 
 		mEMailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{strEMailAddr}) // eMail address
-				.putExtra(Intent.EXTRA_SUBJECT,"Mail SumList summary" )// eMail subject
+				.putExtra(Intent.EXTRA_SUBJECT,mailTitle)// eMail subject
 				.putExtra(Intent.EXTRA_TEXT,text_body) // eMail body (open issue)
 				.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris ); // multiple eMail attachment
 
