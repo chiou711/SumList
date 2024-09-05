@@ -202,8 +202,11 @@ public class MailDialog {
 	// get sum pages title
 	public String getSumPagesTitleString(){
 		String sumPages_title;
-		String folder_title = (String) MainAct.mFolderTitle;
-		String title = folder_title.concat(" ( ").concat(String.valueOf(MainAct.folder_sum)).concat(" ) ");
+
+//		String folder_title = (String) MainAct.mFolderTitle;
+//		String title = folder_title.concat(" ( ").concat(String.valueOf(MainAct.folder_sum)).concat(" ) ");
+
+		String title = (String) MainAct.mFolderTitle;
 
 		// summary title
 		sumPages_title = act.getResources().getString(R.string.sum_pages) +
@@ -215,6 +218,7 @@ public class MailDialog {
 	public String getSumPagesContentString(){
 		String sumPagesStr = "";
 		int length = SumPages.checkedTabs.size();
+
 		DB_folder dB_folder = new DB_folder(act, Pref.getPref_focusView_folder_tableId(act));
 		dB_folder.open();
 		int sum_pages = 0;
@@ -226,35 +230,46 @@ public class MailDialog {
 
 				sumPagesStr = sumPagesStr.concat("\n");
 
-				// note title, note body
+				// title, price, selected, quantity
 				db_page.open();
 				int page_sum = 0;
 				for(int j=0;j<db_page.getNotesCount(false);j++) {
+					int selected = db_page.getNoteMarking(j,false);
+
 					String title = db_page.getNoteTitle(j, false);
+
+					// show selected or not
+					if(selected != 1)
+						title = "(x) ".concat(title);
+
 					sumPagesStr = sumPagesStr.concat(title);
 					sumPagesStr = sumPagesStr.concat(" ");
-					int price = db_page.getNoteBody(j,false);
-					int quantity = db_page.getNoteQuantity(j,false);
+
+					int price = db_page.getNoteBody(j, false);
+
+					int quantity = db_page.getNoteQuantity(j, false);
 					sumPagesStr = sumPagesStr.concat(String.valueOf(price));
 					sumPagesStr = sumPagesStr.concat("*");
 					sumPagesStr = sumPagesStr.concat(String.valueOf(quantity));
 					sumPagesStr = sumPagesStr.concat("\n");
 
-					page_sum += price*quantity;
+					// count selected items
+					if(selected==1)
+						page_sum += price * quantity;
 				}
 				db_page.close();
 
 				sumPagesStr = sumPagesStr.concat("page sum = ");
 				sumPagesStr = sumPagesStr.concat(String.valueOf(page_sum));
-				sumPagesStr = sumPagesStr.concat("\n");
+				sumPagesStr = sumPagesStr.concat("\n\n");
 
 				sum_pages += page_sum;
 			}
-			sumPagesStr = sumPagesStr.concat("\n");
 		}
 		dB_folder.close();
 
-		sumPagesStr = sumPagesStr.concat("Sum of selected items = ");
+		String finalTag = "--- Sum of selected items ---\n => ";
+		sumPagesStr = sumPagesStr.concat(finalTag);
 		sumPagesStr = sumPagesStr.concat(String.valueOf(sum_pages));
 		return sumPagesStr;
 	}
