@@ -16,6 +16,7 @@
 
 package com.cw.sumlist.tabs;
 
+import android.icu.util.Calendar;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,7 +63,17 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position){
 //        System.out.println("TabsPagerAdapter / _getPageTitle / position = " + position);
-        return dbFolder.getPageTitle(position,true);
+        String title = dbFolder.getPageTitle(position,true);
+
+        // add current date symbol to tab title
+        //  eg. (#12)
+        int date = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        // position starts from 0 and date starts from 1
+        date--;
+        if(date == position)
+            title = "(".concat(title).concat(")");
+
+        return title;
     }
 
     @Override

@@ -73,9 +73,6 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
     public static TabsPagerAdapter mTabsPagerAdapter;
     public static int mFocusPageTableId;
     public static int mFocusTabPos;
-
-    public static int lastPageTableId;
-
     public static int firstPos_pageId;
 
     // if ENABLE_ADMOB = true, enable the following
@@ -232,7 +229,6 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
      */
     private int addPages(TabsPagerAdapter adapter)
     {
-        lastPageTableId = 0;
         int pageCount = adapter.dbFolder.getPagesCount(true);
 //        System.out.println("TabsHost / _addPages / pagesCount = " + pageCount);
 
@@ -243,12 +239,9 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
                 if (i == 0)
                     setFirstPos_pageId(adapter.dbFolder.getPageId(i, true));
 
-                if (pageTableId > lastPageTableId)
-                    lastPageTableId = pageTableId;
-
                 System.out.println("TabsHost / _addPages / page_tableId = " + pageTableId);
 
-                Page page = new Page();
+                Page page = new Page();// new page fragment
                 Bundle args = new Bundle();
                 args.putInt("page_pos",i);
                 args.putInt("page_table_id",pageTableId);
@@ -258,22 +251,6 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         }
 
         return pageCount;
-    }
-
-    /**
-     * Get last page table Id
-     */
-    public static int getLastPageTableId()
-    {
-        return lastPageTableId;
-    }
-
-    /**
-     * Set last page table Id
-     */
-    public static void setLastPageTableId(int id)
-    {
-        lastPageTableId = id;
     }
 
     //https://stackoverflow.com/questions/45326669/android-ontabselected-not-called-at-first-time-with-customview

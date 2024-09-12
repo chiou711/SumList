@@ -325,7 +325,7 @@ public class DB_folder
         return id;
 	}
 
-	@SuppressLint("Range")
+	@SuppressLint({"Range", "SuspiciousIndentation"})
 	public String getPageTitle(int position, boolean enDbOpenClose)
 	{
 		if(enDbOpenClose)

@@ -396,8 +396,8 @@ public class MainAct extends AppCompatActivity implements FragmentManager.OnBack
      *  on Back button pressed
      */
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
+        super.onBackPressed();
         System.out.println("MainAct / _onBackPressed");
         doBackKeyEvent();
     }
