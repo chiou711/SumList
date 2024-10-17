@@ -281,7 +281,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.ViewHolder>
 		} else {
 			holder.textBody.setVisibility(View.VISIBLE);
 			holder.textBody.setText(strBody);
-			holder.textBody.setTextSize((float) 18.00);
+			holder.textBody.setTextSize((float) 16.00);
 		}
 
 		// text quantity
