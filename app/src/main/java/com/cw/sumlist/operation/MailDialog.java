@@ -143,16 +143,13 @@ public class MailDialog {
 					// note title
 					summaryStr = summaryStr.concat(db_page.getNoteTitle(j,false));
 
-					// note quantity
-					int quantity = db_page.getNoteQuantity(j,false);
-					summaryStr = summaryStr.concat(" x ");
-					summaryStr = summaryStr.concat(String
-							.valueOf(quantity));
-
-					// note price
+					// note price * quantity
 					int price = db_page.getNoteBody(j,false);
+					int quantity = db_page.getNoteQuantity(j,false);
 					summaryStr = summaryStr.concat(" = ");
 					summaryStr = summaryStr.concat(String.valueOf(price));
+					summaryStr = summaryStr.concat(" * ");
+					summaryStr = summaryStr.concat(String.valueOf(quantity));
 
 					// category title
 					String cat_string = String.valueOf(db_page.getNoteCategory(j,false));
