@@ -139,7 +139,8 @@ public class SumPagesAdapter extends ArrayAdapter<String> {
 		int pageTableId = mDb_folder.getPageTableId(position,true);
 		DB_page db_page = new DB_page(act,pageTableId);
 		String title;
-		int price,total = 0,marking;
+		int price,total= 0,marking;
+		int qnty;
 
 		db_page.open();
 		int count = db_page.getNotesCount(false);
@@ -147,18 +148,23 @@ public class SumPagesAdapter extends ArrayAdapter<String> {
 			title = db_page.getNoteTitle(i,false);
 			price = db_page.getNoteBody(i,false);
 			marking = db_page.getNoteMarking(i,false);
+			qnty = db_page.getNoteQuantity(i,false);
 
 			if(marking==1) {
 				// checked
-				total += price;
+				total += price*qnty;
 				message = message.concat("[v] ")
 						.concat(title).concat(" : ")
-						.concat(String.valueOf(price));
+						.concat(String.valueOf(price))
+						.concat(" * ")
+						.concat(String.valueOf(qnty));
 			} else {
 				// unchecked
 				message = message.concat("[ ] ")
 						.concat(title).concat(" : ")
-						.concat(String.valueOf(price));
+						.concat(String.valueOf(price))
+						.concat(" * ")
+						.concat(String.valueOf(qnty));
 			}
 
 			if(i==count-1) {
