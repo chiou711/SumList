@@ -119,7 +119,10 @@ public class Note_addText_act extends AppCompatActivity {
 		    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    }
 
-	    setTitle(R.string.add_new_note_title);// set title
+	    String focusTitle = TabsHost.getFocusPageTitle();
+	    String dlgTitle = getResources().getString(R.string.add_new_note_title);
+	    dlgTitle = dlgTitle.concat("(").concat(focusTitle).concat(")");
+	    setTitle(dlgTitle);// set title
 
 	    dB_page = new DB_page(this, TabsHost.getCurrentPageTableId());
 

@@ -443,6 +443,12 @@ public class TabsHost extends AppCompatDialogFragment implements TabLayout.OnTab
         }
     }
 
+    // get focus page title
+    public static String getFocusPageTitle(){
+        final DB_folder mDbFolder = mTabsPagerAdapter.dbFolder;
+        return mDbFolder.getPageTitle(getFocus_tabPos(), true);
+    }
+
     /**
      * edit page title
      *
