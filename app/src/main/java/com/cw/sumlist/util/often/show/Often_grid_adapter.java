@@ -29,6 +29,7 @@ import com.cw.sumlist.db.DB_often;
 import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.util.ColorSet;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
@@ -90,10 +91,11 @@ public class Often_grid_adapter extends SimpleCursorAdapter
 //        System.out.println("--- oftenCategory = " + oftenCategory);
 //        System.out.println("--- firstCategoryTitle = " + firstCategoryTitle);
 
-        // set background color to differentiate first category and other categories
+        // set background color to differentiate first often item and other often items
         if((oftenCategory!=null) &&
            oftenCategory.equalsIgnoreCase(firstCategoryTitle)) {
-            viewHolder.oftenItemTitle.setBackground(ResourcesCompat.getDrawable(MainAct.mAct.getResources(), R.drawable.button, null));
+//            viewHolder.oftenItemTitle.setBackground(ResourcesCompat.getDrawable(MainAct.mAct.getResources(), R.drawable.button, null));
+            viewHolder.oftenItemTitle.setBackgroundColor(ContextCompat.getColor(MainAct.mAct,R.color.colorPrice));
         } else {
             viewHolder.oftenItemTitle.setBackgroundColor(ColorSet.mBG_ColorArray[0]);
         }

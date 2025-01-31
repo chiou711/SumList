@@ -35,4 +35,6 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray">#bFbFbF</color>
 
+    <color name="colorPrice">#773030</color>
+
 </resources>

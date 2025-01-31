@@ -30,6 +30,7 @@ import com.cw.sumlist.main.MainAct;
 import com.cw.sumlist.util.ColorSet;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 /**
@@ -95,7 +96,8 @@ public class Often_list_adapter extends SimpleDragSortCursorAdapter
         // set background color to differentiate first category and other categories
         if((category!=null) &&
             category.equalsIgnoreCase(firstCategoryTitle)) {
-            viewHolder.oftenItemTitle.setBackground(ResourcesCompat.getDrawable(MainAct.mAct.getResources(), R.drawable.button, null));
+//            viewHolder.oftenItemTitle.setBackground(ResourcesCompat.getDrawable(MainAct.mAct.getResources(), R.drawable.button, null));
+            viewHolder.oftenItemTitle.setBackgroundColor(ContextCompat.getColor(MainAct.mAct,R.color.colorPrice));
         } else {
             viewHolder.oftenItemTitle.setBackgroundColor(ColorSet.mBG_ColorArray[0]);
         }
